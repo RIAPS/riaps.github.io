@@ -52,7 +52,10 @@ The `timesyncd` service tunes the configuration of the underlying components of 
 This executable runs on the control node and is used for download apps to the target nodes and launching them via the riaps_deplo instance running on those nodes. 
 
 The figure below shows how the various elements are deployed on a system. 
+
 ![RIAPS Element deployment](img/riaps-rt.png)
+
+riaps_deplo is typically started automatically (by systemd, for instance) on the target nodes, and so is rpyc_registry on the control node. riaps_ctrl is started manually on the control node. These processes then will launch the other processes.  (The diagram also shows a redis database - this is used only if the centralized discovery service is used; not relevant for the current implementation of the discovery service.) 
 
 ## Installation
 
