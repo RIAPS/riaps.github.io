@@ -51,6 +51,9 @@ The `timesyncd` service tunes the configuration of the underlying components of 
 
 This executable runs on the control node and is used for download apps to the target nodes and launching them via the riaps_deplo instance running on those nodes. 
 
+The figure below shows how the various elements are deployed on a system. 
+![RIAPS Element deployment](img/riaps-rt.png)
+
 ## Installation
 
 A RIAPS installation includes one development / control host, and a network of target hosts. For the former a pre-configured virtual machine is provided: an x86_64 (or amd64) machine (although a physical machine cna be used as well, after some serious configuration). For the latter we provide a bootable SD card image for a Beaglebone Black (BBB) board.  
