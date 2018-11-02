@@ -8,8 +8,7 @@ RIAPS runs on Linux amd64 and armhf architectures: the former is for the develop
 Note that setting up the environment for RIAPS a system is a non-trivial task - it is doable based on instructions and scripts riaps-integration, but it takes some time. For this reason we provide two pre-built images:
 - A development VM image: an amd64 Xubuntu 18.04 installation that has all packages needed for RIAPS development and control node
 - An SD card image for a Beaglebone Black: an armhf Ubuntu 18.04 installation that has all packages neede on the target nodes.
-
-These packages are available from our file server: https://riaps.isis.vanderbilt.edu/downloads
+These packages are available from our file server: [https://riaps.isis.vanderbilt.edu/downloads]( https://riaps.isis.vanderbilt.edu/downloads)
 
 ### Packages
 

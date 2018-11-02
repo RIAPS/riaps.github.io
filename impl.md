@@ -14,7 +14,8 @@ riaps_actor   | App run-time system that dynamically loads <br> and runs compone
 riaps_device  | A special verions of riaps actor that holds <br> only device components | Target nodes
 riaps_deplo   | RIAPS deployment service (singleton) | Target nodes
 riaps_disco   | RIAPS discovery service (singleton)  | Target nodes
-tsman         | Management tool for the time <br> synchronization service. | Target nodes
+timesyncctl   | Management tool for the time <br> synchronization service. | Target nodes
+timesyncd     | Supervisor daemon for the <br> synchronization service. | Target nodes
 riaps_ctrl    | RIAPS control service (singleton)    | Control node
 rpyc_registry | Registry service <br> Courtesy of https://github.com/tomerfiliba/rpyc | Control node
 
@@ -42,13 +43,19 @@ This process can be started manually, although typically it is started by the sy
 
 This executable implements the discovery service. When an actor is started it connects to this service and registers its message producers, and looks up its message consumers via this service. The service is started automatically by riaps_deplo.
 
-### tsman
+### timesyncd and timesyncctl
 
-This is a command tool to configure the time-syhnchronization service. The service is somewhat independent from the other elements of RIAPS as it's function is to keep the clocks of the hosts synchronized. The clock can be read by application components using standard calls available in Linux. 
+The `timesyncd` service tunes the configuration of the underlying components of the time synchronization service. Primarily, it monitors if a GPS reference clock and/or a control host is available as additional timing references. The `timesyncctl` tool is a command tool to configure the time-syhnchronization service based on pre-defined roles (See the documentation on the `riaps-timesync` repository for details). The service is somewhat independent from the other elements of RIAPS as it's function is to keep the clocks of the hosts synchronized. The clock can be read by application components using standard calls available in Linux. 
 
 ### riaps_ctrl
 
 This executable runs on the control node and is used for download apps to the target nodes and launching them via the riaps_deplo instance running on those nodes. 
+
+The figure below shows how the various elements are deployed on a system. 
+
+![RIAPS Element deployment](img/riaps-rt.png)
+
+riaps_deplo is typically started automatically (by systemd, for instance) on the target nodes, and so is rpyc_registry on the control node. riaps_ctrl is started manually on the control node. These processes then will launch the other processes.  (The diagram also shows a redis database - this is used only if the centralized discovery service is used; not relevant for the current implementation of the discovery service.) 
 
 ## Installation
 
