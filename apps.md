@@ -12,17 +12,17 @@ The core of the application model file defines the application elements:
 
 The key words used to create the core application elements are:
 - Application name <br>
-    ***`app`***` yourAppName{}`
+    ```app yourAppName{}```
 - Component definition - lists all port connections and message passing , explained further below <br>
-  ***`component`***` yourComponentName{}`
+  ```component yourComponentName{}```
 - Device component definition - same as component definition, but defines a physical hardware or software interface available to the application <br>
-  ***`device`***` yourDeviceName{}``
+  ```device yourDeviceName{}```
 - Messages - list all messages available in the application <br>
-  ***`message`***` yourMessageName;`
+  ```message yourMessageName;```
 - Actor definition - list all actors in the application <br>
-  ***`actor`***` yourActorName{actorInstanceName : yourComponentName;}`
+  ```actor yourActorName{actorInstanceName : yourComponentName;}```
 - **Optional:**  Library name - Python or C++ library available to the components code development, either third party packages or developer created.  For Python, the name is a string value representing the folder in which the library code is located.  For C++, the name is the shared library file name (without the .so).  Libraries are either installed in the system or included with the  application files.  <br>
-***`library`***` libraryName;`
+```library libraryName;```
 
 Below is a skeleton of an application file to show how these elements relate in the model (.riaps) file.
 
@@ -76,17 +76,17 @@ The component definitions will indicate the available ports in each components. 
 
 Timers are defined in the application model file with **name** and **period** values. Any number of timers can be defined within a component. Timers run in the background and send a message in every period. The period value is an integer and is specified in milliseconds by default. Time units of ***sec***, ***min***, or ***msec*** can be added after the period value to use a different unit of measured.
 
-***`timer`***` yourTimerName 5000; // 5s timer`
+```timer yourTimerName 5000; // 5s timer```
 
 or
 
-***`timer`***` yourTimerName 5 `***`sec`***`; // 5s timer`
+```timer yourTimerName 5 sec;```
 
 Timers can also be sporadic to allow delay times to be defined and controlled in the component code.  Sporadic timers do not provide a period value in the specification, as seen below.
 
-***`timer`***` yourTimerName;`
+```timer yourTimerName;```
 
-To enforce a clock accuracy, a deadline can be specified by adding ***`within`***` deadlinePeriodValue` to the end of the port definition.  The same time units as Timer ports used can be added here.  If not specified, the time units are assumed to be in milliseconds. The component framework has a **handleDeadline()** function that can be utilized to perform actions when the deadline is not met.  An example of usage of this keyword can be see in the [DEstDeadline](https://github.com/RIAPS/riaps-pycom/tree/master/tests/DEstDeadline) example project.
+To enforce a clock accuracy, a deadline can be specified by adding ```within deadlinePeriodValue``` to the end of the port definition.  The same time units as Timer ports used can be added here.  If not specified, the time units are assumed to be in milliseconds. The component framework has a **handleDeadline()** function that can be utilized to perform actions when the deadline is not met.  An example of usage of this keyword can be see in the [DEstDeadline](https://github.com/RIAPS/riaps-pycom/tree/master/tests/DEstDeadline) example project.
 
 ##### Publish/Subscribe Ports
 
@@ -94,46 +94,54 @@ Publish-subscribe interactions occur when a publisher generates data samples, wh
 
 Publisher and subscriber ports are defined as follows:
 
-***`pub`***` yourPublisherName : aMessage;`<br>
-***`sub`***` yourSubscriberName : aMessage;`
+```
+pub yourPublisherName : aMessage;
+sub yourSubscriberName : aMessage;
+```
 
 Time stamping can be setup to determine when a message is published and when this message is received by the subscriber by adding a ***timed*** keyword to the end of the port definition.  From within the application component code, the send and receive times can be requested from the component framework.
 
-***`pub`***` yourPublisherName : aMessage timed;`
+```pub yourPublisherName : aMessage timed;```
 
-Subscriber ports can specify a deadline for when a message is expected to arrive by adding ***`within`***` deadlinePeriodValue` to the port description.    
+Subscriber ports can specify a deadline for when a message is expected to arrive by adding ```within deadlinePeriodValue``` to the port description.    
 
 ##### Request/Reply Ports
 
 For request/reply interactions, a request message is sent from a client to a server reply port.  Once the message is received on the server, a reply message is sent back to the client's request port.  This message exchanged is indicated in the port definition, as shown below.  These ports can be in the same component definition or in different components.
 
-***`req`***` yourRequestPortName (aRequestMessage, aReplyMessage);`<br>
-***`rep`***` yourReplyPortName (aRequestMessage, aReplyMessage);`
+```
+req yourRequestPortName (aRequestMessage, aReplyMessage);
+rep yourReplyPortName (aRequestMessage, aReplyMessage);
+```
 
 Time stamping can be setup to determine when a client makes a request, when the message is received by the server, when the reply message is sent back to the client, and when the client receives the reply.  This enabled by adding the ***timed*** keyword to the port definition, either request or reply or both.
 
-Once a request is sent to a server, the client can continue execution of other application triggered events until the expected reply is available.  Additional requests must not be made until the reply is received so that the request and reply messaging can stay in lockstep.  For applications expecting replies from servers within specific time periods, ***`within`***` deadlinePeriodValue` can be added to the reply port description.  The deadline checking can also be added to the request port if the application is expecting periodic requests.
+Once a request is sent to a server, the client can continue execution of other application triggered events until the expected reply is available.  Additional requests must not be made until the reply is received so that the request and reply messaging can stay in lockstep.  For applications expecting replies from servers within specific time periods, ```within deadlinePeriodValue``` can be added to the reply port description.  The deadline checking can also be added to the request port if the application is expecting periodic requests.
 
 ##### Client/Server Ports
 
 The client/server pattern is similar to the request/reply pattern except the interaction is synchronous.  Once a request is sent from the client to the server, the client port must explicitly wait for a reply message from the server. This message exchanged is indicated in the port definition, as shown below.  Time stamping is available by adding the ***timed*** keyword to the end.
 
-***`clt`***` yourClientPortName (aRequestMessage, aReplyMessage);`<br>
-***`srv`***` yourServerPortName (aRequestMessage, aReplyMessage);`
+```
+clt yourClientPortName (aRequestMessage, aReplyMessage);
+srv yourServerPortName (aRequestMessage, aReplyMessage);
+```
 
-Since the client port waits for the reply from the server port, the  ***`within`***` deadlinePeriodValue` option is only available on the server port.
+Since the client port waits for the reply from the server port, the  ```within deadlinePeriodValue``` option is only available on the server port.
 
 ##### Query/Answer Ports
 
-The query/answer pattern is similar to the request/reply pattern, except the lockstep rule is not enforced.  An arbitrary number of requests (or queries) can be sent without an intervening reply (answer) being received.  This message exchanged is indicated in the port definition, as shown below.  Time stamping is available by adding the ***timed*** keyword to the end.  As in request/reply, both query and answer ports can be monitored using ***`within`***` deadlinePeriodValue` to the definition.
+The query/answer pattern is similar to the request/reply pattern, except the lockstep rule is not enforced.  An arbitrary number of requests (or queries) can be sent without an intervening reply (answer) being received.  This message exchanged is indicated in the port definition, as shown below.  Time stamping is available by adding the ***timed*** keyword to the end.  As in request/reply, both query and answer ports can be monitored using ```within deadlinePeriodValue``` to the definition.
 
-***`qry`***` yourQueryPortName (aQueryMessage, anAnswerMessage);`<br>
-***`ans`***` yourAnswerPortName (aQueryMessage, anAnswerMessage);`
+```
+qry yourQueryPortName (aQueryMessage, anAnswerMessage);
+ans yourAnswerPortName (aQueryMessage, anAnswerMessage);
+```
 
 ##### Inside Ports
 The inside port is used to forward messages coming from an internal thread to a component port.  This is typically utilized in device components to isolate hardware communication.  Specify this port by
 
-***`inside`***` anInsidePortName;`
+```inside anInsidePortName;```
 
 The default trigger interval for this port is a 1 sec timer/ticker thread.
 
@@ -185,15 +193,15 @@ The developer can specify a limit on the following system resource usage at the 
 
 A CPU usage limit (***cpu***) can either be a hard (using ***max*** keyword) or soft limit (default, no keyword).  The usage value is an integer value representing the percentage of the CPU this actor is allowed to utilize followed by a ***%***.  This calculation can be over a specific timeframe, indicated by ***over*** keyword followed by an integer value.  Time units can be specified in ***sec***, ***min*** or ***msec*** (default).
 
-***`cpu max`***` 10 `***`% over`***` 1;`
+```cpu max 10 % over 1;```
 
 A memory usage limit (***mem***) is specified as an integer value representing the amount of memory available to the actor followed by unit of measure.  Size units available are megabytes (***mb***), kilobytes(***kb***), and gigabytes(***gb***).
 
-***`mem`***` 200 mb;`
+```mem 200 mb;```
 
 A file space limit (***space***) is specified as an integer value representing the amount of disk space available to the actor followed by unit of measure.  Size units available are megabytes(***mb***) or gigabytes(***gb***).
 
-***`space`***` 10 mb;`
+```space 10 mb;```
 
 A network bandwidth limit (***net***) is specified by defining the target limit ***rate*** value in either ***kbps** or ***mbps***.  Optionally, a ceiling value (***ceil***) can be indicated, along with a burst rate (***burst***).
 > MM TODO:  Finish discussion about network bandwidth - how ceil and burst are used
