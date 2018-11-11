@@ -1,6 +1,7 @@
 ## Application Development
 
-Applications are described using a model file (.riaps) to define component port types and connections, the messages passed between or within components, and how the components are utilized to create actors. The deployment model (.deplo) defines the expected configuration of the application within a specific hardware setup.  
+In RIAPS, applications consists of components (written as Python modules or compiled into C++ shared libraries), additional libraries the application needs, and descriptions of the application architecture and how it should be deployed on a network or RIAPS nodes. 
+Applications are described using a model file (.riaps) that define component port types (and, implicitly, connections among those ports), the messages passed between or within components, and how the components are utilized to create actors. The deployment model (.deplo) defines the expected configuration of the application on a specific network setup.  
 
 ### Application Model File (.riaps)
 
@@ -12,12 +13,12 @@ The core of the application model file defines the application elements:
 
 The key words used to create the core application elements are:
 - Application name <br>
-    ```app yourAppName{}```
+    ```app yourAppName { ... }```
 - Component definition - lists all port connections and message passing , explained further below <br>
-  ```component yourComponentName{}```
-- Device component definition - same as component definition, but defines a physical hardware or software interface available to actors on the same RIAPS node <br>
-  ```device yourDeviceName{}```
-- Messages - list all messages available in the application <br>
+  ```component yourComponentName { ... }```
+- Device component definition - same as component definition, but defines a physical hardware or software interface available to actors on a RIAPS node <br>
+  ```device yourDeviceName { ... }```
+- Messages - list messages available in the application <br>
   ```message yourMessageName;```
 - Actor definition - list all actors in the application <br>
   ```actor yourActorName{actorInstanceName : yourComponentName;}```
@@ -67,10 +68,10 @@ The component definitions will indicate the available ports in each components. 
 
 - Timers (***timer***)
 - Publish (***pub***) --> Subscribe (***sub***)
-- Request (***req***) --> Reply (***rep***)
-- Client (***clt***) --> Server (***srv***)  
+- Request (***req***) <--> Reply (***rep***)
+- Client (***clt***) <--> Server (***srv***)  
 - Query (***qry***) / Answer (***ans***)
-- Inside Ports (***inside***) - used in device components to isolate hardware communication
+- Inside Ports (***inside***) - used only in device components to isolate hardware communication
 
 ##### Timer Ports
 
@@ -86,13 +87,13 @@ or
 timer yourTimerName 5 sec;
 ```
 
-Timers can also be sporadic to allow delay times to be defined and controlled in the component code.  Sporadic timers do not provide a period value in the specification, as seen below.
+Timers can also be sporadic to allow delay times to be defined and controlled in the component code.  Sporadic timers do not have a period value in the specification, as seen below.
 
 ```
 timer yourTimerName;
 ```
 
-To enforce a clock accuracy, a deadline can be specified by adding ```within deadlinePeriodValue``` to the end of the port definition.  The same time units as Timer ports used can be added here.  If not specified, the time units are assumed to be in milliseconds. The component framework has a **handleDeadline()** function that can be utilized to perform actions when the deadline is not met.  An example of usage of this keyword can be see in the [DEstDeadline](https://github.com/RIAPS/riaps-pycom/tree/master/tests/DEstDeadline) example project.
+To detect deadline violations caused by the component's code that handles timer events, a deadline can be specified by adding ```within deadlinePeriodValue``` to the end of the port definition.  The same time units as Timer ports used can be added here.  If not specified, the time units are assumed to be in milliseconds. The component framework has a **handleDeadline()** function that can be utilized to perform actions when the deadline is not met.  An example of usage of this keyword can be see in the [DEstDeadline](https://github.com/RIAPS/riaps-pycom/tree/master/tests/DEstDeadline) example project.
 
 ```
 timer yourTimerName 1 sec with 1 msec;
@@ -115,11 +116,11 @@ Time stamping can be setup to determine when a message is published and when thi
 pub yourPublisherName : aMessage timed;
 ```
 
-Subscriber ports can specify a deadline for when a message is expected to arrive by adding ```within deadlinePeriodValue``` to the port description.    
+Subscriber ports can specify a deadline for the completion of the processing of a message by adding ```within deadlinePeriodValue``` to the port description.    
 
 ##### Request/Reply Ports
 
-For request/reply interactions, a request message is sent from a client to a server reply port.  Once the message is received on the server, a reply message is sent back to the client's request port.  This message exchanged is indicated in the port definition, as shown below.  These ports can be in the same component definition or in different components.
+For request/reply interactions, a request message is sent from a client's request port to a server's (corresponding) reply port.  Once the message is received on the server, a reply message is sent back to the client's request port. The ports are matched (i.e. connected) based on the pair of types of the messages they carry. This message exchanged is indicated in the port definition, as shown below.  These ports can be in the same component definition or in different components.
 
 ```
 req yourRequestPortName (aRequestMessage, aReplyMessage);
@@ -128,11 +129,11 @@ rep yourReplyPortName (aRequestMessage, aReplyMessage);
 
 Time stamping can be setup to determine when a client makes a request, when the message is received by the server, when the reply message is sent back to the client, and when the client receives the reply.  This enabled by adding the ***timed*** keyword to the port definition, either request or reply or both.
 
-Once a request is sent to a server, the client can continue execution of other application triggered events until the expected reply is available.  Additional requests must not be made until the reply is received so that the request and reply messaging can stay in lockstep.  For applications expecting replies from servers within specific time periods, ```within deadlinePeriodValue``` can be added to the reply port description.  The deadline checking can also be added to the request port if the application is expecting periodic requests.
+Once a request is sent to a server, the client can continue execution of other application triggered events until the expected reply is available.  Additional requests must not be made until the reply is received so that the request and reply messaging can stay in lockstep.  For applications expecting the completion of server operations within specific time limits ```within deadlinePeriodValue``` can be added to the server's reply port description.  The deadline checking can also be added to the request port.
 
 ##### Client/Server Ports
 
-The client/server pattern is similar to the request/reply pattern except the interaction is synchronous.  Once a request is sent from the client to the server, the client port must explicitly wait for a reply message from the server. This message exchanged is indicated in the port definition, as shown below.  Time stamping is available by adding the ***timed*** keyword to the end.
+The client/server pattern is similar to the request/reply pattern except the interaction is synchronous.  Once a request is sent from the client to the server, the client port must explicitly wait for a reply message (using a receive operation) from the server. This message exchanged is indicated in the port definition, as shown below.  Time stamping is available by adding the ***timed*** keyword to the end.
 
 ```
 clt yourClientPortName (aRequestMessage, aReplyMessage);
@@ -143,7 +144,7 @@ Since the client port waits for the reply from the server port, the  ```within d
 
 ##### Query/Answer Ports
 
-The query/answer pattern is similar to the request/reply pattern, except the lockstep rule is not enforced.  An arbitrary number of requests (or queries) can be sent without an intervening reply (answer) being received.  This message exchanged is indicated in the port definition, as shown below.  Time stamping is available by adding the ***timed*** keyword to the end.  As in request/reply, both query and answer ports can be monitored using ```within deadlinePeriodValue``` to the definition.
+The query/answer pattern is similar to the request/reply pattern, except the lockstep rule is not enforced.  An arbitrary number of requests (or queries) can be sent without an intervening reply (answer) being received.  This message exchanged is indicated in the port definition, as shown below.  Time stamping is available by adding the ***timed*** keyword to the end.  As in request/reply, both query and answer ports can have a deadline specification for the associated operation using the ```within deadlinePeriodValue``` to the definition.
 
 ```
 qry yourQueryPortName (aQueryMessage, anAnswerMessage);
@@ -151,22 +152,24 @@ ans yourAnswerPortName (aQueryMessage, anAnswerMessage);
 ```
 
 ##### Inside Ports
-The inside port is used to forward messages coming from an internal thread to a component port.  This is typically utilized in device components to isolate hardware communication.  Specify this port by
+
+The inside port is used to forward messages coming from an internal thread to a component port.  This is typically utilized in device components to isolate hardware communication that happens in a separate thread, called the I/O thread. Specify this port by
 
 ```
 inside anInsidePortName;
 ```
 
-The default trigger interval for this port is a 1 sec timer/ticker thread.
+Such ports are input ports for the component, i.e. if the (inner) I/O thread sends a message to this port, it will trigger a corresponding component operation. The component's operations can send messages through this port to the inner I/O thread. If the keyword ```default``` is added after the port name, a 1 sec periodic timer will be attached to this port, which will then trigger corresponding component operation with a 1 Hz frequency. 
 
 #### Actor Definitions
-This is where the developer indicates how the components are combined to create the application.  The application is made of one or more actors.  An actor definition includes a list of component instances that are utilized, an indication of the message exposure level, and the resource management specification.  Below is an actor definition where all the components communicate on a global level, all actors can see the message traffic for these components.
+
+This is where the developer indicates how the components are combined to create the application.  The application is made of one or more actors.  An actor definition includes a list of component instances that are utilized, an indication of the message exposure scope, and the resource management specification.  Below is an actor definition where all the components communicate on a global level, all actors can see the message traffic for these components.
 
 ```
 actor ActorName1 {
    {  
-      componentInstanceName : ComponentName1;
-      deviceInstanceName : ADevice
+      component1InstanceName : ComponentName1;
+      component2InstanceName : ComponentName2;
    }
 }
 ```
@@ -204,7 +207,7 @@ actor ActorName2 {
 
 ##### Resource Management Specifications
 
-The developer can specify a limit on the following system resource usage at the actor level:  CPU, memory, file space, and network bandwidth.  Prior to indicating the component instance definitions for the actor, a ***uses{}*** instruction set can be added to outline the desired limits, an example is  shown below.
+The developer can specify a limit on the following system resource usage at the actor level:  CPU, memory, file space, and network bandwidth.  Prior to indicating the component instance definitions for the actor, a ```uses {...}``` clause can be added to outline the desired limits, an example is  shown below.
 
 ```
 actor ActorName1 {
