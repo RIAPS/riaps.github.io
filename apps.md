@@ -123,8 +123,8 @@ Subscriber ports can specify a deadline for the completion of the processing of 
 For request/reply interactions, a request message is sent from a client's request port to a server's (corresponding) reply port.  Once the message is received on the server, a reply message is sent back to the client's request port. The ports are matched (i.e. connected) based on the pair of types of the messages they carry. This message exchanged is indicated in the port definition, as shown below.  These ports can be in the same component definition or in different components.
 
 ```
-req yourRequestPortName (aRequestMessage, aReplyMessage);
-rep yourReplyPortName (aRequestMessage, aReplyMessage);
+req yourRequestPortName : (aRequestMessage, aReplyMessage);
+rep yourReplyPortName : (aRequestMessage, aReplyMessage);
 ```
 
 Time stamping can be setup to determine when a client makes a request, when the message is received by the server, when the reply message is sent back to the client, and when the client receives the reply.  This enabled by adding the ***timed*** keyword to the port definition, either request or reply or both.
@@ -136,8 +136,8 @@ Once a request is sent to a server, the client can continue execution of other a
 The client/server pattern is similar to the request/reply pattern except the interaction is synchronous.  Once a request is sent from the client to the server, the client port must explicitly wait for a reply message (using a receive operation) from the server. This message exchanged is indicated in the port definition, as shown below.  Time stamping is available by adding the ***timed*** keyword to the end.
 
 ```
-clt yourClientPortName (aRequestMessage, aReplyMessage);
-srv yourServerPortName (aRequestMessage, aReplyMessage);
+clt yourClientPortName : (aRequestMessage, aReplyMessage);
+srv yourServerPortName : (aRequestMessage, aReplyMessage);
 ```
 
 Since the client port waits for the reply from the server port, the  ```within deadlinePeriodValue``` option is only available on the server port.
@@ -147,8 +147,8 @@ Since the client port waits for the reply from the server port, the  ```within d
 The query/answer pattern is similar to the request/reply pattern, except the lockstep rule is not enforced.  An arbitrary number of requests (or queries) can be sent without an intervening reply (answer) being received.  This message exchanged is indicated in the port definition, as shown below.  Time stamping is available by adding the ***timed*** keyword to the end.  As in request/reply, both query and answer ports can have a deadline specification for the associated operation using the ```within deadlinePeriodValue``` to the definition.
 
 ```
-qry yourQueryPortName (aQueryMessage, anAnswerMessage);
-ans yourAnswerPortName (aQueryMessage, anAnswerMessage);
+qry yourQueryPortName : (aQueryMessage, anAnswerMessage);
+ans yourAnswerPortName : (aQueryMessage, anAnswerMessage);
 ```
 
 ##### Inside Ports
