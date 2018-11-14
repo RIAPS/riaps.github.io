@@ -96,7 +96,7 @@ timer yourTimerName;
 To detect deadline violations caused by the component's code that handles timer events, a deadline can be specified by adding ```within deadlinePeriodValue``` to the end of the port definition.  The same time units as Timer ports used can be added here.  If not specified, the time units are assumed to be in milliseconds. The component framework has a **handleDeadline()** function that can be utilized to perform actions when the deadline is not met.  An example of usage of this keyword can be see in the [DEstDeadline](https://github.com/RIAPS/riaps-pycom/tree/master/tests/DEstDeadline) example project.
 
 ```
-timer yourTimerName 1 sec with 1 msec;
+timer yourTimerName 1 sec within 1 msec;
 ```
 
 ##### Publish/Subscribe Ports
