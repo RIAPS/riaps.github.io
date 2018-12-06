@@ -1,6 +1,6 @@
-## Application Development
+## Application Model and Deployment Files Tutorial
 
-In RIAPS, applications consists of components (written as Python modules or compiled into C++ shared libraries), additional libraries the application needs, and descriptions of the application architecture and how it should be deployed on a network or RIAPS nodes. 
+In RIAPS, applications consists of components (written as Python modules or compiled into C++ shared libraries), additional libraries the application needs, and descriptions of the application architecture and how it should be deployed on a network or RIAPS nodes.
 Applications are described using a model file (.riaps) that define component port types (and, implicitly, connections among those ports), the messages passed between or within components, and how the components are utilized to create actors. The deployment model (.deplo) defines the expected configuration of the application on a specific network setup.  
 
 ### Application Model File (.riaps)
@@ -159,7 +159,7 @@ The inside port is used to forward messages coming from an internal thread to a 
 inside anInsidePortName;
 ```
 
-Such ports are input ports for the component, i.e. if the (inner) I/O thread sends a message to this port, it will trigger a corresponding component operation. The component's operations can send messages through this port to the inner I/O thread. If the keyword ```default``` is added after the port name, a 1 sec periodic timer will be attached to this port, which will then trigger corresponding component operation with a 1 Hz frequency. 
+Such ports are input ports for the component, i.e. if the (inner) I/O thread sends a message to this port, it will trigger a corresponding component operation. The component's operations can send messages through this port to the inner I/O thread. If the keyword ```default``` is added after the port name, a 1 sec periodic timer will be attached to this port, which will then trigger corresponding component operation with a 1 Hz frequency.
 
 #### Actor Definitions
 
