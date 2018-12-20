@@ -73,6 +73,14 @@ The component definitions will indicate the available ports in each components. 
 - Query (***qry***) / Answer (***ans***)
 - Inside Ports (***inside***) - used only in device components to isolate hardware communication
 
+Components (and Devices) can be written in either Python (3.6) or C++ (v17).  An application can be created from a mix of both Python and C++ components.  To identify the language of the component, add "in" and then the language type just before the "{}" to define the ports.  If no language is indicated, then the components will be expected to be a Python implementation.  Python can be specified by either ***Python***, ***python*** or ***py***.  C++ can be specified by either ***C++***, ***c++*** or ***cpp***.
+
+```
+    Component1 () in Python {
+
+    }
+```
+
 ##### Timer Ports
 
 Timers are defined in the application model file with **name** and **period** values. Any number of timers can be defined within a component. Timers run in the background and send a message in every period. The period value is an integer and is specified in milliseconds by default. Time units of ***sec***, ***min***, or ***msec*** can be added after the period value to use a different unit of measured.
