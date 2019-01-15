@@ -4,7 +4,7 @@ This section describes how to debug RIAPS components without modifying them.
 
 We assume that Eclipse is used for developing RIAPS application components. The Python
 development environment has a debugger that can be used for debugging the components
-running on the RIAPS target nodes while the graphical front-end of the debugger is
+running within actors on the RIAPS target nodes while the graphical front-end of the debugger is
 running on the development machine. The debugger uses the Python source code
 of the components located on development host.
 
@@ -13,9 +13,9 @@ Note: The same debugger can also be used for debugging the RIAPS framework itsel
 When an actor (or a device component that runs in its own device actor) on the target node
 is started it must connect to the debugger front end that runs on the development host.
 This is controlled by a configuration attribute in the **/usr/local/riaps/etc/riaps.conf**
-file on the target node. See the [RIAPS Configuration Files](https://github.com/RIAPS/riaps-pycom/blob/master/src/riaps/etc/README.md) information for how to configure the target nodes for debugging.
+file on the target node. See the [RIAPS Configuration Files](https://github.com/RIAPS/riaps-pycom/blob/master/src/riaps/etc/README.md) information for how to configure the target nodes for debugging.  Setup the **actor_debug_server** to debug application components.
 
-Having configured the target node a debugging session can be started as follows:
+Having configured the target node, a debugging session can be started as follows:
 
 1. Launch Eclipse, open the project that contains the code for the app components.
 Open a component and set a breakpoint somewhere (e.g. in the constructor, or at any operation).
