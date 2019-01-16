@@ -28,11 +28,10 @@ the target host (unless it is already running).
 4. Use riaps_ctrl to launch the application from the development host on the target hosts.
 
 5. When the riaps_actor (or riaps_device) is started, it will link up to the debugger running
-on the development host. This event will activate the debugger, that will stop the code running
-on the target machine at a specific place within the RIAPS code. The **Resume(F8)** button should
+on the development host. This event will activate the debugger, that will stop the code running on the target machine at a specific place within the RIAPS code. The **Resume(F8)** button should
 be used at this point to let the program proceed. <br/>
 
-> Note: This will happen for each actor/device started on the target node. Watch out for the processes running under the Debug Server with the name **unknown** -- these are the remote actors/devices running on the target. Each one of these should be **resumed** after the initial connection.
+> Note: This will happen for each actor/device started on the target node. Watch out for the processes running under the Debug Server with the name **unknown** -- these are the remote actors/devices running on the target. Each one of these should be **resumed** after the initial connection. Make sure the **riaps_trace_setup** thread is selected (see image below) before resuming. <br/><br/> ![Initial Actor Debug Stopping Point](img/actor-debug-1.png)
 
 6. After the initial connection to the debugger has been made, the debugger will stop the target
 code at a breakpoint, and the usual debugging activities can commence.
