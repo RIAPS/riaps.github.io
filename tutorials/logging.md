@@ -18,13 +18,13 @@ This file defines one or more sink types, loggers that utilize one of the sinks,
   - rotating_file_sink ```(_mt or _st)```
   - daily_file_sink_st ```(_mt or _st)```
 
-> Note: single threaded (```_st```) or thread safe multi-threaded (```_mt```) loggers.  For a full list of loggers, see [Supported Sinks](https://github.com/guangie88/spdlog_setup#supported-sinks)
+> Note: Utilize either single threaded (```_st```) or thread safe multi-threaded (```_mt```) loggers.  For a full list of loggers, see [Supported Sinks](https://github.com/guangie88/spdlog_setup#supported-sinks)
 
-A logger section should be available for each component with the name indicating the actor name and the component instance.  This allows flexibility for the developer to direct and format the output of each component individually.
+A logger section should be available for each component with the name indicating the actor name and the component instance.  This allows flexibility for the developer to direct and format the output of each component instance individually.
 
-The pattern section defines the expected format of the logging message, in addition to the message logged by the component in the code.  The pattern flags are available at https://github.com/gabime/spdlog/wiki/3.-Custom-formatting.
+The pattern section defines the expected format of the logging message, any identifying text, and the message logged by the component in the code.  The pattern flag options are listed in a [spdlog custom formatting tutorial](https://github.com/gabime/spdlog/wiki/3.-Custom-formatting).
 
-Using the [example WeatherMonitor application](https://github.com/RIAPS/riaps-apps/tree/master/apps-vu/WeatherMonitor/Python), a **riaps-log.conf** is as follows:
+Using the example [WeatherMonitor application](https://github.com/RIAPS/riaps-apps/tree/master/apps-vu/WeatherMonitor/Python), an example  **riaps-log.conf** is as follows, showing custom patterns for each component being sent to the console for display:
 
 ```
 #
@@ -67,9 +67,9 @@ level = "info"
 create_parent_dir = true
 ```
 
->Note:  When writing to a log file, output to this file happens in batches so can take sometime for the data to appear in the desired file (on the order of a minute or more).  If multiple components are writing to the same file, each batch output will write logs for a single component rotating until all components output a batch set (not interleaved based on time).
+>Note:  When writing to a log file, output to this file happens in batches so can take some time for the data to appear in the desired file (on the order of a minute or more).  If multiple components are writing to the same file, each batch output will write logs for a single component rotating until all components output a batch set (not interleaved based on time).
 
-Example configuration files for various sink types can be found at under [TOML Configuration Example](https://github.com/guangie88/spdlog_setup).
+Example configuration files for various sink types can be found at under [TOML Configuration Example](https://github.com/guangie88/spdlog_setup).  If a log folder is desired for daily and rotating log files, then a simple file sink will be needed that creates the desired directory using the **create_parent_dir** indicator.  The simple file log will be created, but will not be used if it is not specified by a component logger definition.
 
 ## Example Python Code for Component Logging
 
@@ -93,11 +93,11 @@ A global way to log Actor information to a file in the deployed application dire
 
 ```
 # application logs
-# '' 				-- stdout
-# log				-- app/actor.log file
+# ''        -- stdout
+# log       -- app/actor.log file
 app_logs = log
 ```
 
 ## RIAPS Framework Logging
 
-Minimal logging to indicate the current system status and any errors encountered is the default configuration of the framework logging.  More logging is available for each of the RIAPS framework modules to assist in debugging issues.  The logging configuration can be found on each of the RIAPS nodes in **/usr/local/riaps/etc/riaps-log.conf**.  Additional module information can be added by including the desired module (such as riaps.deplo.depm) in the comma separated **keys** list.
+By default, minimal logging is configured to indicate the current system status and any errors encountered is the default configuration of the framework logging.  More logging is available for each of the RIAPS framework modules to assist in debugging issues.  The logging configuration can be found on each of the RIAPS nodes in **/usr/local/riaps/etc/riaps-log.conf**.  Additional module information can be added by including the desired module (such as riaps.deplo.depm) in the comma separated **keys** list.
