@@ -1,3 +1,3 @@
+# Placeholder for RIAPS Application Management Tutorial
 
-
->Note: This page will describe the launching of riaps (ctrl and deplo).  Plan to reference any information already available.
+>Note: This page will describe the launching of riaps (ctrl and deplo).  

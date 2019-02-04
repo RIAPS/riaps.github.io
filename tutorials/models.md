@@ -277,7 +277,7 @@ app TestApp {
 
 ### Component Configuration Using Parameters
 
-Components can be customized by using parameter passing to setup key features of the component.  A good example of the utilization of parameter passing can be found in the [DistributedEstimatorGpio test example](https://github.com/RIAPS/riaps-pycom/tree/master/tests/DEstGPIO).  Here you have two customized components:
+Components can be customized by using parameter passing to setup key features of the component.  A good example of the utilization of parameter passing can be found in the [DistributedEstimatorGpio test example](https://github.com/RIAPS/riaps-apps/tree/master/apps-vu/DistributedEstimatorGPIO).  Here you have two customized components:
 
 * Sensor where the reported value is set by the passed value (if provided).  The component has a default behavior that can be overridden by this passed value.
 *  LocalEstimator allows configure of the estimation frequency rate.

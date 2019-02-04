@@ -1,4 +1,4 @@
-# RIAPS Eclipse DSML Tool Tutorial
+# Placeholder for RIAPS Eclipse DSML Tool Tutorial
 
 Outline:
 * create project
