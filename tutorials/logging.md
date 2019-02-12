@@ -79,14 +79,14 @@ In spdlog terms, a sink is an interface between a logger instance and its desire
 Console and file sink types available are:
 
 - ConsoleLogger
-  - stdout_sink ```(_mt or _st)```
-  - stdout_color_sink ```(_mt or _st)```
-  - stderr_sink ```(_mt or _st)```
-  - stderr_color_sink ```(_mt or _st)```
+  - stdout_sink ```(_mt or _st)``` - standard output.
+  - stdout_color_sink ```(_mt or _st)``` - standard output colored.
+  - stderr_sink ```(_mt or _st)``` - standard error.
+  - stderr_color_sink ```(_mt or _st)``` - standard error colored.
 - FileLogger
-  - simple_file_sink ```(_mt or _st)```
-  - rotating_file_sink ```(_mt or _st)```
-  - daily_file_sink_st ```(_mt or _st)```
+  - simple_file_sink ```(_mt or _st)``` - Basic file sink that writes to a given log file.
+  - rotating_file_sink ```(_mt or _st)``` - Rotating log files. When the maximum size is reached, a new file is created and the logger switches to a new file. The maximum size of each file and the maximum number of files can be configured.
+  - daily_file_sink_st ```(_mt or _st)``` - Creates a new file every day at a specified time instance.
 
 > Note: Utilize either single threaded (```_st```) or thread safe multi-threaded (```_mt```) loggers.  For a full list of loggers, see [Supported Sinks](https://github.com/guangie88/spdlog_setup#supported-sinks)
 
