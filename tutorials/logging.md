@@ -79,6 +79,8 @@ How the output will be handled is defined by the chosen **sink** method.
 - Include the concept of a sink and a logger.  
 - What are the sink types, what they do
 
+> PG: Added them below.
+
 In spdlog terms, a sink is an interface between a logger instance and its desired target. Each logger is associated with one or more sink objects that actually write the log contents to a specific target such as a file, console or database. Each sink also contains its own private instance of a formatter object, which is responsible for the visual representation of the logged data. It can be customized with user-defined patterns that specify the log format. Sinks can also specify colored output.
 
 Console and file sink types available are:
