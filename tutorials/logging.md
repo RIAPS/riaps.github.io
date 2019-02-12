@@ -50,6 +50,11 @@ For the remote RIAPS nodes, the riaps.conf can be modified on the development VM
 
 > MM TODO:  test this command to make sure it is correct or if something else is needed
 
+> PG: Tested successfully. We can maybe add the following: 
+1. Edit the riaps_hosts.py file for the fabfile to work.
+2. riaps.conf file needs to be in same directory as the fabfiles otherwise it will throw an error.
+3. After the local riaps.conf file gets copied to the remote nodes, users need to change the NIC name there.
+
 > Note:  Since applications are deployed under a generated username, the developer must have root access to view the log messages in the ```/home/riaps/riaps_apps/<app name>``` directory.
 
 
