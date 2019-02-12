@@ -87,11 +87,10 @@ Console and file sink types available are:
   - simple_file_sink ```(_mt or _st)``` - Basic file sink that writes to a given log file.
   - rotating_file_sink ```(_mt or _st)``` - Rotating log files. When the maximum size is reached, a new file is created and the logger switches to a new file. The maximum size of each file and the maximum number of files can be configured.
   - daily_file_sink_st ```(_mt or _st)``` - Creates a new file every day at a specified time instance.
-  
-  Apart from these, users can also define their own sinks manually (example shown below).
 
 > Note: Utilize either single threaded (```_st```) or thread safe multi-threaded (```_mt```) loggers.  For a full list of loggers, see [Supported Sinks](https://github.com/guangie88/spdlog_setup#supported-sinks)
 
+Apart from these, users can also define their own sinks manually (example shown below).
 
 The **pattern** section defines the expected format of the logging message, any identifying text, and the message logged by the component in the code.  The pattern flag options are listed in a [spdlog custom formatting tutorial](https://github.com/gabime/spdlog/wiki/3.-Custom-formatting).
 
