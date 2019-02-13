@@ -50,7 +50,11 @@ For the remote RIAPS nodes, the "riaps.conf" can be modified on the development 
 
 Since applications are deployed under a generated username, the developer must have root access to view the log messages in the ```/home/riaps/riaps_apps/<app name>``` directory.  When writing to a log file, output to this file happens in batches so it can take some time for the data to appear in the desired file (on the order of a minute or more).  
 
-The ```/home/riaps/riaps_apps/<app name>``` directory is only available when the application is deployed.  Removing an application using the RIAPS controller will delete the log information.  It is anticipated that when an application is deployed in a real system, it could be stopped and restarted or just left continuously running throughout the life of the application on the system.  Therefore, logged information will remain available to system operators.  During application development, the developer will be deploying and removing the application during debugging efforts.  So it is recommended to copy the logs to another location if access is needed at a later time (for debugging).  
+The ```/home/riaps/riaps_apps/<app name>``` directory is only available when the application is deployed.  Removing an application using the RIAPS controller will delete the log information.  It is anticipated that when an application is deployed in a real system, it could be stopped and restarted or just left continuously running throughout the life of the application on the system.  Therefore, logged information will remain available to system operators.  During application development, the developer will be deploying and removing the application during debugging efforts.  So it is recommended to copy the logs to another location if access is needed at a later time (for debugging).  The log files can be moved from a remote node to the development machine using the following fabric utility command from the development machine (passing where to locate the file and then where to place the file locally).  The "true" is needed since the logs are located in a priviledge location that requires "sudo" in the get command.  
+
+```
+sys.get:riaps_apps/DistributedEstimator/log/*,.,true -H bbb-8014.local
+```
 
 > Note: It is not recommended to leave actor-level logging on in a real system deployed application unless the logging is for errors and warnings only, in order to minimize disk usage.  Consider using customizable component-level logging instead.
 
