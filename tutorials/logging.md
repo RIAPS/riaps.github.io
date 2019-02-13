@@ -50,6 +50,11 @@ For the remote RIAPS nodes, the riaps.conf can be modified on the development VM
 
 > MM TODO:  test this command to make sure it is correct or if something else is needed
 
+> PG: Tested successfully. We can maybe add the following: 
+1. Edit the riaps_hosts.py file for the fabfile to work.
+2. riaps.conf file needs to be in same directory as the fabfiles otherwise it will throw an error.
+3. After the local riaps.conf file gets copied to the remote nodes, users need to change the NIC name there.
+
 > Note:  Since applications are deployed under a generated username, the developer must have root access to view the log messages in the ```/home/riaps/riaps_apps/<app name>``` directory.
 
 
@@ -74,20 +79,25 @@ How the output will be handled is defined by the chosen **sink** method.
 - Include the concept of a sink and a logger.  
 - What are the sink types, what they do
 
+> PG: Added them below.
+
+In spdlog terms, a sink is an interface between a logger instance and its desired target. Each logger is associated with one or more sink objects that actually write the log contents to a specific target such as a file, console or database. Each sink also contains its own private instance of a formatter object, which is responsible for the visual representation of the logged data. It can be customized with user-defined patterns that specify the log format. Sinks can also specify colored output.
+
 Console and file sink types available are:
 
 - ConsoleLogger
-  - stdout_sink ```(_mt or _st)```
-  - stdout_color_sink ```(_mt or _st)```
-  - stderr_sink ```(_mt or _st)```
-  - stderr_color_sink ```(_mt or _st)```
+  - stdout_sink ```(_mt or _st)``` - standard output.
+  - stdout_color_sink ```(_mt or _st)``` - standard output colored.
+  - stderr_sink ```(_mt or _st)``` - standard error.
+  - stderr_color_sink ```(_mt or _st)``` - standard error colored.
 - FileLogger
-  - simple_file_sink ```(_mt or _st)```
-  - rotating_file_sink ```(_mt or _st)```
-  - daily_file_sink_st ```(_mt or _st)```
+  - simple_file_sink ```(_mt or _st)``` - Basic file sink that writes to a given log file.
+  - rotating_file_sink ```(_mt or _st)``` - Rotating log files. When the maximum size is reached, a new file is created and the logger switches to a new file. The maximum size of each file and the maximum number of files can be configured.
+  - daily_file_sink_st ```(_mt or _st)``` - Creates a new file every day at a specified time instance.
 
 > Note: Utilize either single threaded (```_st```) or thread safe multi-threaded (```_mt```) loggers.  For a full list of loggers, see [Supported Sinks](https://github.com/guangie88/spdlog_setup#supported-sinks)
 
+Apart from these, users can also define their own sinks manually (example shown below).
 
 The **pattern** section defines the expected format of the logging message, any identifying text, and the message logged by the component in the code.  The pattern flag options are listed in a [spdlog custom formatting tutorial](https://github.com/gabime/spdlog/wiki/3.-Custom-formatting).
 
