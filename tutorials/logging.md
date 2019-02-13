@@ -46,23 +46,19 @@ A global way to log **Actor** information to a file in the deployed application 
 app_logs = log
 ```
 
-For the remote RIAPS nodes, the riaps.conf can be modified on the development VM and then moved to the remote nodes using the [fabfile utility](https://github.com/RIAPS/riaps-pycom/tree/master/bin). Use the ```fab riaps.updateConfig``` command to setup the remote nodes.
+For the remote RIAPS nodes, the "riaps.conf" can be modified on the development VM and then moved to the remote nodes using the [fabfile utility](https://github.com/RIAPS/riaps-pycom/tree/master/bin). Start with [original "riaps.conf" file](https://github.com/RIAPS/riaps-pycom/blob/master/src/riaps/etc/riaps.conf) and configure appropriately for your system configuration (including the NIC name). Make sure the RIAPS nodes are accessible from the fab command (see ```fab sys.check```). Then use the ```fab riaps.updateConfig``` command to transfer the locally edited "riaps.conf" file to the remote nodes.
 
-> MM TODO:  test this command to make sure it is correct or if something else is needed
+Since applications are deployed under a generated username, the developer must have root access to view the log messages in the ```/home/riaps/riaps_apps/<app name>``` directory.  When writing to a log file, output to this file happens in batches so it can take some time for the data to appear in the desired file (on the order of a minute or more).  
 
-> PG: Tested successfully. We can maybe add the following: 
-1. Edit the riaps_hosts.py file for the fabfile to work.
-2. riaps.conf file needs to be in same directory as the fabfiles otherwise it will throw an error.
-3. After the local riaps.conf file gets copied to the remote nodes, users need to change the NIC name there.
+The ```/home/riaps/riaps_apps/<app name>``` directory is only available when the application is deployed.  Removing an application using the RIAPS controller will delete the log information.  It is anticipated that when an application is deployed in a real system, it could be stopped and restarted or just left continuously running throughout the life of the application on the system.  Therefore, logged information will remain available to system operators.  During application development, the developer will be deploying and removing the application during debugging efforts.  So it is recommended to copy the logs to another location if access is needed at a later time (for debugging).  
 
-> Note:  Since applications are deployed under a generated username, the developer must have root access to view the log messages in the ```/home/riaps/riaps_apps/<app name>``` directory.
-
+> Note: It is not recommended to leave actor-level logging on in a real system deployed application unless the logging is for errors and warnings only, in order to minimize disk usage.  Consider using customizable component-level logging instead.
 
 ## Customizable Component-Level Logging
 
 The application developer can customize the logging setup for each application component instance by defining a **riaps-log.conf** file and placing it in the application directory with the components.  This file defines the logging configuration and output pattern for each of the application components instances, thus providing flexibility for the developer to direct and format the output of each component instance individually.  
 
-The logging configuration (or ```[[logger]]``` section) indicates the component instance for the specific configuration definition, how the output will be handles, and the output format used.  When the actors were defined in the application model file (.riaps), a name was given for each instance of the application component used in the actor.  Using the [WeatherMonitor example application](https://github.com/RIAPS/riaps-apps/blob/master/apps-vu/WeatherMonitor/Python/wmonitor.riaps), an actor definition is shown below.  The **name** for this component instance will be  **WeatherIndicator.sensor**, where 'WeatherIndicator' is the actor's name and 'sensor' is the component instance name.
+The logging configuration (```[[logger]]```) indicates the component instance for the specific configuration definition, how the output will be handles, and the output format used.  When the actors were defined in the application model file (.riaps), a name was given for each instance of the application component used in the actor.  Using the [WeatherMonitor example application](https://github.com/RIAPS/riaps-apps/blob/master/apps-vu/WeatherMonitor/Python/wmonitor.riaps), an actor definition is shown below.  The **name** for this component instance will be  **WeatherIndicator.sensor**, where 'WeatherIndicator' is the actor's name and 'sensor' is the component instance name.
 
 ```
     actor WeatherIndicator {
@@ -72,32 +68,23 @@ The logging configuration (or ```[[logger]]``` section) indicates the component 
     }
 ```
 
-How the output will be handled is defined by the chosen **sink** method.  
-
-> MM TODO:  
-- need to define 'sink' in user terms in the above paragraph.  
-- Include the concept of a sink and a logger.  
-- What are the sink types, what they do
-
-> PG: Added them below.
-
-In spdlog terms, a sink is an interface between a logger instance and its desired target. Each logger is associated with one or more sink objects that actually write the log contents to a specific target such as a file, console or database. Each sink also contains its own private instance of a formatter object, which is responsible for the visual representation of the logged data. It can be customized with user-defined patterns that specify the log format. Sinks can also specify colored output.
+In spdlog terms, a sink (**[[sink]]**) is an interface between a logger instance and its desired target. Each logger is associated with one or more sink objects that actually write the log contents to a specific target such as a file, console or database. Each logger instance also contains its own private instance of a formatter object, which is responsible for the visual representation of the logged data. It can be customized with user-defined patterns (**[[pattern]]**) that specify the log format.
 
 Console and file sink types available are:
 
 - ConsoleLogger
-  - stdout_sink ```(_mt or _st)``` - standard output.
-  - stdout_color_sink ```(_mt or _st)``` - standard output colored.
-  - stderr_sink ```(_mt or _st)``` - standard error.
-  - stderr_color_sink ```(_mt or _st)``` - standard error colored.
+  - Standard output: ```stdout_sink (_mt or _st)```
+  - Colored standard output: ```stdout_color_sink (_mt or _st)```
+  - Standard error output: ```stderr_sink (_mt or _st)```
+  - Colored standard error output: ```stderr_color_sink (_mt or _st)```
 - FileLogger
-  - simple_file_sink ```(_mt or _st)``` - Basic file sink that writes to a given log file.
-  - rotating_file_sink ```(_mt or _st)``` - Rotating log files. When the maximum size is reached, a new file is created and the logger switches to a new file. The maximum size of each file and the maximum number of files can be configured.
-  - daily_file_sink_st ```(_mt or _st)``` - Creates a new file every day at a specified time instance.
+  - Basic file sink that writes to a given log file: ```simple_file_sink (_mt or _st)```
+  - Rotating log files: ```rotating_file_sink (_mt or _st)```
+  - Create new file every day at a specified time: ```daily_file_sink_st (_mt or _st)```
 
-> Note: Utilize either single threaded (```_st```) or thread safe multi-threaded (```_mt```) loggers.  For a full list of loggers, see [Supported Sinks](https://github.com/guangie88/spdlog_setup#supported-sinks)
+> Note: Utilize either single threaded (```_st```) or thread safe multi-threaded (```_mt```) loggers.  While single threaded sinks cannot be used from multiple threads simultaneously, they are faster since no locking is employed.  For a full list of loggers, see [Supported Sinks](https://github.com/guangie88/spdlog_setup#supported-sinks)
 
-Apart from these, users can also define their own sinks manually (example shown below).
+For the rotating log file, when the maximum size is reached, a new file is created and the logger switches to a new file. The maximum size of each file and the maximum number of files can be configured.
 
 The **pattern** section defines the expected format of the logging message, any identifying text, and the message logged by the component in the code.  The pattern flag options are listed in a [spdlog custom formatting tutorial](https://github.com/gabime/spdlog/wiki/3.-Custom-formatting).
 
@@ -147,6 +134,12 @@ create_parent_dir = true
 >Note:  When writing to a log file, output to this file happens in batches so it can take some time for the data to appear in the desired file (on the order of a minute or more).  It is highly recommended to write each component instance to a separate file.  If multiple components are writing to the same file, each batch output will write logs for a single component rotating until all components output a batch set (not interleaved based on time).  During the batch transitions, the component output can become mixed together with another component output.  While all data remains present, batch transition lines become hard to parse for desired information.
 
 Example configuration files for various sink types can be found at under [TOML Configuration Example](https://github.com/guangie88/spdlog_setup).  If a log folder is desired for daily and rotating log files, a simple file sink definition will be needed to create this folder using the **create_parent_dir** indicator since application folders are dynamically created when the RIAPS application is deployed (not by a system administrator).  The simple file log will be created in the desired log directory, but will not be used if it is not specified by a component logger definition.
+
+The console information output can be viewed as indicated in the "Default Logging" section.  Like the actor-level logging, the log files will be stored in the deployed application location (```/home/riaps/riaps_apps/<app name>/```).  To access the files, the developer must have root access.    
+
+The ```/home/riaps/riaps_apps/<app name>``` directory is only available when the application is deployed.  Removing an application using the RIAPS controller will delete the log information.  It is anticipated that when an application is deployed in a real system, it could be stopped and restarted or just left continuously running throughout the life of the application on the system.  Therefore, logged information will remain available to system operators.  During application development, the developer will be deploying and removing the application during debugging efforts.  So it is recommended to copy the logs to another location if access is needed at a later time (for debugging).  
+
+Each application can specify resource limits on each actor instance, one of which is disk usage (or file space).  This limit is specified in the application model file, see the [Resource Management Specifications section](models.md#rm-model-spec).  All components that create log files will be managed by their respective actor-level file space limitation, where the specified limit applies to the combined file space use of all the components that make up the specific actor instance.
 
 
 ## RIAPS Framework Logging

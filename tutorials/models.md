@@ -213,7 +213,7 @@ actor ActorName2 {
 }
 ```
 
-##### Resource Management Specifications
+##### <a name="rm-model-spec">Resource Management Specifications</a>
 
 The developer can specify a limit on the following system resource usage at the actor level:  CPU, memory, file space, and network bandwidth.  Prior to indicating the component instance definitions for the actor, a ```uses {...}``` clause can be added to outline the desired limits, an example is  shown below.
 
