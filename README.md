@@ -35,6 +35,8 @@ The original project website is located at: https://riaps.isis.vanderbilt.edu Th
 
 ## [Setup](setup.md)
 
+## [Tutorials](tutorials.md)
+
 ## Acknowledgment:
 The information, data, or work presented herein was funded in part by the Advanced Research Projects Agency-Energy (ARPA-E), U.S. Department of Energy, under Award Number DE-AR0000666. The views and opinions of authors expressed herein do not necessarily state or reflect those of the United States Government or any agency thereof.
 
