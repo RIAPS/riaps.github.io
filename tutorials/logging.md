@@ -28,11 +28,26 @@ logger.set_level(spd.LogLevel.INFO)
 
 The log messages are sent to the console output on the node.  If working on the development VM and starting the **riaps_deplo** using either Eclipse or ```sudo -E riaps_deplo``` in a terminal window, the console output will be available.  The information provided will be both the RIAPS platform and the application component logging information.
 
-The BBB nodes run **riaps_deplo** as a systemd service, so the console log information is placed in the system logs.  To view the information as the application is running, ssh into a BBB node and run the following command:
+The BBB nodes run **riaps_deplo** as a systemd service, so the console log information is placed in the system logs.  To view the information as the application is running, ssh into a BBB node and run the 'journalctl' command or you can view an individual BBB journal file using a fabric command.
 
-```
-sudo journalctl -u riaps-deplo.service -f
-```
+* SSH to BBB:
+  ```
+  sudo journalctl -u riaps-deplo.service -f
+  ```
+
+* Fabric command from VM:
+  ```
+  fab deplo.journal:n=200,grep=WeatherMonitor -H bbb-a2c4.local > debug-log.log
+
+  where
+    - n is the number of lines of the journal desired, defaults to 10
+    - grep='' allows one word search narrowing,
+      it is case sensitive and only search number of lines pulled (n=)
+    - '-H' allows specification of a single BBB hostname
+      (either IP address or bbb-xxxx.local format),
+      defaults to all riaps hosted specified in fabric riaps_host.py file
+    - use '>' to direct output to a file, if desired
+  ```
 
 
 ## Actor-Level Logging
