@@ -10,7 +10,7 @@ Use of logging within a component is simple.  Utilize the RIAPS component ```sel
 self.logger.info("on_tempupdate(): Temperature:%s, PID %s, Timestamp:%s" % (temperatureValue, str(now), temperatureTime))
 ```
 
-The available **log levels** are listed below in order of priority (from low to high).  The RIAPS platform sets a log level of **info** by default.  At this level, you will receive all messages at the info level and others of higher priority (such as warn, error and critical).
+The available **log levels** are listed below in order of priority (from low to high).  All logging higher than the level set will be provided (i.e. for warn level setting, the error and critical messages will also be provided).  The RIAPS platform sets a log level of **info** by default.  At this level, you will receive all messages at the info level and others of higher priority (such as warn, error and critical).
 - trace
 - debug
 - info
@@ -18,13 +18,14 @@ The available **log levels** are listed below in order of priority (from low to 
 - error
 - critical
 
-For debugging, you can adjust the logging level using the following in the application component code.
+For initial debugging efforts, the component logging level can be adjusted using the following statements in the application component code.
 
 ```
 import spdlog as spd
 
 logger.set_level(spd.LogLevel.INFO)
 ```
+>Note:  Once component code works and matures, it is preferred to set the level using the Customizable Component-Level Logging described below so that tested code does not have to change.
 
 The log messages are sent to the console output on the node.  If working on the development VM and starting the **riaps_deplo** using either Eclipse or ```sudo -E riaps_deplo``` in a terminal window, the console output will be available.  The information provided will be both the RIAPS platform and the application component logging information.
 
@@ -69,6 +70,25 @@ The logging configuration (```[[logger]]```) indicates the component instance fo
        {  // TempSensor publishes 'TempData' messages
           sensor : TempSensor;				
        }
+    }
+```
+Device components are handled slightly differently in the RIAPS platform.  The device component instance is identified by the device component name followed by the same name.  Using the [DistributedEstimatorGPIO example application](https://github.com/RIAPS/riaps-apps/tree/master/apps-vu/DistributedEstimatorGPIO/Python/DistributedEstimatorGpio.riaps), an actor definition (shown below) would be called by a **name** of **GPIODevice.GPIODevice**.
+
+```
+    device GPIODevice() {
+        sub blink : Blink;
+    }
+
+    // Estimator actor
+    actor Estimator (freqArg,value=0.0) {
+        local SensorReady, SensorQuery, SensorValue, Blink;    // Local message types
+        {  // Sensor component
+            sensor : Sensor(value=value);								
+            // Local estimator, publishes global message 'Estimate'
+            filter : LocalEstimator(frqArg=freqArg);
+            // GPIO component to blink
+            gpio : GPIODevice();
+        }
     }
 ```
 
@@ -136,6 +156,8 @@ create_parent_dir = true
 ```
 
 >Note:  When writing to a log file, output to this file happens in batches so it can take some time for the data to appear in the desired file (on the order of a minute or more).  It is highly recommended to write each component instance to a separate file.  If multiple components are writing to the same file, each batch output will write logs for a single component rotating until all components output a batch set (not interleaved based on time).  During the batch transitions, the component output can become mixed together with another component output.  While all data remains present, batch transition lines become hard to parse for desired information.
+
+Logging levels can be changed by adding **level = "debug"** (or whichever level desired) to the **[[sink]]** and the **[[logger]]** definition.  The sink level indicates how much logging is available, while the logger level enables the desired logging level.  If tracing is available in the component, the sink can indicate **level = "trace"**.  But if the user does not want to see that level of information and only wants "info" and above, **level = "info"** can be setup in the **[[logger]]**.
 
 Example configuration files for various sink types can be found at under [TOML Configuration Example](https://github.com/guangie88/spdlog_setup#toml-configuration-example).  If a log folder is desired for daily and rotating log files, a simple file sink definition will be needed to create this folder using the **create_parent_dir** indicator since application folders are dynamically created when the RIAPS application is deployed (not by a system administrator).  The simple file log will be created in the desired log directory, but will not be used if it is not specified by a component logger definition.
 
