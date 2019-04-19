@@ -7,7 +7,7 @@ On both platforms we use Ubuntu 18.04 as the foundation, and RIAPS is layered on
 RIAPS is available in various forms.
 * Pre-built development VM and BBB SD card images
 * Debian packages via an apt repository
-* Source code in githube repositories
+* Source code in github repositories
 
 The easiest way to get started is to use the pre-built images - follow the instructions on [RIAPS Integration](https://github.com/RIAPS/riaps-integration/blob/master/README.md) page. These images take some time to build due to the number of packages RIAPS uses, but that repository has the instructions and supporting scripts. 
 
