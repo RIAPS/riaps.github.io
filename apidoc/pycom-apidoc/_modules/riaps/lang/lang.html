@@ -1,0 +1,693 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.lang.lang &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">riaps</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>riaps.lang.lang</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for riaps.lang.lang</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">DSL for RIAPS software models</span>
+<span class="sd">Created on Oct 9, 2016</span>
+<span class="sd">Uses the textX parser</span>
+<span class="sd">@author: riaps</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">textx.metamodel</span> <span class="k">import</span> <span class="n">metamodel_from_file</span>
+<span class="kn">from</span> <span class="nn">textx.export</span> <span class="k">import</span> <span class="n">metamodel_export</span><span class="p">,</span> <span class="n">model_export</span>
+<span class="kn">from</span> <span class="nn">textx.exceptions</span> <span class="k">import</span> <span class="n">TextXSemanticError</span><span class="p">,</span> <span class="n">TextXSyntaxError</span>
+<span class="kn">import</span> <span class="nn">textx.model</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+
+<div class="viewcode-block" id="LangError"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.LangError">[docs]</a><span class="k">class</span> <span class="nc">LangError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LangError</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiapsModel2JSON"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON">[docs]</a><span class="k">class</span> <span class="nc">RiapsModel2JSON</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Class to convert the RIAPS model (constructed by the parser) into a data structure</span>
+<span class="sd">    suitable for generating JSON output.Dependent on the DSL syntax and the object structure</span>
+<span class="sd">    built by the parser.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">model</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Constructs the JSON structures from the model objects</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">apps</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">apps</span><span class="p">:</span>
+            <span class="n">appObj</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">appObj</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">appObj</span><span class="p">[</span><span class="s1">&#39;messages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getMessages</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span>
+            <span class="n">appObj</span><span class="p">[</span><span class="s1">&#39;groups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getGroups</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">groups</span><span class="p">)</span>
+            <span class="n">appObj</span><span class="p">[</span><span class="s1">&#39;libraries&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getLibraries</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">libraries</span><span class="p">)</span>
+            <span class="n">appObj</span><span class="p">[</span><span class="s1">&#39;devices&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getIOComponents</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+            <span class="n">appObj</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getComponents</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+            <span class="n">appObj</span><span class="p">[</span><span class="s1">&#39;actors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActors</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">actors</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">apps</span><span class="p">[</span><span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">appObj</span>
+<div class="viewcode-block" id="RiapsModel2JSON.getMessages"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getMessages">[docs]</a>    <span class="k">def</span> <span class="nf">getMessages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">messages</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
+            <span class="n">msgObj</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span> 
+            <span class="n">msgObj</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msgObj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.getGroups"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getGroups">[docs]</a>    <span class="k">def</span> <span class="nf">getGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">groups</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+            <span class="n">groupObj</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+            <span class="n">groupObj</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">groupObj</span><span class="p">[</span><span class="s2">&quot;kind&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">kind</span><span class="o">.</span><span class="n">kind</span> <span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">kind</span> <span class="k">else</span> <span class="s1">&#39;default&#39;</span>
+            <span class="n">msgs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">messages</span><span class="p">:</span>
+                <span class="n">msgObj</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">msgObj</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msgObj</span><span class="p">)</span>
+            <span class="n">groupObj</span><span class="p">[</span><span class="s1">&#39;messages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">msgs</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">groupObj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.getLibraries"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getLibraries">[docs]</a>    <span class="k">def</span> <span class="nf">getLibraries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">libraries</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">lib</span> <span class="ow">in</span> <span class="n">libraries</span><span class="p">:</span>
+            <span class="n">libObj</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span> 
+            <span class="n">libObj</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">libObj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.getFormals"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getFormals">[docs]</a>    <span class="k">def</span> <span class="nf">getFormals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">formals</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">formal</span> <span class="ow">in</span> <span class="n">formals</span><span class="p">:</span>
+            <span class="n">formalObj</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+            <span class="n">argName</span> <span class="o">=</span> <span class="n">formal</span><span class="o">.</span><span class="n">argName</span>
+            <span class="k">if</span> <span class="n">argName</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TextXSemanticError</span><span class="p">(</span><span class="s1">&#39;Argument name &quot;</span><span class="si">%s</span><span class="s1">&quot; is not unique.&#39;</span> <span class="o">%</span> 
+                                         <span class="n">argName</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argName</span><span class="p">)</span>
+            <span class="n">formalObj</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">argName</span>
+            <span class="k">if</span> <span class="n">formal</span><span class="o">.</span><span class="n">argDefault</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">formalObj</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formal</span><span class="o">.</span><span class="n">argDefault</span><span class="o">.</span><span class="n">default</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">formalObj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.getImpl"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getImpl">[docs]</a>    <span class="k">def</span> <span class="nf">getImpl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">comp</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">language</span>
+        <span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;default&quot;</span>
+        <span class="k">elif</span> <span class="n">l</span><span class="o">.</span><span class="n">pyImpl</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;py&quot;</span>
+        <span class="k">elif</span> <span class="n">l</span><span class="o">.</span><span class="n">cppImpl</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;cpp&quot;</span> </div>
+<div class="viewcode-block" id="RiapsModel2JSON.getIOComponents"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getIOComponents">[docs]</a>    <span class="k">def</span> <span class="nf">getIOComponents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">components</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">components</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">comp</span><span class="o">.</span><span class="n">ioComponent</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">comp</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">TextXSemanticError</span><span class="p">(</span><span class="s1">&#39;Component name &quot;</span><span class="si">%s</span><span class="s1">&quot; is not unique.&#39;</span> <span class="o">%</span> 
+                                             <span class="n">comp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">compObj</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+                <span class="n">compObj</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">compObj</span><span class="p">[</span><span class="s2">&quot;formals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFormals</span><span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">formals</span><span class="p">)</span>
+                <span class="n">compObj</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getImpl</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span>
+                <span class="n">compObj</span><span class="p">[</span><span class="s2">&quot;ports&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPorts</span><span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">ports</span><span class="p">)</span>
+                <span class="n">res</span><span class="p">[</span><span class="n">comp</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">compObj</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.getComponents"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getComponents">[docs]</a>    <span class="k">def</span> <span class="nf">getComponents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">components</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">components</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">comp</span><span class="o">.</span><span class="n">appComponent</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">comp</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">TextXSemanticError</span><span class="p">(</span><span class="s1">&#39;Component name &quot;</span><span class="si">%s</span><span class="s1">&quot; is not unique.&#39;</span> <span class="o">%</span> 
+                                             <span class="n">comp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">compObj</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+                <span class="n">compObj</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">compObj</span><span class="p">[</span><span class="s2">&quot;formals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFormals</span><span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">formals</span><span class="p">)</span>
+                <span class="n">compObj</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getImpl</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span>
+                <span class="n">compObj</span><span class="p">[</span><span class="s2">&quot;ports&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPorts</span><span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">ports</span><span class="p">)</span>
+                <span class="n">res</span><span class="p">[</span><span class="n">comp</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">compObj</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.getPorts"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getPorts">[docs]</a>    <span class="k">def</span> <span class="nf">getPorts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ports</span><span class="p">):</span>
+        <span class="n">pubs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">subs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">clts</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">srvs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">reqs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">reps</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">tims</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">inss</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">qrys</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">anss</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">portNames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="n">ports</span><span class="p">:</span>
+            <span class="n">portObj</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">port</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">portNames</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">TextXSemanticError</span><span class="p">(</span><span class="s1">&#39;Port name &quot;</span><span class="si">%s</span><span class="s1">&quot; is not unique&#39;</span> <span class="o">%</span>
+                                         <span class="n">port</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">portNames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">port</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">portClass</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">portClass</span> <span class="o">==</span> <span class="s1">&#39;PubPort&#39;</span><span class="p">):</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">timed</span>
+                <span class="n">pubs</span><span class="p">[</span><span class="n">port</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">portObj</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">portClass</span> <span class="o">==</span> <span class="s1">&#39;SubPort&#39;</span><span class="p">):</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">timed</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;deadline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">deadline</span>
+                <span class="n">subs</span><span class="p">[</span><span class="n">port</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">portObj</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">portClass</span> <span class="o">==</span> <span class="s1">&#39;ClntPort&#39;</span><span class="p">):</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;req_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">req_type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;rep_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">rep_type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">timed</span>
+                <span class="n">clts</span><span class="p">[</span><span class="n">port</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">portObj</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">portClass</span> <span class="o">==</span> <span class="s1">&#39;SrvPort&#39;</span><span class="p">):</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;req_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">req_type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;rep_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">rep_type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">timed</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;deadline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">deadline</span>
+                <span class="n">srvs</span><span class="p">[</span><span class="n">port</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">portObj</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">portClass</span> <span class="o">==</span> <span class="s1">&#39;ReqPort&#39;</span><span class="p">):</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;req_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">req_type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;rep_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">rep_type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">timed</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;deadline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">deadline</span>
+                <span class="n">reqs</span><span class="p">[</span><span class="n">port</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">portObj</span>
+            <span class="k">elif</span><span class="p">(</span><span class="n">portClass</span> <span class="o">==</span> <span class="s1">&#39;RepPort&#39;</span><span class="p">):</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;req_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">req_type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;rep_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">rep_type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">timed</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;deadline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">deadline</span>
+                <span class="n">reps</span><span class="p">[</span><span class="n">port</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">portObj</span>
+            <span class="k">elif</span><span class="p">(</span><span class="n">portClass</span> <span class="o">==</span> <span class="s1">&#39;TimPort&#39;</span><span class="p">):</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">period</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;deadline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">deadline</span>
+                <span class="n">tims</span><span class="p">[</span><span class="n">port</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">portObj</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">portClass</span> <span class="o">==</span> <span class="s1">&#39;InsPort&#39;</span><span class="p">):</span>
+                <span class="n">inss</span><span class="p">[</span><span class="n">port</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">portObj</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;spec&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">spec</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">portClass</span> <span class="o">==</span> <span class="s1">&#39;QryPort&#39;</span><span class="p">):</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;req_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">req_type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;rep_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">rep_type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">timed</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;deadline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">deadline</span>
+                <span class="n">qrys</span><span class="p">[</span><span class="n">port</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">portObj</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">portClass</span> <span class="o">==</span> <span class="s1">&#39;AnsPort&#39;</span><span class="p">):</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;req_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">req_type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;rep_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">rep_type</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">timed</span>
+                <span class="n">portObj</span><span class="p">[</span><span class="s1">&#39;deadline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">deadline</span>
+                <span class="n">anss</span><span class="p">[</span><span class="n">port</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">portObj</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TextXSemanticError</span><span class="p">(</span><span class="s1">&#39;Unknown type for port &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span>
+                                         <span class="n">port</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span> <span class="s2">&quot;subs&quot;</span> <span class="p">:</span> <span class="n">subs</span> <span class="p">,</span> <span class="s2">&quot;pubs&quot;</span> <span class="p">:</span> <span class="n">pubs</span><span class="p">,</span>
+                 <span class="s2">&quot;clts&quot;</span> <span class="p">:</span> <span class="n">clts</span> <span class="p">,</span> <span class="s2">&quot;srvs&quot;</span> <span class="p">:</span> <span class="n">srvs</span><span class="p">,</span>
+                 <span class="s2">&quot;reqs&quot;</span> <span class="p">:</span> <span class="n">reqs</span><span class="p">,</span>  <span class="s2">&quot;reps&quot;</span> <span class="p">:</span> <span class="n">reps</span><span class="p">,</span>
+                 <span class="s2">&quot;tims&quot;</span> <span class="p">:</span> <span class="n">tims</span><span class="p">,</span>  <span class="s2">&quot;inss&quot;</span> <span class="p">:</span> <span class="n">inss</span><span class="p">,</span>
+                 <span class="s2">&quot;qrys&quot;</span> <span class="p">:</span> <span class="n">qrys</span><span class="p">,</span>  <span class="s2">&quot;anss&quot;</span> <span class="p">:</span> <span class="n">anss</span>
+                 <span class="p">}</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.getActors"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getActors">[docs]</a>    <span class="k">def</span> <span class="nf">getActors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">actors</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">act</span> <span class="ow">in</span> <span class="n">actors</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">act</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TextXSemanticError</span><span class="p">(</span><span class="s1">&#39;Actor name &quot;</span><span class="si">%s</span><span class="s1">&quot; is not unique.&#39;</span> <span class="o">%</span> 
+                                         <span class="n">act</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">actObj</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span> 
+            <span class="n">actObj</span><span class="p">[</span><span class="s2">&quot;formals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFormals</span><span class="p">(</span><span class="n">act</span><span class="o">.</span><span class="n">formals</span><span class="p">)</span>
+            <span class="n">actObj</span><span class="p">[</span><span class="s2">&quot;locals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getLocals</span><span class="p">(</span><span class="n">act</span><span class="o">.</span><span class="n">locals</span><span class="p">)</span>
+            <span class="n">actObj</span><span class="p">[</span><span class="s2">&quot;internals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInternals</span><span class="p">(</span><span class="n">act</span><span class="o">.</span><span class="n">internals</span><span class="p">)</span>
+            <span class="n">actObj</span><span class="p">[</span><span class="s2">&quot;usage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getUsage</span><span class="p">(</span><span class="n">act</span><span class="o">.</span><span class="n">usage</span><span class="p">)</span>
+            <span class="n">actObj</span><span class="p">[</span><span class="s2">&quot;instances&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getInstances</span><span class="p">(</span><span class="n">act</span><span class="o">.</span><span class="n">instances</span><span class="p">)</span>
+<span class="c1">#            actObj[&quot;wires&quot;] = self.getWires(act.wires)</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">act</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">actObj</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.getLocals"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getLocals">[docs]</a>    <span class="k">def</span> <span class="nf">getLocals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">locals_</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">local</span> <span class="ow">in</span> <span class="n">locals_</span><span class="p">:</span>
+            <span class="n">localObj</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">localObj</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">local</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">localObj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.getInternals"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getInternals">[docs]</a>    <span class="k">def</span> <span class="nf">getInternals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">internals</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">internal</span> <span class="ow">in</span> <span class="n">internals</span><span class="p">:</span>
+            <span class="n">internalObj</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">internalObj</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">internal</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">internalObj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.getActuals"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getActuals">[docs]</a>    <span class="k">def</span> <span class="nf">getActuals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">actuals</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">actual</span> <span class="ow">in</span> <span class="n">actuals</span><span class="p">:</span>
+            <span class="n">actualObj</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+            <span class="n">argName</span> <span class="o">=</span> <span class="n">actual</span><span class="o">.</span><span class="n">argName</span>
+            <span class="k">if</span> <span class="n">argName</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TextXSemanticError</span><span class="p">(</span><span class="s1">&#39;Argument &quot;</span><span class="si">%s</span><span class="s1">&quot; is not unique.&#39;</span> <span class="o">%</span> 
+                                         <span class="n">argName</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argName</span><span class="p">)</span>
+            <span class="n">actualObj</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">argName</span>
+            <span class="k">if</span> <span class="n">actual</span><span class="o">.</span><span class="n">argValue</span><span class="o">.</span><span class="n">param</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">actualObj</span><span class="p">[</span><span class="s2">&quot;param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">actual</span><span class="o">.</span><span class="n">argValue</span><span class="o">.</span><span class="n">param</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">actualObj</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">actual</span><span class="o">.</span><span class="n">argValue</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actualObj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.convertTime"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.convertTime">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">convertTime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="n">unit</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Convert all time values to msec&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;msec&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span> 
+        <span class="k">elif</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;sec&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">1000</span>
+        <span class="k">elif</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.convertMem"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.convertMem">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">convertMem</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="n">unit</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Convert all memory size values to kilobytes&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;mb&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">1024</span> 
+        <span class="k">elif</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;kb&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+        <span class="k">elif</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;gb&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.convertRate"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.convertRate">[docs]</a>    <span class="k">def</span> <span class="nf">convertRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">unit</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Convert all rate values to bytes/sec&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;kbps&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;mbps&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">;</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.getUsage"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getUsage">[docs]</a>    <span class="k">def</span> <span class="nf">getUsage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">usage</span><span class="p">):</span>
+        <span class="n">cpuUsage</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+        <span class="n">memUsage</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+        <span class="n">spcUsage</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+        <span class="n">netUsage</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+        <span class="k">for</span> <span class="n">use</span> <span class="ow">in</span> <span class="n">usage</span><span class="p">:</span>
+            <span class="n">useClass</span> <span class="o">=</span> <span class="n">use</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">useClass</span> <span class="o">==</span> <span class="s1">&#39;CPUUsage&#39;</span><span class="p">):</span>
+                <span class="n">cpuUsage</span><span class="p">[</span><span class="s1">&#39;use&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">use</span><span class="o">.</span><span class="n">usage</span>
+                <span class="n">cpuUsage</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">use</span><span class="o">.</span><span class="n">max</span>
+                <span class="n">unit</span> <span class="o">=</span> <span class="s1">&#39;sec&#39;</span> <span class="k">if</span> <span class="n">use</span><span class="o">.</span><span class="n">unit</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">use</span><span class="o">.</span><span class="n">unit</span> 
+                <span class="n">cpuUsage</span><span class="p">[</span><span class="s1">&#39;interval&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convertTime</span><span class="p">(</span><span class="n">use</span><span class="o">.</span><span class="n">interval</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">useClass</span> <span class="o">==</span> <span class="s1">&#39;MemUsage&#39;</span><span class="p">):</span>
+                <span class="n">unit</span> <span class="o">=</span> <span class="s1">&#39;MB&#39;</span> <span class="k">if</span> <span class="n">use</span><span class="o">.</span><span class="n">unit</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">use</span><span class="o">.</span><span class="n">unit</span>
+                <span class="n">memUsage</span><span class="p">[</span><span class="s1">&#39;use&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convertMem</span><span class="p">(</span><span class="n">use</span><span class="o">.</span><span class="n">usage</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">useClass</span> <span class="o">==</span> <span class="s1">&#39;SpaceUsage&#39;</span><span class="p">):</span>
+                <span class="n">unit</span> <span class="o">=</span> <span class="s1">&#39;MB&#39;</span> <span class="k">if</span> <span class="n">use</span><span class="o">.</span><span class="n">unit</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">use</span><span class="o">.</span><span class="n">unit</span>
+                <span class="n">spcUsage</span><span class="p">[</span><span class="s1">&#39;use&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convertMem</span><span class="p">(</span><span class="n">use</span><span class="o">.</span><span class="n">usage</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">useClass</span> <span class="o">==</span> <span class="s1">&#39;NetUsage&#39;</span><span class="p">):</span>
+                <span class="n">netUsage</span><span class="p">[</span><span class="s1">&#39;rate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convertRate</span><span class="p">(</span><span class="n">use</span><span class="o">.</span><span class="n">rate</span><span class="p">,</span><span class="n">use</span><span class="o">.</span><span class="n">rateUnit</span><span class="p">)</span>
+                <span class="n">netUsage</span><span class="p">[</span><span class="s1">&#39;ceil&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">use</span><span class="o">.</span><span class="n">ceil</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">convertRate</span><span class="p">(</span><span class="n">use</span><span class="o">.</span><span class="n">ceil</span><span class="p">,</span><span class="n">use</span><span class="o">.</span><span class="n">ceilUnit</span><span class="p">)</span>
+                <span class="n">netUsage</span><span class="p">[</span><span class="s1">&#39;burst&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">use</span><span class="o">.</span><span class="n">burst</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">use</span><span class="o">.</span><span class="n">burst</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TextXSemanticError</span><span class="p">(</span><span class="s1">&#39;Unknown usage for port &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span>
+                                         <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">use</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="p">{</span> <span class="s2">&quot;cpu&quot;</span> <span class="p">:</span> <span class="n">cpuUsage</span> <span class="p">,</span> <span class="s2">&quot;mem&quot;</span> <span class="p">:</span> <span class="n">memUsage</span><span class="p">,</span> 
+                <span class="s2">&quot;spc&quot;</span> <span class="p">:</span> <span class="n">spcUsage</span> <span class="p">,</span> <span class="s2">&quot;net&quot;</span> <span class="p">:</span> <span class="n">netUsage</span>
+                <span class="p">}</span></div>
+<div class="viewcode-block" id="RiapsModel2JSON.getInstances"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.RiapsModel2JSON.getInstances">[docs]</a>    <span class="k">def</span> <span class="nf">getInstances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">instances</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span> 
+        <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">inst</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TextXSemanticError</span><span class="p">(</span><span class="s1">&#39;Instance name &quot;</span><span class="si">%s</span><span class="s1">&quot; is not unique.&#39;</span> <span class="o">%</span> 
+                                         <span class="n">inst</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">instObj</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="n">inst</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                       <span class="p">}</span>
+            <span class="n">instObj</span><span class="p">[</span><span class="s2">&quot;actuals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActuals</span><span class="p">(</span><span class="n">inst</span><span class="o">.</span><span class="n">actuals</span><span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">inst</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">instObj</span>
+        <span class="k">return</span> <span class="n">res</span></div></div>
+<span class="c1">#     def getWires(self,wires):</span>
+<span class="c1">#         res = []</span>
+<span class="c1">#         for wire in wires:</span>
+<span class="c1">#             wireObj = { &quot;lhsName&quot; : wire.lhsInst.name,</span>
+<span class="c1">#                         &quot;lhsPort&quot; : wire.lhsPort.name,</span>
+<span class="c1">#                         &quot;rhsName&quot; : wire.rhsInst.name,</span>
+<span class="c1">#                         &quot;rhsPort&quot; : wire.rhsPort.name,</span>
+<span class="c1">#                         }</span>
+<span class="c1">#             res.append(wireObj)</span>
+<span class="c1">#         return res</span>
+
+<span class="c1"># Object processor for timer ports: the &#39;spec&#39; part is optional. If missing, it means period=0, i.e. a one-shot timer</span>
+<div class="viewcode-block" id="timport_obj_processor"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.timport_obj_processor">[docs]</a><span class="k">def</span> <span class="nf">timport_obj_processor</span><span class="p">(</span><span class="n">timport</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">timport</span><span class="o">.</span><span class="n">spec</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">timport</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">timport</span><span class="o">.</span><span class="n">spec</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="s1">&#39;msec&#39;</span> <span class="k">if</span> <span class="n">timport</span><span class="o">.</span><span class="n">periodUnit</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">timport</span><span class="o">.</span><span class="n">periodUnit</span> 
+        <span class="n">timport</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">RiapsModel2JSON</span><span class="o">.</span><span class="n">convertTime</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">timport</span><span class="o">.</span><span class="n">deadline</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">timport</span><span class="o">.</span><span class="n">deadline</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="s1">&#39;msec&#39;</span> <span class="k">if</span> <span class="n">timport</span><span class="o">.</span><span class="n">unit</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">timport</span><span class="o">.</span><span class="n">unit</span>
+        <span class="n">timport</span><span class="o">.</span><span class="n">deadline</span> <span class="o">=</span> <span class="n">RiapsModel2JSON</span><span class="o">.</span><span class="n">convertTime</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span></div>
+
+<span class="c1"># Object processor for inside  ports: the &#39;spec&#39; part is optional. If missing it implies the default 1sec trigger</span>
+<div class="viewcode-block" id="insport_obj_processor"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.insport_obj_processor">[docs]</a><span class="k">def</span> <span class="nf">insport_obj_processor</span><span class="p">(</span><span class="n">insport</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">insport</span><span class="o">.</span><span class="n">spec</span> <span class="o">==</span> <span class="kc">True</span> <span class="p">:</span>
+        <span class="n">insport</span><span class="o">.</span><span class="n">spec</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">insport</span><span class="o">.</span><span class="n">spec</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<span class="c1"># Object processor for non-operation ports: the &#39;timed&#39; flag is optional. </span>
+<div class="viewcode-block" id="timed_port_obj_processor"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.timed_port_obj_processor">[docs]</a><span class="k">def</span> <span class="nf">timed_port_obj_processor</span><span class="p">(</span><span class="n">port</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">port</span><span class="o">.</span><span class="n">timed</span> <span class="o">==</span> <span class="s1">&#39;timed&#39;</span><span class="p">:</span>
+        <span class="n">port</span><span class="o">.</span><span class="n">timed</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">port</span><span class="o">.</span><span class="n">timed</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<span class="c1"># Object processor for operation ports: the &#39;timed&#39; and deadline are optional. </span>
+<div class="viewcode-block" id="op_port_obj_processor"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.op_port_obj_processor">[docs]</a><span class="k">def</span> <span class="nf">op_port_obj_processor</span><span class="p">(</span><span class="n">port</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">port</span><span class="o">.</span><span class="n">timed</span> <span class="o">==</span> <span class="s1">&#39;timed&#39;</span><span class="p">:</span>
+        <span class="n">port</span><span class="o">.</span><span class="n">timed</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">port</span><span class="o">.</span><span class="n">timed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">port</span><span class="o">.</span><span class="n">deadline</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">deadline</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="s1">&#39;msec&#39;</span> <span class="k">if</span> <span class="n">port</span><span class="o">.</span><span class="n">unit</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">port</span><span class="o">.</span><span class="n">unit</span>
+        <span class="n">port</span><span class="o">.</span><span class="n">deadline</span> <span class="o">=</span> <span class="n">RiapsModel2JSON</span><span class="o">.</span><span class="n">convertTime</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span></div>
+
+<span class="c1"># Object processor for io component instances: messages must be local</span>
+<div class="viewcode-block" id="instance_obj_processor"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.instance_obj_processor">[docs]</a><span class="k">def</span> <span class="nf">instance_obj_processor</span><span class="p">(</span><span class="n">instance</span><span class="p">):</span>
+    <span class="n">component</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">type</span>
+    <span class="k">if</span> <span class="n">component</span><span class="o">.</span><span class="n">ioComponent</span><span class="p">:</span>
+        <span class="n">localMessages</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">locals</span>
+        <span class="n">localMessageNames</span> <span class="o">=</span> <span class="p">[</span><span class="n">localMessage</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">localMessage</span> <span class="ow">in</span> <span class="n">localMessages</span><span class="p">]</span>
+        <span class="n">portMessageNames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="n">component</span><span class="o">.</span><span class="n">ports</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">):</span>
+                <span class="n">portMessageNames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">port</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">port</span><span class="p">,</span><span class="s1">&#39;req_type&#39;</span><span class="p">):</span>
+                <span class="n">portMessageNames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">port</span><span class="o">.</span><span class="n">req_type</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">port</span><span class="p">,</span><span class="s1">&#39;rep_type&#39;</span><span class="p">):</span>
+                <span class="n">portMessageNames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">port</span><span class="o">.</span><span class="n">rep_type</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">for</span> <span class="n">portMessageName</span> <span class="ow">in</span> <span class="n">portMessageNames</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">portMessageName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">localMessageNames</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TextXSemanticError</span><span class="p">(</span><span class="s1">&#39;Non-local message type </span><span class="si">%s</span><span class="s1"> for IO component </span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">&#39;</span> 
+                                         <span class="o">%</span> <span class="p">(</span><span class="n">portMessageName</span><span class="p">,</span><span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">component</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+<span class="c1"># # Object processor for wires: checks if the names used are correct. </span>
+<span class="c1"># # Wires are to connect ports of local instances.</span>
+<span class="c1"># def wire_obj_processor(wire):</span>
+<span class="c1"># #    print &#39;(&#39; + wire.lhsName + &#39;.&#39; + wire.lhsPortName + &#39;=&#39; + wire.rhsName + &#39;.&#39; + wire.rhsPortName + &#39;)&#39;</span>
+<span class="c1">#     instances = wire.parent.instances</span>
+<span class="c1">#     lhsInst = [inst for inst in instances if inst.name == wire.lhsName]</span>
+<span class="c1">#     if not lhsInst:</span>
+<span class="c1">#         raise TextXSemanticError(&#39;Wire LHS instance &quot;%s&quot; not found.&#39; %</span>
+<span class="c1">#                                  wire.lhsName)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         wire.lhsInst = lhsInst[0]</span>
+<span class="c1">#     lhsPort = [port for port in wire.lhsInst.type.ports if port.name == wire.lhsPortName]</span>
+<span class="c1">#     if not lhsPort:</span>
+<span class="c1">#         raise TextXSemanticError(&#39;Wire LHS port &quot;%s&quot; in instance &quot;%s&quot; not found.&#39; %</span>
+<span class="c1">#                                  (wire.lhsPortName, wire.lhsName))</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         wire.lhsPort=lhsPort[0]</span>
+<span class="c1">#     rhsInst = [inst for inst in instances if inst.name == wire.rhsName]</span>
+<span class="c1">#     if not rhsInst:</span>
+<span class="c1">#         raise TextXSemanticError(&#39;Wire RHS instance &quot;%s&quot; not found.&#39; %</span>
+<span class="c1">#                                  wire.rhsName)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         wire.rhsInst=rhsInst[0]</span>
+<span class="c1">#     rhsPort = [port for port in wire.rhsInst.type.ports if port.name == wire.rhsPortName]</span>
+<span class="c1">#     if not rhsPort:</span>
+<span class="c1">#         raise TextXSemanticError(&#39;Wire RHS port &quot;%s&quot; in instance &quot;%s&quot; not found.&#39; %</span>
+<span class="c1">#                                  (wire.rhsPortName, wire.rhsName))</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         wire.rhsPort=rhsPort[0]</span>
+<span class="c1"># #    print lhsInst, lhsPort, rhsInst, rhsPort</span>
+           
+<div class="viewcode-block" id="compileModel"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.compileModel">[docs]</a><span class="k">def</span> <span class="nf">compileModel</span><span class="p">(</span><span class="n">modelFileName</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">generate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">riaps_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;RIAPSHOME&#39;</span><span class="p">,</span> <span class="s1">&#39;./&#39;</span><span class="p">)</span> <span class="c1"># RIAPSHOME points to the folder containing the grammar</span>
+    <span class="n">this_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>  
+    
+    <span class="c1"># Get meta-model from language grammar</span>
+    <span class="n">riaps_meta</span> <span class="o">=</span> <span class="n">metamodel_from_file</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">riaps_folder</span><span class="p">,</span> <span class="s1">&#39;lang/riaps.tx&#39;</span><span class="p">),</span>
+                                     <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>       
+    
+    <span class="c1"># Register object processors for wires and timer ports</span>
+    <span class="n">obj_processors</span> <span class="o">=</span> <span class="p">{</span>
+<span class="c1">#         &#39;Wire&#39;: wire_obj_processor,</span>
+        <span class="s1">&#39;TimPort&#39;</span><span class="p">:</span> <span class="n">timport_obj_processor</span><span class="p">,</span>
+         <span class="c1"># &#39;InsPort&#39;: op_port_obj_processor, # Inside port cannot be timed / have deadline</span>
+        <span class="s1">&#39;Instance&#39;</span><span class="p">:</span> <span class="n">instance_obj_processor</span><span class="p">,</span>
+        <span class="s1">&#39;PubPort&#39;</span> <span class="p">:</span> <span class="n">timed_port_obj_processor</span><span class="p">,</span>
+        <span class="s1">&#39;SubPort&#39;</span> <span class="p">:</span> <span class="n">op_port_obj_processor</span><span class="p">,</span>
+        <span class="s1">&#39;ClntPort&#39;</span><span class="p">:</span> <span class="n">timed_port_obj_processor</span><span class="p">,</span>
+        <span class="s1">&#39;SrvPort&#39;</span> <span class="p">:</span> <span class="n">op_port_obj_processor</span><span class="p">,</span>
+        <span class="s1">&#39;ReqPort&#39;</span> <span class="p">:</span> <span class="n">op_port_obj_processor</span><span class="p">,</span>
+        <span class="s1">&#39;RepPort&#39;</span> <span class="p">:</span> <span class="n">op_port_obj_processor</span><span class="p">,</span>
+        <span class="s1">&#39;QryPort&#39;</span> <span class="p">:</span> <span class="n">op_port_obj_processor</span><span class="p">,</span>
+        <span class="s1">&#39;AnsPort&#39;</span> <span class="p">:</span> <span class="n">op_port_obj_processor</span><span class="p">,</span>
+        <span class="c1"># We should also check for parameters: </span>
+        <span class="c1">#   (1) formal/actual lists should match, </span>
+        <span class="c1">#   (2) inherited parameters should appear in their parent </span>
+        <span class="p">}</span>
+    <span class="n">riaps_meta</span><span class="o">.</span><span class="n">register_obj_processors</span><span class="p">(</span><span class="n">obj_processors</span><span class="p">)</span>
+    
+    <span class="c1"># Optionally export meta-model to dot (for debugging only)</span>
+    <span class="c1"># metamodel_export(riaps_meta, join(this_folder, &#39;riaps_meta.dot&#39;))</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Instantiate the model object structure from the model file </span>
+        <span class="n">example_riaps_model</span> <span class="o">=</span> <span class="n">riaps_meta</span><span class="o">.</span><span class="n">model_from_file</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">this_folder</span><span class="p">,</span><span class="n">modelFileName</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">errMsg</span> <span class="o">=</span> <span class="s2">&quot;I/O error(</span><span class="si">{0}</span><span class="s2">): </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">errno</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="n">errMsg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">LangError</span><span class="p">(</span><span class="n">errMsg</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">TextXSyntaxError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">errMsg</span> <span class="o">=</span> <span class="s2">&quot;Syntax error: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="n">errMsg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">LangError</span><span class="p">(</span><span class="n">errMsg</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">TextXSemanticError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">errMsg</span> <span class="o">=</span> <span class="s2">&quot;Semantic error: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="n">errMsg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">LangError</span><span class="p">(</span><span class="n">errMsg</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span> 
+        <span class="n">errMsg</span> <span class="o">=</span> <span class="s2">&quot;Unexpected error </span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span><span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="n">errMsg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">LangError</span><span class="p">(</span><span class="n">errMsg</span><span class="p">)</span>
+    
+    <span class="c1"># Optionally export model to dot</span>
+    <span class="c1"># model_export(example_riaps_model, join(this_folder, &#39;sample.dot&#39;))</span>
+
+    <span class="c1"># Convert model object structure into JSON data</span>
+    <span class="n">riaps_model</span> <span class="o">=</span> <span class="n">RiapsModel2JSON</span><span class="p">(</span><span class="n">example_riaps_model</span><span class="p">)</span>
+    <span class="n">riaps_model_json</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+    
+    <span class="c1"># Optionally print generated JSON on console</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">riaps_model_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">riaps_model</span><span class="o">.</span><span class="n">apps</span><span class="p">,</span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                      <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">riaps_model_json</span><span class="p">)</span>
+    
+    <span class="c1"># Generated JSON files for each app    </span>
+    <span class="k">if</span> <span class="n">generate</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">appName</span> <span class="ow">in</span> <span class="n">riaps_model</span><span class="o">.</span><span class="n">apps</span><span class="p">:</span>
+            <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">appName</span> <span class="o">+</span> <span class="s1">&#39;.json&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+            <span class="n">appObj</span> <span class="o">=</span> <span class="n">riaps_model</span><span class="o">.</span><span class="n">apps</span><span class="p">[</span><span class="n">appName</span><span class="p">]</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">appObj</span><span class="p">,</span><span class="n">fp</span><span class="p">,</span><span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        
+    <span class="k">return</span> <span class="n">riaps_model</span><span class="o">.</span><span class="n">apps</span></div>
+    
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.lang.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;model file&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;print JSON on console&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">compileModel</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">model</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">main</span><span class="p">()</span>
+<span class="c1">#   print (m)</span>
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

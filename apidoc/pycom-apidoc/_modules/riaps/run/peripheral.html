@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.run.peripheral &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">riaps</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>riaps.run.peripheral</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for riaps.run.peripheral</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Peripheral class - encapsulates a device, used in an app actor</span>
+<span class="sd">Created on Jan 6, 2017</span>
+
+<span class="sd">@author: riaps</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Part class</span>
+<span class="sd">Created on Oct 9, 2016</span>
+
+<span class="sd">@author: run</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
+
+<span class="kn">from</span> <span class="nn">.exc</span> <span class="k">import</span> <span class="n">StateError</span>
+<span class="kn">from</span> <span class="nn">.exc</span> <span class="k">import</span> <span class="n">SetupError</span>
+<span class="kn">from</span> <span class="nn">.exc</span> <span class="k">import</span> <span class="n">ControlError</span>
+<span class="kn">from</span> <span class="nn">.exc</span> <span class="k">import</span> <span class="n">BuildError</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<div class="viewcode-block" id="Peripheral"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral">[docs]</a><span class="k">class</span> <span class="nc">Peripheral</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Peripheral class to encapsulate access to a device component</span>
+<span class="sd">    Note: implements a public interface compatible with a part </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="Peripheral.State"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.State">[docs]</a>    <span class="k">class</span> <span class="nc">State</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>          <span class="c1"># Component state codes</span>
+        <span class="n">Starting</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">Initial</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">Ready</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">Active</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">Checkpointing</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">Inactive</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">Passive</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="n">Destroyed</span> <span class="o">=</span> <span class="mi">7</span></div>
+        
+    <span class="n">_mods</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mods</span>
+    <span class="nd">@mods</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">mods</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mods</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parentActor</span><span class="p">,</span> <span class="n">iTypeDef</span><span class="p">,</span> <span class="n">iName</span><span class="p">,</span> <span class="n">iTypeName</span><span class="p">,</span> <span class="n">iArgs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Construct the Peripheral object</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;building device component </span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">iName</span><span class="p">,</span><span class="n">iTypeName</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Starting</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">iName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parentActor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">iTypeDef</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">typeName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">iArgs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Initial</span>
+        
+<div class="viewcode-block" id="Peripheral.getControl"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.getControl">[docs]</a>    <span class="k">def</span> <span class="nf">getControl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+    
+<div class="viewcode-block" id="Peripheral.setup"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set up the peripheral and change its state to Ready</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Initial</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">StateError</span><span class="p">(</span><span class="s2">&quot;Invalid state </span><span class="si">%s</span><span class="s2"> in setup()&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;setting up device component&quot;</span><span class="p">)</span>
+        <span class="c1"># Ask parent actor to contact devm to start our dca</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">typeName</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">_resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">registerDevice</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Ready</span></div>
+        
+<div class="viewcode-block" id="Peripheral.handleUpdate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.handleUpdate">[docs]</a>    <span class="k">def</span> <span class="nf">handleUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handle an update message coming from the devm service</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># print(msg)</span>
+        <span class="k">pass</span></div>
+      
+<div class="viewcode-block" id="Peripheral.activate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.activate">[docs]</a>    <span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Activate this peripheral</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Ready</span><span class="p">,</span><span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Passive</span><span class="p">,</span><span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Inactive</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">StateError</span><span class="p">(</span><span class="s2">&quot;Invalid state </span><span class="si">%s</span><span class="s2"> in activate()&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+        <span class="c1"># Now we are active</span>
+ 
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Active</span></div>
+
+<div class="viewcode-block" id="Peripheral.deactivate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.deactivate">[docs]</a>    <span class="k">def</span> <span class="nf">deactivate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">StateError</span><span class="p">(</span><span class="s2">&quot;Invalid state </span><span class="si">%s</span><span class="s2"> in deactivate()&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+
+        <span class="c1"># Now we are inactive</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Inactive</span></div>
+    
+<div class="viewcode-block" id="Peripheral.passivate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.passivate">[docs]</a>    <span class="k">def</span> <span class="nf">passivate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">StateError</span><span class="p">(</span><span class="s2">&quot;Invalid state </span><span class="si">%s</span><span class="s2"> in passivate()&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+<span class="c1">#        self.sendControl(&quot;passivate&quot;,-1)         # Send passivate command to component thread</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Passive</span></div>
+    
+<div class="viewcode-block" id="Peripheral.reactivate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.reactivate">[docs]</a>    <span class="k">def</span> <span class="nf">reactivate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Ready</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">StateError</span><span class="p">(</span><span class="s2">&quot;Invalid state </span><span class="si">%s</span><span class="s2"> in reactivate()&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Active</span></div>
+        
+<div class="viewcode-block" id="Peripheral.checkpoint"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.checkpoint">[docs]</a>    <span class="k">def</span> <span class="nf">checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">StateError</span><span class="p">(</span><span class="s2">&quot;Invalid state </span><span class="si">%s</span><span class="s2"> in checkpoint()&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span></div>
+        <span class="c1"># Checkpoint</span>
+    
+<div class="viewcode-block" id="Peripheral.destroy"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.destroy">[docs]</a>    <span class="k">def</span> <span class="nf">destroy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">Peripheral</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">Destroyed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">StateError</span><span class="p">(</span><span class="s2">&quot;Invalid state </span><span class="si">%s</span><span class="s2"> in destroy()&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span></div>
+        <span class="c1"># Destroy thread</span>
+        
+<div class="viewcode-block" id="Peripheral.handleReinstate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.handleReinstate">[docs]</a>    <span class="k">def</span> <span class="nf">handleReinstate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Peripheral.handleCPULimit"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.handleCPULimit">[docs]</a>    <span class="k">def</span> <span class="nf">handleCPULimit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Peripheral devices are just placeholders </span>
+        <span class="c1"># for the device components that live inside</span>
+        <span class="c1"># device actors. </span>
+        <span class="k">pass</span> </div>
+        
+<div class="viewcode-block" id="Peripheral.handleMemLimit"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.handleMemLimit">[docs]</a>    <span class="k">def</span> <span class="nf">handleMemLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Peripheral.handleSpcLimit"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.handleSpcLimit">[docs]</a>    <span class="k">def</span> <span class="nf">handleSpcLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+        
+<div class="viewcode-block" id="Peripheral.handleNetLimit"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.handleNetLimit">[docs]</a>    <span class="k">def</span> <span class="nf">handleNetLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Peripheral.handleNICStateChange"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.handleNICStateChange">[docs]</a>    <span class="k">def</span> <span class="nf">handleNICStateChange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">state</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+        
+<div class="viewcode-block" id="Peripheral.handlePeerStateChange"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.handlePeerStateChange">[docs]</a>    <span class="k">def</span> <span class="nf">handlePeerStateChange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">state</span><span class="p">,</span><span class="n">uuid</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Peripheral.terminate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.peripheral.Peripheral.terminate">[docs]</a>    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;terminating </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">typeName</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">typeName</span><span class="p">,)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">unregisterDevice</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;terminating </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">typeName</span><span class="p">)</span></div></div>
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

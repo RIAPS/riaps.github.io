@@ -1,0 +1,304 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.fabfile.sys &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">riaps</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>riaps.fabfile.sys</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for riaps.fabfile.sys</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Fabric commands for performing system tasks</span>
+<span class="kn">from</span> <span class="nn">fabric</span> <span class="k">import</span> <span class="n">api</span><span class="p">,</span> <span class="n">operations</span>
+<span class="kn">from</span> <span class="nn">fabric.api</span> <span class="k">import</span> <span class="n">task</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">fabric.context_managers</span> <span class="k">import</span> <span class="n">hide</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">csv</span><span class="o">,</span><span class="nn">itertools</span><span class="o">,</span><span class="nn">configparser</span>
+
+<span class="c1"># Prevent namespace errors by explicitly defining which tasks belong to this file</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">,</span> <span class="s1">&#39;shutdown&#39;</span><span class="p">,</span> <span class="s1">&#39;reboot&#39;</span><span class="p">,</span> <span class="s1">&#39;clearJournal&#39;</span><span class="p">,</span> <span class="s1">&#39;run&#39;</span><span class="p">,</span> <span class="s1">&#39;sudo&#39;</span><span class="p">,</span> <span class="s1">&#39;hosts&#39;</span><span class="p">,</span> <span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;put&#39;</span><span class="p">,</span> <span class="s1">&#39;arch&#39;</span><span class="p">,</span> <span class="s1">&#39;setup_cython&#39;</span><span class="p">]</span>
+
+<span class="c1"># Check that all BBBs are communicating</span>
+<div class="viewcode-block" id="check"><a class="viewcode-back" href="../../../riaps.fabfile.html#riaps.fabfile.sys.check">[docs]</a><span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">check</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Test that hosts are communicating&quot;&quot;&quot;</span>
+    <span class="n">run</span><span class="p">(</span><span class="s1">&#39;hostname &amp;&amp; uname -a&#39;</span><span class="p">)</span></div>
+
+<span class="c1"># Shutdown the hosts</span>
+<span class="c1"># Note: must be used prior to powering down the hosts</span>
+<div class="viewcode-block" id="shutdown"><a class="viewcode-back" href="../../../riaps.fabfile.html#riaps.fabfile.sys.shutdown">[docs]</a><span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="n">when</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="p">,</span> <span class="n">why</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Shutdown the hosts:[when],[why]&quot;&quot;&quot;</span>
+    <span class="n">sudo</span><span class="p">(</span><span class="s1">&#39;shutdown &#39;</span> <span class="o">+</span> <span class="n">when</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">why</span><span class="p">)</span></div>
+
+<span class="c1"># Reboot the hosts</span>
+<div class="viewcode-block" id="reboot"><a class="viewcode-back" href="../../../riaps.fabfile.html#riaps.fabfile.sys.reboot">[docs]</a><span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">reboot</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Reboot the hosts&quot;&quot;&quot;</span>
+    <span class="n">sudo</span><span class="p">(</span><span class="s1">&#39;reboot &amp;&#39;</span><span class="p">)</span></div>
+
+<span class="c1"># The system journal run continuously with no regard to login session. So to isolate testing data, the system journal can be cleared.</span>
+<div class="viewcode-block" id="clearJournal"><a class="viewcode-back" href="../../../riaps.fabfile.html#riaps.fabfile.sys.clearJournal">[docs]</a><span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">clearJournal</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Clear system journal&quot;&quot;&quot;</span>
+    <span class="n">sudo</span><span class="p">(</span><span class="s1">&#39;rm -rf  /run/log/journal/*&#39;</span><span class="p">)</span>
+    <span class="n">sudo</span><span class="p">(</span><span class="s1">&#39;systemctl restart systemd-journald&#39;</span><span class="p">)</span></div>
+
+<span class="c1"># Wrapper for fabric.api.run to capture and combine and console output</span>
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../../riaps.fabfile.html#riaps.fabfile.sys.run">[docs]</a><span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Execute command as user:&lt;command&gt;&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">hide</span><span class="p">(</span><span class="s1">&#39;everything&#39;</span><span class="p">),</span> <span class="n">settings</span><span class="p">(</span><span class="n">warn_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="o">+</span><span class="n">env</span><span class="o">.</span><span class="n">host</span><span class="o">+</span><span class="s2">&quot;] &quot;</span> <span class="o">+</span> <span class="n">command</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<span class="c1"># Wrapper for fabric.api.sudo to capture and combine any console output</span>
+<div class="viewcode-block" id="sudo"><a class="viewcode-back" href="../../../riaps.fabfile.html#riaps.fabfile.sys.sudo">[docs]</a><span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">sudo</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Execute a command as root:&lt;command&gt;&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">hide</span><span class="p">(</span><span class="s1">&#39;everything&#39;</span><span class="p">),</span> <span class="n">settings</span><span class="p">(</span><span class="n">warn_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">sudo</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="o">+</span><span class="n">env</span><span class="o">.</span><span class="n">host</span><span class="o">+</span><span class="s2">&quot;] sudo &quot;</span> <span class="o">+</span> <span class="n">command</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="hosts"><a class="viewcode-back" href="../../../riaps.fabfile.html#riaps.fabfile.sys.hosts">[docs]</a><span class="nd">@task</span>
+<span class="nd">@api</span><span class="o">.</span><span class="n">hosts</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hosts</span><span class="p">(</span><span class="n">hosts_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load hosts from file:&lt;file name&gt;&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">hosts_file</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hosts configuration file doesn</span><span class="se">\&#39;</span><span class="s1">t exist: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">hosts_file</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">hosts_file</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; Hosts configuration file </span><span class="si">%s</span><span class="s1"> has a problem: </span><span class="si">%s</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hosts_file</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
+        <span class="k">return</span>
+
+    <span class="n">riaps_section</span> <span class="o">=</span> <span class="s1">&#39;RIAPS&#39;</span>
+    <span class="k">if</span> <span class="n">settings</span> <span class="o">==</span> <span class="p">[]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="n">riaps_section</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hosts configuration file </span><span class="si">%s</span><span class="s1"> is missing [RIAPS] section.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hosts_file</span><span class="p">))</span>
+        <span class="k">return</span>
+
+    <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="n">riaps_section</span><span class="p">):</span>
+        <span class="n">key</span><span class="p">,</span><span class="n">arg</span> <span class="o">=</span> <span class="n">item</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;hosts&#39;</span><span class="p">:</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="c1"># Parse hosts config as multi line csv</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">parser</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="c1"># Parse commas and quotations</span>
+            <span class="n">hosts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">parser</span><span class="p">))</span> <span class="c1"># Combine lines</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">hosts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">hosts</span><span class="p">))</span> <span class="c1"># Filter out any empty strings</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unrecognized key in </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hosts_file</span><span class="p">,</span><span class="n">key</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Failed to find &quot;hosts&quot; key in hosts file </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">hosts_file</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../../riaps.fabfile.html#riaps.fabfile.sys.get">[docs]</a><span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">local_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">use_sudo</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Download file from host:&lt;file name&gt;,[local path],[use sudo]&quot;&quot;&quot;</span>
+    <span class="n">use_sudo</span> <span class="o">=</span> <span class="n">use_sudo</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]</span>
+    <span class="n">operations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">local_path</span><span class="o">=</span><span class="n">local_path</span><span class="p">,</span> <span class="n">remote_path</span><span class="o">=</span><span class="n">fileName</span><span class="p">,</span> <span class="n">use_sudo</span><span class="o">=</span><span class="n">use_sudo</span><span class="p">)</span></div>
+
+<span class="c1"># If transferring to a RIAPS account directory, use_sudo=False.</span>
+<span class="c1"># If transferring to a system location, use_sudo=True</span>
+<div class="viewcode-block" id="put"><a class="viewcode-back" href="../../../riaps.fabfile.html#riaps.fabfile.sys.put">[docs]</a><span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">remote_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">use_sudo</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Upload file to hosts:&lt;file name&gt;,[remote path],[use sudo]&quot;&quot;&quot;</span>
+    <span class="n">use_sudo</span> <span class="o">=</span> <span class="n">use_sudo</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]</span>
+    <span class="n">operations</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">local_path</span><span class="o">=</span><span class="n">fileName</span><span class="p">,</span> <span class="n">remote_path</span><span class="o">=</span><span class="n">remote_path</span><span class="p">,</span> <span class="n">use_sudo</span><span class="o">=</span><span class="n">use_sudo</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="arch"><a class="viewcode-back" href="../../../riaps.fabfile.html#riaps.fabfile.sys.arch">[docs]</a><span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">arch</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Detect architecture of host&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">run</span><span class="p">(</span><span class="s2">&quot;dpkg --print-architecture &quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="setup_cython"><a class="viewcode-back" href="../../../riaps.fabfile.html#riaps.fabfile.sys.setup_cython">[docs]</a><span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">setup_cython</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Fix &#39;Debugger speedups using cython not found&#39; warnings&quot;&quot;&quot;</span>
+    <span class="n">sudo</span><span class="p">(</span><span class="s1">&#39;wget https://raw.githubusercontent.com/fabioz/PyDev.Debugger/master/setup_cython.py -P /usr/local/lib/python3.5/dist-packages/&#39;</span><span class="p">)</span>
+    <span class="n">sudo</span><span class="p">(</span><span class="s1">&#39;python3 /usr/local/lib/python3.5/dist-packages/setup_cython.py build_ext --inplace&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

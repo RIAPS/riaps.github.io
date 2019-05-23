@@ -1,0 +1,62 @@
+riaps.ctrl package
+==================
+
+Submodules
+----------
+
+riaps.ctrl.ctrl module
+----------------------
+
+.. automodule:: riaps.ctrl.ctrl
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.ctrl.ctrlcli module
+-------------------------
+
+.. automodule:: riaps.ctrl.ctrlcli
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.ctrl.ctrlgui module
+-------------------------
+
+.. automodule:: riaps.ctrl.ctrlgui
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.ctrl.ctrlsrv module
+-------------------------
+
+.. automodule:: riaps.ctrl.ctrlsrv
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.ctrl.main module
+----------------------
+
+.. automodule:: riaps.ctrl.main
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.ctrl.origin module
+------------------------
+
+.. automodule:: riaps.ctrl.origin
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: riaps.ctrl
+    :members:
+    :undoc-members:
+    :show-inheritance:

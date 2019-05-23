@@ -1,0 +1,549 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.utils package &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="riaps.run package" href="riaps.run.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">riaps</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="riaps.html">riaps package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="riaps.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="riaps.consts.html">riaps.consts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.ctrl.html">riaps.ctrl package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.deplo.html">riaps.deplo package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.discd.html">riaps.discd package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.fabfile.html">riaps.fabfile package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.gen.html">riaps.gen package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.lang.html">riaps.lang package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.proto.html">riaps.proto package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.run.html">riaps.run package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">riaps.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_actor">riaps.riaps_actor module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_ctrl">riaps.riaps_ctrl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_depll">riaps.riaps_depll module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_deplo">riaps.riaps_deplo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_device">riaps.riaps_device module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_disco">riaps.riaps_disco module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_gen">riaps.riaps_gen module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_gviz">riaps.riaps_gviz module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_lang">riaps.riaps_lang module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">riaps</a> &raquo;</li>
+        
+          <li><a href="riaps.html">riaps package</a> &raquo;</li>
+        
+      <li>riaps.utils package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/riaps.utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="riaps-utils-package">
+<h1>riaps.utils package<a class="headerlink" href="#riaps-utils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-riaps.utils.appdesc">
+<span id="riaps-utils-appdesc-module"></span><h2>riaps.utils.appdesc module<a class="headerlink" href="#module-riaps.utils.appdesc" title="Permalink to this headline">¶</a></h2>
+<p>Created on Oct 29, 2018</p>
+<p>&#64;author: riaps</p>
+<dl class="class">
+<dt id="riaps.utils.appdesc.AppDescriptor">
+<em class="property">class </em><code class="descclassname">riaps.utils.appdesc.</code><code class="descname">AppDescriptor</code><span class="sig-paren">(</span><em>url</em>, <em>host</em>, <em>mac</em>, <em>sha</em>, <em>home</em>, <em>hosts</em>, <em>network</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/appdesc.html#AppDescriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.appdesc.AppDescriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>RIAPS app origin - ‘signature file
+url = URL of the repo (or local folder) the app is coming from
+host = host IP addares
+mac = MAC address of host
+sha = SHA of package
+home = local source folder (used in remote debugging)
+hosts = hosts participating in the app
+network = network access control for nodes</p>
+<blockquote>
+<div><p>(ip|’[]’) =&gt; [] | [ (‘dns’ | ip) ]+</p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.utils.config">
+<span id="riaps-utils-config-module"></span><h2>riaps.utils.config module<a class="headerlink" href="#module-riaps.utils.config" title="Permalink to this headline">¶</a></h2>
+<p>Created on Nov 23, 2016</p>
+<p>&#64;author: riaps</p>
+<dl class="class">
+<dt id="riaps.utils.config.Config">
+<em class="property">class </em><code class="descclassname">riaps.utils.config.</code><code class="descname">Config</code><a class="reference internal" href="_modules/riaps/utils/config.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.config.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Configuration database for RIAPS tools
+Including logging configuration</p>
+<dl class="attribute">
+<dt id="riaps.utils.config.Config.ACTOR_DEBUG_SERVER">
+<code class="descname">ACTOR_DEBUG_SERVER</code><em class="property"> = ''</em><a class="headerlink" href="#riaps.utils.config.Config.ACTOR_DEBUG_SERVER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.utils.config.Config.APP_LOGS">
+<code class="descname">APP_LOGS</code><em class="property"> = ''</em><a class="headerlink" href="#riaps.utils.config.Config.APP_LOGS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.utils.config.Config.CTRL_DEBUG_SERVER">
+<code class="descname">CTRL_DEBUG_SERVER</code><em class="property"> = ''</em><a class="headerlink" href="#riaps.utils.config.Config.CTRL_DEBUG_SERVER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.utils.config.Config.DEPLO_DEBUG_SERVER">
+<code class="descname">DEPLO_DEBUG_SERVER</code><em class="property"> = ''</em><a class="headerlink" href="#riaps.utils.config.Config.DEPLO_DEBUG_SERVER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.utils.config.Config.DEVICE_DEBUG_SERVER">
+<code class="descname">DEVICE_DEBUG_SERVER</code><em class="property"> = ''</em><a class="headerlink" href="#riaps.utils.config.Config.DEVICE_DEBUG_SERVER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.utils.config.Config.DISCO_DEBUG_SERVER">
+<code class="descname">DISCO_DEBUG_SERVER</code><em class="property"> = ''</em><a class="headerlink" href="#riaps.utils.config.Config.DISCO_DEBUG_SERVER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.utils.config.Config.NIC_CEIL">
+<code class="descname">NIC_CEIL</code><em class="property"> = '131kbps'</em><a class="headerlink" href="#riaps.utils.config.Config.NIC_CEIL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.utils.config.Config.NIC_NAME">
+<code class="descname">NIC_NAME</code><em class="property"> = None</em><a class="headerlink" href="#riaps.utils.config.Config.NIC_NAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.utils.config.Config.NIC_RATE">
+<code class="descname">NIC_RATE</code><em class="property"> = '118kbps'</em><a class="headerlink" href="#riaps.utils.config.Config.NIC_RATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.utils.config.Config.RECV_TIMEOUT">
+<code class="descname">RECV_TIMEOUT</code><em class="property"> = -1</em><a class="headerlink" href="#riaps.utils.config.Config.RECV_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.utils.config.Config.SECURITY">
+<code class="descname">SECURITY</code><em class="property"> = True</em><a class="headerlink" href="#riaps.utils.config.Config.SECURITY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.utils.config.Config.SEND_TIMEOUT">
+<code class="descname">SEND_TIMEOUT</code><em class="property"> = -1</em><a class="headerlink" href="#riaps.utils.config.Config.SEND_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.utils.config.Config.TARGET_USER">
+<code class="descname">TARGET_USER</code><em class="property"> = 'riaps'</em><a class="headerlink" href="#riaps.utils.config.Config.TARGET_USER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.utils.ifaces">
+<span id="riaps-utils-ifaces-module"></span><h2>riaps.utils.ifaces module<a class="headerlink" href="#module-riaps.utils.ifaces" title="Permalink to this headline">¶</a></h2>
+<p>Various network interface utility functions
+Created on Nov 4, 2016</p>
+<p>&#64;author: riaps</p>
+<dl class="function">
+<dt id="riaps.utils.ifaces.getNetworkInterfaces">
+<code class="descclassname">riaps.utils.ifaces.</code><code class="descname">getNetworkInterfaces</code><span class="sig-paren">(</span><em>nicName=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/ifaces.html#getNetworkInterfaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.ifaces.getNetworkInterfaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the IP address of  the network interfaces
+Return a tuple of list of global IP addresses, list of MAC addresses, and local IP address</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.ifaces.get_unix_dns_ips">
+<code class="descclassname">riaps.utils.ifaces.</code><code class="descname">get_unix_dns_ips</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/ifaces.html#get_unix_dns_ips"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.ifaces.get_unix_dns_ips" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the IP address(es) of dns servers used by this host</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.ifaces.is_valid_ipv4_address">
+<code class="descclassname">riaps.utils.ifaces.</code><code class="descname">is_valid_ipv4_address</code><span class="sig-paren">(</span><em>address</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/ifaces.html#is_valid_ipv4_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.ifaces.is_valid_ipv4_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine if the argument is a valid IP address</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.utils.names">
+<span id="riaps-utils-names-module"></span><h2>riaps.utils.names module<a class="headerlink" href="#module-riaps.utils.names" title="Permalink to this headline">¶</a></h2>
+<p>name operations
+Created on Jan 19, 2018</p>
+<p>&#64;author: riaps</p>
+<dl class="function">
+<dt id="riaps.utils.names.actorIdentity">
+<code class="descclassname">riaps.utils.names.</code><code class="descname">actorIdentity</code><span class="sig-paren">(</span><em>appName</em>, <em>actorName</em>, <em>pid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/names.html#actorIdentity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.names.actorIdentity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-riaps.utils.origin">
+<span id="riaps-utils-origin-module"></span><h2>riaps.utils.origin module<a class="headerlink" href="#module-riaps.utils.origin" title="Permalink to this headline">¶</a></h2>
+<p>Created on Oct 29, 2018</p>
+<p>&#64;author: riaps</p>
+<dl class="class">
+<dt id="riaps.utils.origin.Origin">
+<em class="property">class </em><code class="descclassname">riaps.utils.origin.</code><code class="descname">Origin</code><span class="sig-paren">(</span><em>url</em>, <em>host</em>, <em>mac</em>, <em>sha</em>, <em>home</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/origin.html#Origin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.origin.Origin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>RIAPS app origin - ‘signature file
+url = URL of the repo (or local folder) the app is coming from
+host = host IP addares
+mac = MAC address of host
+sha = SHA of package
+home = local source folder (used in remote debugging)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.utils.singleton">
+<span id="riaps-utils-singleton-module"></span><h2>riaps.utils.singleton module<a class="headerlink" href="#module-riaps.utils.singleton" title="Permalink to this headline">¶</a></h2>
+<p>Created on Jul 23, 2018</p>
+<p>&#64;author: riaps</p>
+<dl class="function">
+<dt id="riaps.utils.singleton.singleton">
+<code class="descclassname">riaps.utils.singleton.</code><code class="descname">singleton</code><span class="sig-paren">(</span><em>process_name</em>, <em>suffix=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/singleton.html#singleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.singleton.singleton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enforce the caller process is a singleton</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.utils.spdlog_setup">
+<span id="riaps-utils-spdlog-setup-module"></span><h2>riaps.utils.spdlog_setup module<a class="headerlink" href="#module-riaps.utils.spdlog_setup" title="Permalink to this headline">¶</a></h2>
+<p>Created on Jan 3, 2019</p>
+<p>&#64;author: riaps</p>
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_color_stdout_sink_mt">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_color_stdout_sink_mt</code><span class="sig-paren">(</span><em>_s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_color_stdout_sink_mt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_color_stdout_sink_mt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_color_stdout_sink_st">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_color_stdout_sink_st</code><span class="sig-paren">(</span><em>_s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_color_stdout_sink_st"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_color_stdout_sink_st" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_daily_file_sink_mt">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_daily_file_sink_mt</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_daily_file_sink_mt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_daily_file_sink_mt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_daily_file_sink_st">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_daily_file_sink_st</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_daily_file_sink_st"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_daily_file_sink_st" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_null_sink_mt">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_null_sink_mt</code><span class="sig-paren">(</span><em>_s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_null_sink_mt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_null_sink_mt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_null_sink_st">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_null_sink_st</code><span class="sig-paren">(</span><em>_s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_null_sink_st"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_null_sink_st" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_parent_dir">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_parent_dir</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_parent_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_parent_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_rotating_file_sink_mt">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_rotating_file_sink_mt</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_rotating_file_sink_mt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_rotating_file_sink_mt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_rotating_file_sink_st">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_rotating_file_sink_st</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_rotating_file_sink_st"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_rotating_file_sink_st" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_simple_file_sink_mt">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_simple_file_sink_mt</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_simple_file_sink_mt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_simple_file_sink_mt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_simple_file_sink_st">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_simple_file_sink_st</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_simple_file_sink_st"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_simple_file_sink_st" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_stdout_sink_mt">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_stdout_sink_mt</code><span class="sig-paren">(</span><em>_s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_stdout_sink_mt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_stdout_sink_mt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_stdout_sink_st">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_stdout_sink_st</code><span class="sig-paren">(</span><em>_s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_stdout_sink_st"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_stdout_sink_st" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.add_syslog_sink">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">add_syslog_sink</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#add_syslog_sink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.add_syslog_sink" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.file_size">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">file_size</code><span class="sig-paren">(</span><em>num</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#file_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.file_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.from_file">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">from_file</code><span class="sig-paren">(</span><em>fname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.from_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.spdlog_setup.get_logger">
+<code class="descclassname">riaps.utils.spdlog_setup.</code><code class="descname">get_logger</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/spdlog_setup.html#get_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.spdlog_setup.get_logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-riaps.utils.sudo">
+<span id="riaps-utils-sudo-module"></span><h2>riaps.utils.sudo module<a class="headerlink" href="#module-riaps.utils.sudo" title="Permalink to this headline">¶</a></h2>
+<p>sudo operations
+Created on Jan 19, 2018</p>
+<p>&#64;author: riaps</p>
+<dl class="function">
+<dt id="riaps.utils.sudo.cleanup">
+<code class="descclassname">riaps.utils.sudo.</code><code class="descname">cleanup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/sudo.html#cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.sudo.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.sudo.is_su">
+<code class="descclassname">riaps.utils.sudo.</code><code class="descname">is_su</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/sudo.html#is_su"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.sudo.is_su" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.sudo.riaps_sudo">
+<code class="descclassname">riaps.utils.sudo.</code><code class="descname">riaps_sudo</code><span class="sig-paren">(</span><em>cmd</em>, <em>timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/sudo.html#riaps_sudo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.sudo.riaps_sudo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.sudo.run">
+<code class="descclassname">riaps.utils.sudo.</code><code class="descname">run</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/sudo.html#run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.sudo.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.sudo.sudo">
+<code class="descclassname">riaps.utils.sudo.</code><code class="descname">sudo</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/sudo.html#sudo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.sudo.sudo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-riaps.utils.trace">
+<span id="riaps-utils-trace-module"></span><h2>riaps.utils.trace module<a class="headerlink" href="#module-riaps.utils.trace" title="Permalink to this headline">¶</a></h2>
+<p>Created on Dec 16, 2017</p>
+<p>&#64;author: riaps</p>
+<dl class="function">
+<dt id="riaps.utils.trace.riaps_trace">
+<code class="descclassname">riaps.utils.trace.</code><code class="descname">riaps_trace</code><span class="sig-paren">(</span><em>debug=None</em>, <em>prog=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/trace.html#riaps_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.trace.riaps_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup trace mode and wait for the debug server.</p>
+<dl class="simple">
+<dt>&#64;debug: Debug server control string of the form ‘hostname:portname’, </dt><dd><p>both of which are optional, ‘:’ defaulting to localhost:5678</p>
+</dd>
+</dl>
+<p>&#64;prog:  Label for the program, looked up in the riaps configuration file.</p>
+<p>First, it attempts to connect to the debug server using the debug argument (if present).
+Second, it tries to connect to the debug server using the information from the configuration file.
+If the config file argument is empty, it silently returns.  
+Returns: True of False depending on whether the program is running in trace mode.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="riaps.utils.trace.riaps_trace_setup">
+<code class="descclassname">riaps.utils.trace.</code><code class="descname">riaps_trace_setup</code><span class="sig-paren">(</span><em>debug</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/utils/trace.html#riaps_trace_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.utils.trace.riaps_trace_setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-riaps.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-riaps.utils" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="riaps.run.html" class="btn btn-neutral float-left" title="riaps.run package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

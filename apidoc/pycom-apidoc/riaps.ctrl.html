@@ -1,0 +1,1155 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.ctrl package &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="riaps.deplo package" href="riaps.deplo.html" />
+    <link rel="prev" title="riaps.consts package" href="riaps.consts.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">riaps</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="riaps.html">riaps package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="riaps.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="riaps.consts.html">riaps.consts package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">riaps.ctrl package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.deplo.html">riaps.deplo package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.discd.html">riaps.discd package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.fabfile.html">riaps.fabfile package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.gen.html">riaps.gen package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.lang.html">riaps.lang package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.proto.html">riaps.proto package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.run.html">riaps.run package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.utils.html">riaps.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_actor">riaps.riaps_actor module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_ctrl">riaps.riaps_ctrl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_depll">riaps.riaps_depll module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_deplo">riaps.riaps_deplo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_device">riaps.riaps_device module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_disco">riaps.riaps_disco module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_gen">riaps.riaps_gen module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_gviz">riaps.riaps_gviz module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_lang">riaps.riaps_lang module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">riaps</a> &raquo;</li>
+        
+          <li><a href="riaps.html">riaps package</a> &raquo;</li>
+        
+      <li>riaps.ctrl package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/riaps.ctrl.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="riaps-ctrl-package">
+<h1>riaps.ctrl package<a class="headerlink" href="#riaps-ctrl-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-riaps.ctrl.ctrl">
+<span id="riaps-ctrl-ctrl-module"></span><h2>riaps.ctrl.ctrl module<a class="headerlink" href="#module-riaps.ctrl.ctrl" title="Permalink to this headline">¶</a></h2>
+<p>Controller: main class of the controller node
+Created on Nov 10, 2016</p>
+<p>&#64;author: riaps</p>
+<dl class="class">
+<dt id="riaps.ctrl.ctrl.Controller">
+<em class="property">class </em><code class="descclassname">riaps.ctrl.ctrl.</code><code class="descname">Controller</code><span class="sig-paren">(</span><em>port</em>, <em>script</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Main class of controller - manages everything and maintains global controller state</p>
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.addClient">
+<code class="descname">addClient</code><span class="sig-paren">(</span><em>clientName</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.addClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.addClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a client object, representing a RIAPS node to the list. The operation is called
+from the service thread, so it is protected by the lock</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.addKeyToAgent">
+<code class="descname">addKeyToAgent</code><span class="sig-paren">(</span><em>agent_keys</em>, <em>rsa_private_key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.addKeyToAgent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.addKeyToAgent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.addToLaunchList">
+<code class="descname">addToLaunchList</code><span class="sig-paren">(</span><em>clientName</em>, <em>appName</em>, <em>actorName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.addToLaunchList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.addToLaunchList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.authenticate">
+<code class="descname">authenticate</code><span class="sig-paren">(</span><em>transport</em>, <em>username</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.authenticate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to authenticate to the given transport using any of the private
+keys available from an SSH agent or from a local private RSA key file (assumes no pass phrase).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.buildAppDescriptor">
+<code class="descname">buildAppDescriptor</code><span class="sig-paren">(</span><em>hosts</em>, <em>network</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.buildAppDescriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.buildAppDescriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build an app descriptor file for the app that is being downloaded
+and record the download event in the git repository the app has
+come from (if there is a git repo).
+Generate certs for the app.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.buildArgs">
+<code class="descname">buildArgs</code><span class="sig-paren">(</span><em>actuals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.buildArgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.buildArgs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build argument list from actual list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.buildDownload">
+<code class="descname">buildDownload</code><span class="sig-paren">(</span><em>appName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.buildDownload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.buildDownload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a download package for the application.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.buildPackage">
+<code class="descname">buildPackage</code><span class="sig-paren">(</span><em>appName</em>, <em>files</em>, <em>libraries</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.buildPackage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.buildPackage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a download package in a temporary folder.
+The package contains a tgz file with all the artifacts to be downloaded
+and a signature file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.cleanAll">
+<code class="descname">cleanAll</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.cleanAll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.cleanAll" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.compileApplication">
+<code class="descname">compileApplication</code><span class="sig-paren">(</span><em>appModelName</em>, <em>appFolder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.compileApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.compileApplication" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compile an application model (create both the JSON file and the data structure)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.compileDeployment">
+<code class="descname">compileDeployment</code><span class="sig-paren">(</span><em>depModelName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.compileDeployment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.compileDeployment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compile a deployment model (create both the JSON file and the data structure)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.delClient">
+<code class="descname">delClient</code><span class="sig-paren">(</span><em>clientName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.delClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.delClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a client object, representing a RIAPS node from the list. The operation is called
+from the service thread, so it is protected by the lock</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.downloadApp">
+<code class="descname">downloadApp</code><span class="sig-paren">(</span><em>files</em>, <em>libraries</em>, <em>clients</em>, <em>appName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.downloadApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.downloadApp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.downloadAppToClient">
+<code class="descname">downloadAppToClient</code><span class="sig-paren">(</span><em>appName</em>, <em>tgz_file</em>, <em>sha_file</em>, <em>client</em>, <em>resList</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.downloadAppToClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.downloadAppToClient" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.findClient">
+<code class="descname">findClient</code><span class="sig-paren">(</span><em>clientName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.findClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.findClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a client based on its name that can be be an IP address or
+a DNS name. Clients log in with their numeric IP address, but the
+deployment plan may have DNS names.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.getClient">
+<code class="descname">getClient</code><span class="sig-paren">(</span><em>clientName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.getClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.getClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a known client by name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.haltByName">
+<code class="descname">haltByName</code><span class="sig-paren">(</span><em>appNameToHalt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.haltByName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.haltByName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Halt (terminate) all launched actors of an app</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.installClientComplete">
+<code class="descname">installClientComplete</code><span class="sig-paren">(</span><em>client</em>, <em>appName</em>, <em>res</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.installClientComplete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.installClientComplete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.isClient">
+<code class="descname">isClient</code><span class="sig-paren">(</span><em>clientName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.isClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.isClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the name stands for a known client</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.isdir">
+<code class="descname">isdir</code><span class="sig-paren">(</span><em>sftp</em>, <em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.isdir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.isdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True  if a remote folder path points to a directory</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.killAll">
+<code class="descname">killAll</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.killAll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.killAll" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.launchByName">
+<code class="descname">launchByName</code><span class="sig-paren">(</span><em>appName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.launchByName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.launchByName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launch an app. The model of the app is in self.riaps_model, and the corresponding deployment
+is in self.riaps_depl.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log a message on the GUI</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.queryClient">
+<code class="descname">queryClient</code><span class="sig-paren">(</span><em>clientName</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.queryClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.queryClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query the client for apps already running</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.removeApp">
+<code class="descname">removeApp</code><span class="sig-paren">(</span><em>appName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.removeApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.removeApp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.removeAppByName">
+<code class="descname">removeAppByName</code><span class="sig-paren">(</span><em>appName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.removeAppByName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.removeAppByName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.removeAppFromClient">
+<code class="descname">removeAppFromClient</code><span class="sig-paren">(</span><em>client</em>, <em>appName</em>, <em>files=[]</em>, <em>libraries=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.removeAppFromClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.removeAppFromClient" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.removeSignature">
+<code class="descname">removeSignature</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.removeSignature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.removeSignature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a ‘signature’ file from the current app folder,
+and remove the corresponding tag from the git repository 
+of the app (if it came from one).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.rm">
+<code class="descname">rm</code><span class="sig-paren">(</span><em>sftp</em>, <em>path</em>, <em>top=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.rm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.rm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively remove the content of a remote directory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yield control to the main GUI loop. When the loop terminates this operation will return</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.setAppFolder">
+<code class="descname">setAppFolder</code><span class="sig-paren">(</span><em>appFolderPath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.setAppFolder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.setAppFolder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.setupHostKeys">
+<code class="descname">setupHostKeys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.setupHostKeys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.setupHostKeys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.setupIfaces">
+<code class="descname">setupIfaces</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.setupIfaces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.setupIfaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the IP addresses of the (host-)local and network(-global) interfaces</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.signPackage">
+<code class="descname">signPackage</code><span class="sig-paren">(</span><em>keyName</em>, <em>dataName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.signPackage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.signPackage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start up everything in the controller</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.startClientSession">
+<code class="descname">startClientSession</code><span class="sig-paren">(</span><em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.startClientSession"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.startClientSession" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.startDbase">
+<code class="descname">startDbase</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.startDbase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.startDbase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the (redis) database</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.startService">
+<code class="descname">startService</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.startService"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.startService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launch the RIAPSCONTROL service (in its own thread)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.startUI">
+<code class="descname">startUI</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.startUI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.startUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the GUI (which runs in</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop everything started by this class</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.Controller.updateClient">
+<code class="descname">updateClient</code><span class="sig-paren">(</span><em>clientName</em>, <em>client</em>, <em>res</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#Controller.updateClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.Controller.updateClient" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="riaps.ctrl.ctrl.RSFTPClient">
+<em class="property">class </em><code class="descclassname">riaps.ctrl.ctrl.</code><code class="descname">RSFTPClient</code><span class="sig-paren">(</span><em>sock</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#RSFTPClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.RSFTPClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">paramiko.sftp_client.SFTPClient</span></code></p>
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.RSFTPClient.mkdir">
+<code class="descname">mkdir</code><span class="sig-paren">(</span><em>path</em>, <em>mode=511</em>, <em>ignore_existing=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#RSFTPClient.mkdir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.RSFTPClient.mkdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Augments mkdir by adding an option to not fail if the folder exists</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrl.RSFTPClient.put_dir">
+<code class="descname">put_dir</code><span class="sig-paren">(</span><em>source</em>, <em>target</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrl.html#RSFTPClient.put_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrl.RSFTPClient.put_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uploads the contents of the source directory to the target path. The
+target directory needs to exists. All subdirectories in source are 
+created under target.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.ctrl.ctrlcli">
+<span id="riaps-ctrl-ctrlcli-module"></span><h2>riaps.ctrl.ctrlcli module<a class="headerlink" href="#module-riaps.ctrl.ctrlcli" title="Permalink to this headline">¶</a></h2>
+<p>Controller CMD
+Created on Dec 6.2016</p>
+<p>&#64;author: riaps</p>
+<dl class="class">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient">
+<em class="property">class </em><code class="descclassname">riaps.ctrl.ctrlcli.</code><code class="descname">ControlCLIClient</code><span class="sig-paren">(</span><em>port</em>, <em>controller</em>, <em>script</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Controller GUI class</p>
+<dl class="class">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell">
+<em class="property">class </em><code class="descname">CtrlCmdShell</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.CtrlCmdShell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/cmd.html#cmd.Cmd" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">cmd.Cmd</span></code></a></p>
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_d">
+<code class="descname">do_d</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.CtrlCmdShell.do_d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select deployment model: d app.depl</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_e">
+<code class="descname">do_e</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.CtrlCmdShell.do_e"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_e" title="Permalink to this definition">¶</a></dt>
+<dd><p>Echo argument: e message</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_f">
+<code class="descname">do_f</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.CtrlCmdShell.do_f"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select app folder: f path</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_h">
+<code class="descname">do_h</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.CtrlCmdShell.do_h"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Halt app: h app</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_l">
+<code class="descname">do_l</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.CtrlCmdShell.do_l"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_l" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launch app: g app</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_m">
+<code class="descname">do_m</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.CtrlCmdShell.do_m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select app model: m app.riaps</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_q">
+<code class="descname">do_q</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.CtrlCmdShell.do_q"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_q" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quit program</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_r">
+<code class="descname">do_r</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.CtrlCmdShell.do_r"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove app: r app</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_shell">
+<code class="descname">do_shell</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.CtrlCmdShell.do_shell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute command: e ls -l</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_w">
+<code class="descname">do_w</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.CtrlCmdShell.do_w"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.do_w" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait: w sec</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.intro">
+<code class="descname">intro</code><em class="property"> = 'Welcome to the ctrl shell.   Type help or ? to list commands.\n'</em><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.CtrlCmdShell.intro" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.clearApplication">
+<code class="descname">clearApplication</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.clearApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.clearApplication" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.clearDeployment">
+<code class="descname">clearDeployment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.clearDeployment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.clearDeployment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.cmdClearApp">
+<code class="descname">cmdClearApp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.cmdClearApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.cmdClearApp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the app entry.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.cmdClearDepl">
+<code class="descname">cmdClearDepl</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.cmdClearDepl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.cmdClearDepl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the deployment entry</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.cmdLaunchApp">
+<code class="descname">cmdLaunchApp</code><span class="sig-paren">(</span><em>appSelected</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.cmdLaunchApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.cmdLaunchApp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.cmdQuit">
+<code class="descname">cmdQuit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.cmdQuit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.cmdQuit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quit the app. Forces a return from the CMD loop</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.cmdRemoveApp">
+<code class="descname">cmdRemoveApp</code><span class="sig-paren">(</span><em>appSelected</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.cmdRemoveApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.cmdRemoveApp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.cmdSelectApp">
+<code class="descname">cmdSelectApp</code><span class="sig-paren">(</span><em>fileName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.cmdSelectApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.cmdSelectApp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.cmdSelectDepl">
+<code class="descname">cmdSelectDepl</code><span class="sig-paren">(</span><em>fileName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.cmdSelectDepl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.cmdSelectDepl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.cmdSelectFolder">
+<code class="descname">cmdSelectFolder</code><span class="sig-paren">(</span><em>folderName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.cmdSelectFolder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.cmdSelectFolder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.cmdStopApp">
+<code class="descname">cmdStopApp</code><span class="sig-paren">(</span><em>appSelected</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.cmdStopApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.cmdStopApp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.cmd_line">
+<code class="descname">cmd_line</code><span class="sig-paren">(</span><em>line</em>, <em>fnames=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.cmd_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.cmd_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.cmd_script">
+<code class="descname">cmd_script</code><span class="sig-paren">(</span><em>fname</em>, <em>fnames=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.cmd_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.cmd_script" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.cmd_server">
+<code class="descname">cmd_server</code><span class="sig-paren">(</span><em>source=None</em>, <em>_cond=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.cmd_server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.cmd_server" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.do_prompt">
+<code class="descname">do_prompt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.do_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.do_prompt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.isAppOK">
+<code class="descname">isAppOK</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.isAppOK"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.isAppOK" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.on_serverMessage">
+<code class="descname">on_serverMessage</code><span class="sig-paren">(</span><em>_channel=None</em>, <em>_cond=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.on_serverMessage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.on_serverMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback used by the service thread(s): it prints a log message.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlcli.ControlCLIClient.update_node_apps">
+<code class="descname">update_node_apps</code><span class="sig-paren">(</span><em>clientName</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlcli.html#ControlCLIClient.update_node_apps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlcli.ControlCLIClient.update_node_apps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.ctrl.ctrlgui">
+<span id="riaps-ctrl-ctrlgui-module"></span><h2>riaps.ctrl.ctrlgui module<a class="headerlink" href="#module-riaps.ctrl.ctrlgui" title="Permalink to this headline">¶</a></h2>
+<p>Controller GUI
+Created on Nov 7, 2016</p>
+<p>&#64;author: riaps</p>
+<dl class="class">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient">
+<em class="property">class </em><code class="descclassname">riaps.ctrl.ctrlgui.</code><code class="descname">ControlGUIClient</code><span class="sig-paren">(</span><em>port</em>, <em>controller</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Controller GUI class</p>
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.add_app">
+<code class="descname">add_app</code><span class="sig-paren">(</span><em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.add_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.add_app" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.add_table_column">
+<code class="descname">add_table_column</code><span class="sig-paren">(</span><em>col_index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.add_table_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.add_table_column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.appDownLoaded">
+<code class="descname">appDownLoaded</code><em class="property"> = None</em><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.appDownLoaded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Status Table Additions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.check_server_msg">
+<code class="descname">check_server_msg</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.check_server_msg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.check_server_msg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Server message parser and dispatcher. Based on the log message received, updates the status grid gui.
+To be deprecated when the server is updated to call directly the status grid gui update functions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.clearApplication">
+<code class="descname">clearApplication</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.clearApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.clearApplication" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the app entry.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.clearDeployment">
+<code class="descname">clearDeployment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.clearDeployment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.clearDeployment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the deployment entry</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.create_app_menu_button">
+<code class="descname">create_app_menu_button</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.create_app_menu_button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.create_app_menu_button" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.create_table_cell">
+<code class="descname">create_table_cell</code><span class="sig-paren">(</span><em>text</em>, <em>fg_color='blue'</em>, <em>bg_color='white'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.create_table_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.create_table_cell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.create_table_row">
+<code class="descname">create_table_row</code><span class="sig-paren">(</span><em>row_index</em>, <em>col_length</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.create_table_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.create_table_row" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.halt_app">
+<code class="descname">halt_app</code><span class="sig-paren">(</span><em>node</em>, <em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.halt_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.halt_app" title="Permalink to this definition">¶</a></dt>
+<dd><p>An app has been halted</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.init_GridTable">
+<code class="descname">init_GridTable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.init_GridTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.init_GridTable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.isAppOK">
+<code class="descname">isAppOK</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.isAppOK"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.isAppOK" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.launch_app">
+<code class="descname">launch_app</code><span class="sig-paren">(</span><em>node</em>, <em>app</em>, <em>actor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.launch_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.launch_app" title="Permalink to this definition">¶</a></dt>
+<dd><p>An app has been launched</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.modify_text_cell_color">
+<code class="descname">modify_text_cell_color</code><span class="sig-paren">(</span><em>cell</em>, <em>bg=''</em>, <em>fg=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.modify_text_cell_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.modify_text_cell_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.modify_text_cell_text">
+<code class="descname">modify_text_cell_text</code><span class="sig-paren">(</span><em>cell</em>, <em>text=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.modify_text_cell_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.modify_text_cell_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.node_connected">
+<code class="descname">node_connected</code><span class="sig-paren">(</span><em>ip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.node_connected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.node_connected" title="Permalink to this definition">¶</a></dt>
+<dd><p>A node connected to the controller</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.node_disconnected">
+<code class="descname">node_disconnected</code><span class="sig-paren">(</span><em>ip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.node_disconnected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.node_disconnected" title="Permalink to this definition">¶</a></dt>
+<dd><p>A node disconnected from the controller</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_Clean">
+<code class="descname">on_Clean</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_Clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_Clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clean all connected deplos</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_ConsoleEntry">
+<code class="descname">on_ConsoleEntry</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_ConsoleEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_ConsoleEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when the console entry receives an ‘activate’ event
+NOT USED</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_Kill">
+<code class="descname">on_Kill</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_Kill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_Kill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kill all connected deplos</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_LoadApplication">
+<code class="descname">on_LoadApplication</code><span class="sig-paren">(</span><em>widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_LoadApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_LoadApplication" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the selected application onto to the network</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_Quit">
+<code class="descname">on_Quit</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_Quit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_Quit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quit the app. Forces a return from the GUI loop</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_SelectApplication">
+<code class="descname">on_SelectApplication</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_SelectApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_SelectApplication" title="Permalink to this definition">¶</a></dt>
+<dd><p>App selection. Sets the app entry and calls the controller to compile the app model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_SelectDeployment">
+<code class="descname">on_SelectDeployment</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_SelectDeployment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_SelectDeployment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deployment selection. Sets the deployment entry and calls the controller
+to compile the deployment model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_ViewApplication">
+<code class="descname">on_ViewApplication</code><span class="sig-paren">(</span><em>widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_ViewApplication"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_ViewApplication" title="Permalink to this definition">¶</a></dt>
+<dd><p>View the selected application as to be deployed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_folderEntryActivate">
+<code class="descname">on_folderEntryActivate</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_folderEntryActivate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_folderEntryActivate" title="Permalink to this definition">¶</a></dt>
+<dd><p>App folder selection. Called when the folder entry or the folder button is activated.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_launch_app_press">
+<code class="descname">on_launch_app_press</code><span class="sig-paren">(</span><em>widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_launch_app_press"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_launch_app_press" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_remove_app_press">
+<code class="descname">on_remove_app_press</code><span class="sig-paren">(</span><em>widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_remove_app_press"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_remove_app_press" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_serverMessage">
+<code class="descname">on_serverMessage</code><span class="sig-paren">(</span><em>_channel=None</em>, <em>_cond=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_serverMessage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_serverMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback used by the service thread(s): it prints a log message.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_show_app_ctrl_options">
+<code class="descname">on_show_app_ctrl_options</code><span class="sig-paren">(</span><em>widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_show_app_ctrl_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_show_app_ctrl_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.on_stop_app_press">
+<code class="descname">on_stop_app_press</code><span class="sig-paren">(</span><em>widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.on_stop_app_press"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.on_stop_app_press" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.remove_app">
+<code class="descname">remove_app</code><span class="sig-paren">(</span><em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.remove_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.remove_app" title="Permalink to this definition">¶</a></dt>
+<dd><p>An app has been removed from the system</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.remove_table_row">
+<code class="descname">remove_table_row</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.remove_table_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.remove_table_row" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.selectFile">
+<code class="descname">selectFile</code><span class="sig-paren">(</span><em>title</em>, <em>patterns</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.selectFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.selectFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>File selection dialog</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.selectFolder">
+<code class="descname">selectFolder</code><span class="sig-paren">(</span><em>title</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.selectFolder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.selectFolder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Folder selection dialog</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.set_cell_bg_color">
+<code class="descname">set_cell_bg_color</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.set_cell_bg_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.set_cell_bg_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.update_halt_status">
+<code class="descname">update_halt_status</code><span class="sig-paren">(</span><em>node</em>, <em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.update_halt_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.update_halt_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>An app has been halted on a node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.update_launch_status">
+<code class="descname">update_launch_status</code><span class="sig-paren">(</span><em>info</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.update_launch_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.update_launch_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>An app has been launched on a node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.update_node_apps">
+<code class="descname">update_node_apps</code><span class="sig-paren">(</span><em>clientName</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.update_node_apps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.update_node_apps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the gui with list of apps running on the client</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.update_node_connected_status">
+<code class="descname">update_node_connected_status</code><span class="sig-paren">(</span><em>ip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.update_node_connected_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.update_node_connected_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>A new node connected to the controller</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.update_node_disconnected_status">
+<code class="descname">update_node_disconnected_status</code><span class="sig-paren">(</span><em>ip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.update_node_disconnected_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.update_node_disconnected_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>A node disconnected from the controller</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlgui.ControlGUIClient.update_remove_status">
+<code class="descname">update_remove_status</code><span class="sig-paren">(</span><em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlgui.html#ControlGUIClient.update_remove_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlgui.ControlGUIClient.update_remove_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>An app has been removed</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.ctrl.ctrlsrv">
+<span id="riaps-ctrl-ctrlsrv-module"></span><h2>riaps.ctrl.ctrlsrv module<a class="headerlink" href="#module-riaps.ctrl.ctrlsrv" title="Permalink to this headline">¶</a></h2>
+<p>Controller node service implementation
+Created on Nov 6, 2016</p>
+<p>&#64;author: riaps</p>
+<dl class="class">
+<dt id="riaps.ctrl.ctrlsrv.ControllerService">
+<em class="property">class </em><code class="descclassname">riaps.ctrl.ctrlsrv.</code><code class="descname">ControllerService</code><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ControllerService"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ControllerService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rpyc.core.service.Service</span></code></p>
+<p>Controller Service implementation (rpyc service)</p>
+<dl class="attribute">
+<dt id="riaps.ctrl.ctrlsrv.ControllerService.ALIASES">
+<code class="descname">ALIASES</code><em class="property"> = ['RIAPSCONTROL']</em><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ControllerService.ALIASES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.ctrl.ctrlsrv.ControllerService.STOPPING">
+<code class="descname">STOPPING</code><em class="property"> = None</em><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ControllerService.STOPPING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ControllerService.exposed_login">
+<code class="descname">exposed_login</code><span class="sig-paren">(</span><em>clientName</em>, <em>callback</em>, <em>appFolder=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ControllerService.exposed_login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ControllerService.exposed_login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log into the service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ControllerService.on_connect">
+<code class="descname">on_connect</code><span class="sig-paren">(</span><em>_conn=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ControllerService.on_connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ControllerService.on_connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when a client connects. Subsequently the client must login.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ControllerService.on_disconnect">
+<code class="descname">on_disconnect</code><span class="sig-paren">(</span><em>_conn=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ControllerService.on_disconnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ControllerService.on_disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when a client disconnects</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="riaps.ctrl.ctrlsrv.ServiceClient">
+<em class="property">class </em><code class="descclassname">riaps.ctrl.ctrlsrv.</code><code class="descname">ServiceClient</code><span class="sig-paren">(</span><em>name</em>, <em>callback</em>, <em>parent</em>, <em>appFolder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Service Client object represents a RIAPS node that runs a Deployment Service</p>
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceClient.clean">
+<code class="descname">clean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceClient.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceClient.clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clean the riaps_deplo app folder</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceClient.cleanupApp">
+<code class="descname">cleanupApp</code><span class="sig-paren">(</span><em>appName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceClient.cleanupApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceClient.cleanupApp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes an app from the client: it calls the Deployment service’s callback running on the
+node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceClient.cleanupApps">
+<code class="descname">cleanupApps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceClient.cleanupApps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceClient.cleanupApps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all apps from the client: it calls the Deployment service’s callback running on the
+node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceClient.exposed_logout">
+<code class="descname">exposed_logout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceClient.exposed_logout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceClient.exposed_logout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs out a node from service. Called when connection to the deployment service is lost.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceClient.halt">
+<code class="descname">halt</code><span class="sig-paren">(</span><em>appName</em>, <em>actorName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceClient.halt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceClient.halt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Halts an app actor on the client: it calls the Deployment service’s callback running on the
+node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceClient.install">
+<code class="descname">install</code><span class="sig-paren">(</span><em>appName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceClient.install"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceClient.install" title="Permalink to this definition">¶</a></dt>
+<dd><p>Installs the downloaded package on the client.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceClient.kill">
+<code class="descname">kill</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceClient.kill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceClient.kill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kill the riaps_deplo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceClient.launch">
+<code class="descname">launch</code><span class="sig-paren">(</span><em>appName</em>, <em>appNameJSON</em>, <em>actorName</em>, <em>actuals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceClient.launch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceClient.launch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launches an app actor on the client: it calls the Deployment service’s callback running on the
+node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceClient.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceClient.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceClient.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a log message to the GUI</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceClient.query">
+<code class="descname">query</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceClient.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceClient.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query client for running apps</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceClient.reclaim">
+<code class="descname">reclaim</code><span class="sig-paren">(</span><em>appName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceClient.reclaim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceClient.reclaim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reclaim app files</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceClient.setupApp">
+<code class="descname">setupApp</code><span class="sig-paren">(</span><em>appName</em>, <em>appNameJSON</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceClient.setupApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceClient.setupApp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up an app on the client: it calls the Deployment service’s callback running on the
+node.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="riaps.ctrl.ctrlsrv.ServiceThread">
+<em class="property">class </em><code class="descclassname">riaps.ctrl.ctrlsrv.</code><code class="descname">ServiceThread</code><span class="sig-paren">(</span><em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/threading.html#threading.Thread" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></a></p>
+<p>Control server main execution thread.
+Note: ThreadedServer launches a new thread for every connection.</p>
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceThread.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceThread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceThread.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the rpyc ThreadedServer with the service implementation.
+NOTE: it expects a rpyc service registry running</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceThread.setController">
+<code class="descname">setController</code><span class="sig-paren">(</span><em>ctrl</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceThread.setController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceThread.setController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the controller object for the service thread.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.ctrl.ctrlsrv.ServiceThread.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/ctrlsrv.html#ServiceThread.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.ctrlsrv.ServiceThread.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminates the service. Called when the program exits.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.ctrl.main">
+<span id="riaps-ctrl-main-module"></span><h2>riaps.ctrl.main module<a class="headerlink" href="#module-riaps.ctrl.main" title="Permalink to this headline">¶</a></h2>
+<p>Deployment controller - main program
+Created on Nov 1, 2016</p>
+<p>&#64;author: riaps</p>
+<dl class="function">
+<dt id="riaps.ctrl.main.interact">
+<code class="descclassname">riaps.ctrl.main.</code><code class="descname">interact</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/main.html#interact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.main.interact" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.ctrl.main.main">
+<code class="descclassname">riaps.ctrl.main.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/main.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.main.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.ctrl.main.termHandler">
+<code class="descclassname">riaps.ctrl.main.</code><code class="descname">termHandler</code><span class="sig-paren">(</span><em>signal</em>, <em>frame</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/main.html#termHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.main.termHandler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-riaps.ctrl.origin">
+<span id="riaps-ctrl-origin-module"></span><h2>riaps.ctrl.origin module<a class="headerlink" href="#module-riaps.ctrl.origin" title="Permalink to this headline">¶</a></h2>
+<p>Created on Oct 29, 2018</p>
+<p>&#64;author: riaps</p>
+<dl class="class">
+<dt id="riaps.ctrl.origin.Origin">
+<em class="property">class </em><code class="descclassname">riaps.ctrl.origin.</code><code class="descname">Origin</code><span class="sig-paren">(</span><em>url</em>, <em>host</em>, <em>mac</em>, <em>sha</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/ctrl/origin.html#Origin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.ctrl.origin.Origin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>RIAPS app origin</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.ctrl">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-riaps.ctrl" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="riaps.deplo.html" class="btn btn-neutral float-right" title="riaps.deplo package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="riaps.consts.html" class="btn btn-neutral float-left" title="riaps.consts package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

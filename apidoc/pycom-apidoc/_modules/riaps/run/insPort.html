@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.run.insPort &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">riaps</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>riaps.run.insPort</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for riaps.run.insPort</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created on Jan 9, 2017</span>
+
+<span class="sd">@author: riaps</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">.port</span> <span class="k">import</span> <span class="n">Port</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">zmq</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">.exc</span> <span class="k">import</span> <span class="n">OperationError</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
+
+<span class="c1"># Example insider thread (1 sec ticker)</span>
+<div class="viewcode-block" id="InsThread"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsThread">[docs]</a><span class="k">class</span> <span class="nc">InsThread</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">parent</span><span class="p">):</span>
+        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">instName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">context</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="mf">1.0</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waiting</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        
+<div class="viewcode-block" id="InsThread.run"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsThread.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plug</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">setupPlug</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span> <span class="k">break</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">waiting</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span> <span class="k">break</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plug</span><span class="o">.</span><span class="n">send_pyobj</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="InsThread.activate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsThread.activate">[docs]</a>    <span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="InsThread.deactivate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsThread.deactivate">[docs]</a>    <span class="k">def</span> <span class="nf">deactivate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="InsThread.terminate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsThread.terminate">[docs]</a>    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div></div>
+        
+<div class="viewcode-block" id="InsPort"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort">[docs]</a><span class="k">class</span> <span class="nc">InsPort</span><span class="p">(</span><span class="n">Port</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    classdocs</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+        
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parentPart</span><span class="p">,</span> <span class="n">portName</span><span class="p">,</span> <span class="n">portSpec</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Constructor</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">InsPort</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parentPart</span><span class="p">,</span><span class="n">portName</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spec</span> <span class="o">=</span> <span class="n">portSpec</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="InsPort.setup"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="n">InsThread</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span> </div>
+    
+<div class="viewcode-block" id="InsPort.setupSocket"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort.setupSocket">[docs]</a>    <span class="k">def</span> <span class="nf">setupSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">owner</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setOwner</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">PAIR</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;inproc://inside_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">instName</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ins&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span></div>
+    
+<div class="viewcode-block" id="InsPort.reset"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="InsPort.setupPlug"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort.setupPlug">[docs]</a>    <span class="k">def</span> <span class="nf">setupPlug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">thread</span><span class="p">):</span>
+        <span class="c1"># Must not be called from the main thread</span>
+        <span class="k">assert</span> <span class="n">thread</span> <span class="o">!=</span> <span class="n">threading</span><span class="o">.</span><span class="n">main_thread</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="n">thread</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">OperationError</span><span class="p">(</span><span class="s1">&#39;default inside thread already running on </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">instName</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="n">thread</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plug</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">PAIR</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plug</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;inproc://inside_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">instName</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plug</span></div>
+
+<div class="viewcode-block" id="InsPort.activate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort.activate">[docs]</a>    <span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="p">,</span><span class="s1">&#39;activate&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span></div>
+        
+<div class="viewcode-block" id="InsPort.deactivate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort.deactivate">[docs]</a>    <span class="k">def</span> <span class="nf">deactivate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="p">,</span><span class="s1">&#39;deactivate&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">deactivate</span><span class="p">()</span></div>
+        
+<div class="viewcode-block" id="InsPort.terminate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort.terminate">[docs]</a>    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="p">,</span><span class="s1">&#39;terminate&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="InsPort.getSocket"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort.getSocket">[docs]</a>    <span class="k">def</span> <span class="nf">getSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span></div>
+    
+<div class="viewcode-block" id="InsPort.inSocket"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort.inSocket">[docs]</a>    <span class="k">def</span> <span class="nf">inSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+    
+<div class="viewcode-block" id="InsPort.getContext"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort.getContext">[docs]</a>    <span class="k">def</span> <span class="nf">getContext</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span></div>
+
+<div class="viewcode-block" id="InsPort.recv_pyobj"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort.recv_pyobj">[docs]</a>    <span class="k">def</span> <span class="nf">recv_pyobj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">recv_pyobj</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+    
+<div class="viewcode-block" id="InsPort.send_pyobj"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort.send_pyobj">[docs]</a>    <span class="k">def</span> <span class="nf">send_pyobj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">send_pyobj</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">zmq</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">ZMQError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span> <span class="o">==</span> <span class="n">zmq</span><span class="o">.</span><span class="n">EAGAIN</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+    
+<div class="viewcode-block" id="InsPort.getInfo"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.insPort.InsPort.getInfo">[docs]</a>    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span></div></div>
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

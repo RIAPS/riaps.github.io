@@ -1,0 +1,242 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.gen.target.cpp.ccfilters &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">riaps</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>riaps.gen.target.cpp.ccfilters</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for riaps.gen.target.cpp.ccfilters</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="port_macro"><a class="viewcode-back" href="../../../../../riaps.gen.target.cpp.html#riaps.gen.target.cpp.ccfilters.port_macro">[docs]</a><span></span><span class="k">def</span> <span class="nf">port_macro</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">port_type</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">port_type</span> <span class="o">==</span> <span class="s1">&#39;tims&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;PORT_TIMER_{value.upper()}&quot;</span>
+    <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;PORT_{port_type[:-1].upper()}_{value.upper()}&quot;</span></div>
+
+<div class="viewcode-block" id="handler_name"><a class="viewcode-back" href="../../../../../riaps.gen.target.cpp.html#riaps.gen.target.cpp.ccfilters.handler_name">[docs]</a><span class="k">def</span> <span class="nf">handler_name</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;On{value.capitalize()}&quot;</span></div>
+
+<div class="viewcode-block" id="sender_name"><a class="viewcode-back" href="../../../../../riaps.gen.target.cpp.html#riaps.gen.target.cpp.ccfilters.sender_name">[docs]</a><span class="k">def</span> <span class="nf">sender_name</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;Send{value.capitalize()}&quot;</span></div>
+
+<div class="viewcode-block" id="recv_message_type"><a class="viewcode-back" href="../../../../../riaps.gen.target.cpp.html#riaps.gen.target.cpp.ccfilters.recv_message_type">[docs]</a><span class="k">def</span> <span class="nf">recv_message_type</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">port_type</span><span class="p">):</span>
+    <span class="n">type_name</span> <span class="o">=</span> <span class="s1">&#39;type&#39;</span>
+    <span class="k">if</span> <span class="n">port_type</span> <span class="o">==</span> <span class="s1">&#39;tims&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">elif</span> <span class="n">port_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;clts&#39;</span><span class="p">,</span> <span class="s1">&#39;qrys&#39;</span><span class="p">,</span> <span class="s1">&#39;reqs&#39;</span><span class="p">]:</span>
+        <span class="n">type_name</span> <span class="o">=</span> <span class="s1">&#39;rep_type&#39;</span>
+    <span class="k">elif</span> <span class="n">port_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;anss&#39;</span><span class="p">,</span> <span class="s1">&#39;reps&#39;</span><span class="p">,</span> <span class="s1">&#39;srvs&#39;</span><span class="p">]:</span>
+        <span class="n">type_name</span> <span class="o">=</span> <span class="s1">&#39;req_type&#39;</span>
+    <span class="k">return</span> <span class="n">value</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="sender_message_type"><a class="viewcode-back" href="../../../../../riaps.gen.target.cpp.html#riaps.gen.target.cpp.ccfilters.sender_message_type">[docs]</a><span class="k">def</span> <span class="nf">sender_message_type</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">port_type</span><span class="p">):</span>
+    <span class="n">type_name</span> <span class="o">=</span> <span class="s1">&#39;type&#39;</span>
+    <span class="k">if</span> <span class="n">port_type</span> <span class="o">==</span> <span class="s1">&#39;tims&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">elif</span> <span class="n">port_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;clts&#39;</span><span class="p">,</span> <span class="s1">&#39;qrys&#39;</span><span class="p">,</span> <span class="s1">&#39;reqs&#39;</span><span class="p">]:</span>
+        <span class="n">type_name</span> <span class="o">=</span> <span class="s1">&#39;req_type&#39;</span>
+    <span class="k">elif</span> <span class="n">port_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;anss&#39;</span><span class="p">,</span> <span class="s1">&#39;reps&#39;</span><span class="p">,</span> <span class="s1">&#39;srvs&#39;</span><span class="p">]:</span>
+        <span class="n">type_name</span> <span class="o">=</span> <span class="s1">&#39;rep_type&#39;</span>
+    <span class="k">return</span> <span class="n">value</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="recv_return_type"><a class="viewcode-back" href="../../../../../riaps.gen.target.cpp.html#riaps.gen.target.cpp.ccfilters.recv_return_type">[docs]</a><span class="k">def</span> <span class="nf">recv_return_type</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">port_type</span><span class="p">):</span>
+    <span class="n">msg_type</span> <span class="o">=</span> <span class="n">recv_message_type</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">port_type</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">msg_type</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;messages::</span><span class="si">{msg_type}</span><span class="s2">::Reader&quot;</span></div>
+
+<div class="viewcode-block" id="cpp_port_type"><a class="viewcode-back" href="../../../../../riaps.gen.target.cpp.html#riaps.gen.target.cpp.ccfilters.cpp_port_type">[docs]</a><span class="k">def</span> <span class="nf">cpp_port_type</span><span class="p">(</span><span class="n">port_type</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">port_type</span> <span class="o">==</span> <span class="s1">&#39;tims&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;PeriodicTimer&#39;</span>
+    <span class="k">elif</span> <span class="n">port_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;clts&#39;</span><span class="p">,</span> <span class="s1">&#39;reqs&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="s1">&#39;RequestPort&#39;</span>
+    <span class="k">elif</span> <span class="n">port_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;reps&#39;</span><span class="p">,</span> <span class="s1">&#39;srvs&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="s1">&#39;ResponsePort&#39;</span>
+    <span class="k">elif</span> <span class="n">port_type</span> <span class="o">==</span> <span class="s1">&#39;pubs&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;PublisherPort&#39;</span>
+    <span class="k">elif</span> <span class="n">port_type</span> <span class="o">==</span> <span class="s1">&#39;subs&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;SubscriberPort&#39;</span>
+    <span class="k">elif</span> <span class="n">port_type</span> <span class="o">==</span> <span class="s1">&#39;anss&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;AnswerPort&#39;</span>
+    <span class="k">elif</span> <span class="n">port_type</span> <span class="o">==</span> <span class="s1">&#39;qrys&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;QueryPort&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;UnknownPort&#39;</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

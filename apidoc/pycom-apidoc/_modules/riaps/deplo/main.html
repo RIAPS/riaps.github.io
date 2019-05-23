@@ -1,0 +1,257 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.deplo.main &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">riaps</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>riaps.deplo.main</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for riaps.deplo.main</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Deployment manager main program</span>
+<span class="sd">Created on Nov 1, 2016</span>
+
+<span class="sd">@author: riaps</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">signal</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">.deplo</span> <span class="k">import</span> <span class="n">DeploService</span>
+<span class="kn">from</span> <span class="nn">riaps.consts.defs</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">riaps.utils.config</span> <span class="k">import</span> <span class="n">Config</span> 
+<span class="kn">from</span> <span class="nn">riaps.utils.trace</span> <span class="k">import</span> <span class="n">riaps_trace</span>
+
+<span class="c1"># Singleton Deployment Service object </span>
+<span class="n">theDepl</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># Config object</span>
+<span class="n">conf</span> <span class="o">=</span> <span class="kc">None</span> 
+
+<span class="c1"># Interactive console for debugging (not used)</span>
+<div class="viewcode-block" id="interact"><a class="viewcode-back" href="../../../riaps.deplo.html#riaps.deplo.main.interact">[docs]</a><span class="k">def</span> <span class="nf">interact</span><span class="p">():</span>
+    <span class="kn">import</span> <span class="nn">code</span>
+    <span class="n">code</span><span class="o">.</span><span class="n">InteractiveConsole</span><span class="p">(</span><span class="nb">locals</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="termHandler"><a class="viewcode-back" href="../../../riaps.deplo.html#riaps.deplo.main.termHandler">[docs]</a><span class="k">def</span> <span class="nf">termHandler</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span><span class="n">frame</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">theDepl</span>
+    <span class="n">theDepl</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span></div>
+      
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../riaps.deplo.html#riaps.deplo.main.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span><span class="s2">&quot;--port&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>  <span class="n">default</span><span class="o">=</span><span class="n">const</span><span class="o">.</span><span class="n">ctrlPort</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;controller port number&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-n&quot;</span><span class="p">,</span><span class="s2">&quot;--node&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">const</span><span class="o">.</span><span class="n">ctrlNode</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;controller node&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-t&quot;</span><span class="p">,</span><span class="s2">&quot;--trace&quot;</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;debug server on host:port&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">except</span><span class="p">:</span> 
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Unexpected error:&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">raise</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>   <span class="c1"># Ensure load_module works from current directory</span>
+    <span class="k">global</span> <span class="n">conf</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+    <span class="c1"># Setup the logger formatter </span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="o">.</span><span class="n">default_time_format</span> <span class="o">=</span> <span class="s1">&#39;%H:%M:%S&#39;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="o">.</span><span class="n">default_msec_format</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">,</span><span class="si">%03d</span><span class="s1">&#39;</span>
+    
+    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGTERM</span><span class="p">,</span><span class="n">termHandler</span><span class="p">)</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span><span class="n">termHandler</span><span class="p">)</span>
+    <span class="n">_traced</span> <span class="o">=</span> <span class="n">riaps_trace</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">trace</span><span class="p">,</span><span class="s1">&#39;DEPLO_DEBUG_SERVER&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">global</span> <span class="n">theDepl</span>
+        <span class="n">theDepl</span> <span class="o">=</span> <span class="n">DeploService</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">node</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>  <span class="c1"># Assign the service to the singleton</span>
+        <span class="n">theDepl</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+        <span class="n">theDepl</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;riaps_deplo: Fatal error: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="mi">1</span><span class="p">],))</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">_exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+<span class="c1">#     if debug:</span>
+<span class="c1">#         interact()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.run.ansPort &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">riaps</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>riaps.run.ansPort</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for riaps.run.ansPort</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created on Oct 10, 2016</span>
+
+<span class="sd">@author: riaps</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">zmq</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">from</span> <span class="nn">.port</span> <span class="k">import</span> <span class="n">Port</span>
+<span class="kn">from</span> <span class="nn">riaps.run.exc</span> <span class="k">import</span> <span class="n">OperationError</span><span class="p">,</span><span class="n">PortError</span>
+<span class="kn">from</span> <span class="nn">riaps.utils.config</span> <span class="k">import</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">zmq.error</span> <span class="k">import</span> <span class="n">ZMQError</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">cPickle</span>
+    <span class="n">pickle</span> <span class="o">=</span> <span class="n">cPickle</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">cPickle</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="kn">import</span> <span class="nn">pickle</span>
+    
+<div class="viewcode-block" id="AnsPort"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort">[docs]</a><span class="k">class</span> <span class="nc">AnsPort</span><span class="p">(</span><span class="n">Port</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    classdocs</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parentComponent</span><span class="p">,</span> <span class="n">portName</span><span class="p">,</span> <span class="n">portSpec</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Constructor</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">AnsPort</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parentComponent</span><span class="p">,</span><span class="n">portName</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">req_type</span> <span class="o">=</span> <span class="n">portSpec</span><span class="p">[</span><span class="s2">&quot;req_type&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rep_type</span> <span class="o">=</span> <span class="n">portSpec</span><span class="p">[</span><span class="s2">&quot;rep_type&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isTimed</span> <span class="o">=</span> <span class="n">portSpec</span><span class="p">[</span><span class="s2">&quot;timed&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deadline</span> <span class="o">=</span> <span class="n">portSpec</span><span class="p">[</span><span class="s2">&quot;deadline&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.001</span> <span class="c1"># msec</span>
+        <span class="n">parentActor</span> <span class="o">=</span> <span class="n">parentComponent</span><span class="o">.</span><span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isLocalPort</span> <span class="o">=</span> <span class="n">parentActor</span><span class="o">.</span><span class="n">isLocalMessage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">req_type</span><span class="p">)</span> <span class="ow">and</span> <span class="n">parentActor</span><span class="o">.</span><span class="n">isLocalMessage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rep_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">identity</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="AnsPort.setup"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+  
+<div class="viewcode-block" id="AnsPort.setupSocket"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.setupSocket">[docs]</a>    <span class="k">def</span> <span class="nf">setupSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">owner</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setOwner</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">ROUTER</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">SNDTIMEO</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">sendTimeout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setupCurve</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isLocalPort</span><span class="p">:</span>
+            <span class="n">globalHost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getGlobalIface</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">portNum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">bind_to_random_port</span><span class="p">(</span><span class="s2">&quot;tcp://&quot;</span> <span class="o">+</span> <span class="n">globalHost</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">globalHost</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">localHost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getLocalIface</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">portNum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">bind_to_random_port</span><span class="p">(</span><span class="s2">&quot;tcp://&quot;</span> <span class="o">+</span> <span class="n">localHost</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">localHost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;ans&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">isLocalPort</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">req_type</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;#&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rep_type</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">portNum</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span></div>
+
+<div class="viewcode-block" id="AnsPort.update"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">OperationError</span><span class="p">(</span><span class="s2">&quot;Unsupported update() on AnsPort&quot;</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="AnsPort.reset"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="AnsPort.getSocket"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.getSocket">[docs]</a>    <span class="k">def</span> <span class="nf">getSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span></div>
+    
+<div class="viewcode-block" id="AnsPort.inSocket"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.inSocket">[docs]</a>    <span class="k">def</span> <span class="nf">inSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+    
+<div class="viewcode-block" id="AnsPort.get_identity"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.get_identity">[docs]</a>    <span class="k">def</span> <span class="nf">get_identity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">identity</span></div>
+    
+<div class="viewcode-block" id="AnsPort.set_identity"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.set_identity">[docs]</a>    <span class="k">def</span> <span class="nf">set_identity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">identity</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">identity</span> <span class="o">=</span> <span class="n">identity</span></div>
+        
+<div class="viewcode-block" id="AnsPort.ans_port_recv"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.ans_port_recv">[docs]</a>    <span class="k">def</span> <span class="nf">ans_port_recv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">is_pyobj</span><span class="p">):</span>   
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">msgFrames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">recv_multipart</span><span class="p">()</span>    <span class="c1"># Receive multipart (IDENTITY + payload) message</span>
+        <span class="k">except</span> <span class="n">zmq</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">ZMQError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PortError</span><span class="p">(</span><span class="s2">&quot;recv error (</span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isTimed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recvTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">identity</span> <span class="o">=</span> <span class="n">msgFrames</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>                <span class="c1"># Separate identity, it is a Frame</span>
+        <span class="k">if</span> <span class="n">is_pyobj</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">msgFrames</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>     <span class="c1"># Separate payload (pyobj)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">msgFrames</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>                   <span class="c1"># Separate payload (bytes)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msgFrames</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>                     <span class="c1"># If we have a send time stamp</span>
+            <span class="n">rawMsg</span> <span class="o">=</span> <span class="n">msgFrames</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">rawTuple</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">rawMsg</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sendTime</span> <span class="o">=</span> <span class="n">rawTuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+        
+<div class="viewcode-block" id="AnsPort.ans_port_send"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.ans_port_send">[docs]</a>    <span class="k">def</span> <span class="nf">ans_port_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">,</span><span class="n">is_pyobj</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sendMsg</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">identity</span><span class="p">]</span>                   <span class="c1"># Identity is already a frame</span>
+            <span class="k">if</span> <span class="n">is_pyobj</span><span class="p">:</span>
+                <span class="n">payload</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>  <span class="c1"># Pickle python payload</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">payload</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>                <span class="c1"># Take bytearray                        </span>
+            <span class="n">sendMsg</span> <span class="o">+=</span> <span class="p">[</span><span class="n">payload</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isTimed</span><span class="p">:</span>
+                <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">now</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
+                <span class="n">nowFrame</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>
+                <span class="n">sendMsg</span> <span class="o">+=</span> <span class="p">[</span><span class="n">nowFrame</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">send_multipart</span><span class="p">(</span><span class="n">sendMsg</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">zmq</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">ZMQError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PortError</span><span class="p">(</span><span class="s2">&quot;send error (</span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+    
+<div class="viewcode-block" id="AnsPort.recv_pyobj"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.recv_pyobj">[docs]</a>    <span class="k">def</span> <span class="nf">recv_pyobj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ans_port_recv</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AnsPort.send_pyobj"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.send_pyobj">[docs]</a>    <span class="k">def</span> <span class="nf">send_pyobj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span> 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ans_port_send</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>     </div>
+    
+<div class="viewcode-block" id="AnsPort.recv"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.recv">[docs]</a>    <span class="k">def</span> <span class="nf">recv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ans_port_recv</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AnsPort.send"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_msg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ans_port_send</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="AnsPort.getInfo"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.ansPort.AnsPort.getInfo">[docs]</a>    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span></div></div>
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

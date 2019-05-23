@@ -1,0 +1,102 @@
+riaps package
+=============
+
+Subpackages
+-----------
+
+.. toctree::
+
+    riaps.consts
+    riaps.ctrl
+    riaps.deplo
+    riaps.discd
+    riaps.fabfile
+    riaps.gen
+    riaps.lang
+    riaps.proto
+    riaps.run
+    riaps.utils
+
+Submodules
+----------
+
+riaps.riaps\_actor module
+-------------------------
+
+.. automodule:: riaps.riaps_actor
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.riaps\_ctrl module
+------------------------
+
+.. automodule:: riaps.riaps_ctrl
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.riaps\_depll module
+-------------------------
+
+.. automodule:: riaps.riaps_depll
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.riaps\_deplo module
+-------------------------
+
+.. automodule:: riaps.riaps_deplo
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.riaps\_device module
+--------------------------
+
+.. automodule:: riaps.riaps_device
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.riaps\_disco module
+-------------------------
+
+.. automodule:: riaps.riaps_disco
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.riaps\_gen module
+-----------------------
+
+.. automodule:: riaps.riaps_gen
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.riaps\_gviz module
+------------------------
+
+.. automodule:: riaps.riaps_gviz
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.riaps\_lang module
+------------------------
+
+.. automodule:: riaps.riaps_lang
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: riaps
+    :members:
+    :undoc-members:
+    :show-inheritance:

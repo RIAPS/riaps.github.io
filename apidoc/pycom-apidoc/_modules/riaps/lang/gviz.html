@@ -1,0 +1,403 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.lang.gviz &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">riaps</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>riaps.lang.gviz</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for riaps.lang.gviz</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created on Mar 17, 2018</span>
+
+<span class="sd">@author: riaps</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">riaps.lang.lang</span> <span class="k">import</span> <span class="n">compileModel</span>
+<span class="kn">from</span> <span class="nn">riaps.lang.depl</span> <span class="k">import</span> <span class="n">DeploymentModel</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">pydot</span>
+
+<span class="n">ucount</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="unique"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.gviz.unique">[docs]</a><span class="k">def</span> <span class="nf">unique</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">ucount</span>
+    <span class="n">ucount</span> <span class="o">=</span> <span class="n">ucount</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ucount</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="visualize_messages"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.gviz.visualize_messages">[docs]</a><span class="k">def</span> <span class="nf">visualize_messages</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">appModel</span><span class="p">,</span><span class="n">msgMap</span><span class="p">,</span> <span class="n">msgMapUsed</span><span class="p">):</span>
+    <span class="n">msgs</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Subgraph</span><span class="p">(</span><span class="s1">&#39;msgs&#39;</span><span class="p">,</span><span class="n">rank</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">)</span> <span class="c1">#,rankdir=&#39;LR&#39;)</span>
+    <span class="n">msgList</span> <span class="o">=</span> <span class="n">appModel</span><span class="p">[</span><span class="s1">&#39;messages&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">msgList</span><span class="p">:</span>
+        <span class="n">msgName</span> <span class="o">=</span> <span class="n">msg</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="n">msgNode</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">msgName</span><span class="p">)</span>
+        <span class="n">msgNode</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;shape&#39;</span><span class="p">,</span><span class="s1">&#39;ellipse&#39;</span><span class="p">)</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">msgNode</span><span class="p">)</span>
+        <span class="n">msgMap</span><span class="p">[</span><span class="n">msgName</span><span class="p">]</span> <span class="o">=</span> <span class="n">msgNode</span>
+        <span class="n">msgMapUsed</span><span class="p">[</span><span class="n">msgName</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_subgraph</span><span class="p">(</span><span class="n">msgs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">msgs</span></div>
+
+<div class="viewcode-block" id="findMsgNode"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.gviz.findMsgNode">[docs]</a><span class="k">def</span> <span class="nf">findMsgNode</span><span class="p">(</span><span class="n">msgType</span><span class="p">,</span><span class="n">actorLocals</span><span class="p">,</span><span class="n">actorLocalMessageNodes</span><span class="p">,</span><span class="n">msgMap</span><span class="p">,</span><span class="n">msgMapUsed</span><span class="p">,</span><span class="n">msgGraph</span><span class="p">):</span>
+    <span class="n">msgNode</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">msgType</span> <span class="ow">in</span> <span class="n">actorLocals</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">msgType</span> <span class="ow">in</span> <span class="n">actorLocalMessageNodes</span><span class="p">:</span>
+            <span class="n">msgNode</span> <span class="o">=</span> <span class="n">actorLocalMessageNodes</span><span class="p">[</span><span class="n">msgType</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="n">msgNode</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">msgType</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">msgType</span><span class="p">)</span>
+            <span class="n">msgNode</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;shape&#39;</span><span class="p">,</span><span class="s1">&#39;ellipse&#39;</span><span class="p">)</span>
+            <span class="n">msgGraph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">msgNode</span><span class="p">)</span>
+            <span class="n">actorLocalMessageNodes</span><span class="p">[</span><span class="n">msgType</span><span class="p">]</span> <span class="o">=</span> <span class="n">msgNode</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msgNode</span> <span class="o">=</span> <span class="n">msgMap</span><span class="p">[</span><span class="n">msgType</span><span class="p">]</span>
+        <span class="n">msgMapUsed</span><span class="p">[</span><span class="n">msgType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">msgNode</span></div>
+
+<div class="viewcode-block" id="findMsgNodePair"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.gviz.findMsgNodePair">[docs]</a><span class="k">def</span> <span class="nf">findMsgNodePair</span><span class="p">(</span><span class="n">msgType</span><span class="p">,</span><span class="n">actorLocals</span><span class="p">,</span><span class="n">actorLocalMessageNodes</span><span class="p">,</span><span class="n">msgMap</span><span class="p">,</span>
+                    <span class="n">localMsgGraph</span><span class="p">,</span><span class="n">globalMsgGraph</span><span class="p">):</span>
+    <span class="n">msgNode</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">reqType</span><span class="p">,</span><span class="n">repType</span> <span class="o">=</span> <span class="n">msgType</span>
+    <span class="n">msgPair</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">reqType</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">repType</span><span class="p">)</span>
+    <span class="n">msgLabel</span> <span class="o">=</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">reqType</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; | &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">repType</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">reqType</span> <span class="ow">in</span> <span class="n">actorLocals</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">repType</span> <span class="ow">in</span> <span class="n">actorLocals</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">msgPair</span> <span class="ow">in</span> <span class="n">actorLocalMessageNodes</span><span class="p">:</span>
+            <span class="n">msgNode</span> <span class="o">=</span> <span class="n">actorLocalMessageNodes</span><span class="p">[</span><span class="n">msgPair</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msgNode</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">msgPair</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">msgLabel</span><span class="p">)</span>
+            <span class="n">msgNode</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;shape&#39;</span><span class="p">,</span><span class="s1">&#39;Mrecord&#39;</span><span class="p">)</span>
+            <span class="n">localMsgGraph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">msgNode</span><span class="p">)</span>
+            <span class="n">actorLocalMessageNodes</span><span class="p">[</span><span class="n">msgPair</span><span class="p">]</span> <span class="o">=</span> <span class="n">msgNode</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">msgPair</span> <span class="ow">in</span> <span class="n">msgMap</span><span class="p">:</span>
+            <span class="n">msgNode</span> <span class="o">=</span> <span class="n">msgMap</span><span class="p">[</span><span class="n">msgPair</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msgNode</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">msgPair</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">msgLabel</span><span class="p">)</span>
+            <span class="n">msgNode</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;shape&#39;</span><span class="p">,</span><span class="s1">&#39;Mrecord&#39;</span><span class="p">)</span>
+            <span class="n">msgMap</span><span class="p">[</span><span class="n">msgPair</span><span class="p">]</span> <span class="o">=</span> <span class="n">msgNode</span>
+            <span class="n">globalMsgGraph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">msgNode</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">msgNode</span></div>
+
+<div class="viewcode-block" id="visualize_actors"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.gviz.visualize_actors">[docs]</a><span class="k">def</span> <span class="nf">visualize_actors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">appModel</span><span class="p">,</span><span class="n">hostName</span><span class="p">,</span><span class="n">hostLabel</span><span class="p">,</span><span class="n">actors</span><span class="p">,</span><span class="n">msgMap</span><span class="p">,</span><span class="n">msgMapUsed</span><span class="p">,</span><span class="n">globalMsgSubgraph</span><span class="p">):</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Cluster</span><span class="p">(</span><span class="n">graph_name</span><span class="o">=</span><span class="n">hostName</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">hostLabel</span><span class="p">,</span> <span class="n">rankdir</span> <span class="o">=</span> <span class="s1">&#39;BT&#39;</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">)</span>
+    <span class="n">actorModels</span> <span class="o">=</span> <span class="n">appModel</span><span class="p">[</span><span class="s1">&#39;actors&#39;</span><span class="p">]</span>
+    <span class="n">componentModels</span> <span class="o">=</span> <span class="n">appModel</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">]</span>
+    <span class="n">deviceModels</span> <span class="o">=</span> <span class="n">appModel</span><span class="p">[</span><span class="s1">&#39;devices&#39;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">actor</span> <span class="ow">in</span> <span class="n">actors</span><span class="p">:</span>
+        <span class="n">actorName</span> <span class="o">=</span> <span class="n">actor</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+<span class="c1">#         actorNode = pydot.Node(unique(actorName),label=actorName)</span>
+<span class="c1">#         actorNode.set(&#39;shape&#39;,&#39;box3d&#39;)</span>
+        <span class="n">actorCluster</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Cluster</span><span class="p">(</span><span class="n">graph_name</span><span class="o">=</span><span class="n">unique</span><span class="p">(</span><span class="n">actorName</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">actorName</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;rounded&#39;</span><span class="p">)</span>
+        <span class="n">actorModel</span> <span class="o">=</span> <span class="n">actorModels</span><span class="p">[</span><span class="n">actorName</span><span class="p">]</span>
+        <span class="n">actorLocals</span> <span class="o">=</span> <span class="p">[]</span> 
+        <span class="k">for</span> <span class="n">localMessage</span> <span class="ow">in</span> <span class="n">actorModel</span><span class="p">[</span><span class="s1">&#39;locals&#39;</span><span class="p">]:</span>
+            <span class="n">actorLocals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">localMessage</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
+        <span class="n">actorLocalMessageNodes</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">actorLocals</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">localMsgSubgraph</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Subgraph</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">actorName</span> <span class="o">+</span> <span class="s1">&#39;_msgs&#39;</span><span class="p">),</span><span class="n">rank</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">)</span> <span class="c1">#,rankdir=&#39;LR&#39;)</span>
+            <span class="n">host</span><span class="o">.</span><span class="n">add_subgraph</span><span class="p">(</span><span class="n">localMsgSubgraph</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">localMsgSubgraph</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">instName</span><span class="p">,</span><span class="n">instObj</span> <span class="ow">in</span> <span class="n">actorModel</span><span class="p">[</span><span class="s1">&#39;instances&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">instType</span> <span class="o">=</span> <span class="n">instObj</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+            <span class="n">compName</span> <span class="o">=</span> <span class="n">instName</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">instType</span>
+            <span class="n">compLabel</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">instName</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">instType</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">&#39;</span>
+            <span class="n">compNode</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">compName</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">compLabel</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">)</span>
+            <span class="n">compNode</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;shape&#39;</span><span class="p">,</span><span class="s1">&#39;component&#39;</span><span class="p">)</span>
+            <span class="n">actorCluster</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">compNode</span><span class="p">)</span>
+            <span class="n">compType</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">instType</span> <span class="ow">in</span> <span class="n">componentModels</span><span class="p">:</span>
+                <span class="n">compType</span> <span class="o">=</span> <span class="n">componentModels</span><span class="p">[</span><span class="n">instType</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">instType</span> <span class="ow">in</span> <span class="n">deviceModels</span><span class="p">:</span>
+                <span class="n">compType</span> <span class="o">=</span> <span class="n">deviceModels</span><span class="p">[</span><span class="n">instType</span><span class="p">]</span>
+            <span class="n">compPorts</span> <span class="o">=</span> <span class="n">compType</span><span class="p">[</span><span class="s1">&#39;ports&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">_key</span><span class="p">,</span><span class="n">value</span> <span class="ow">in</span> <span class="n">compPorts</span><span class="p">[</span><span class="s1">&#39;pubs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">msgType</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+                <span class="n">msgNode</span> <span class="o">=</span> <span class="n">findMsgNode</span><span class="p">(</span><span class="n">msgType</span><span class="p">,</span><span class="n">actorLocals</span><span class="p">,</span><span class="n">actorLocalMessageNodes</span><span class="p">,</span>
+                                      <span class="n">msgMap</span><span class="p">,</span><span class="n">msgMapUsed</span><span class="p">,</span><span class="n">localMsgSubgraph</span><span class="p">)</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">pydot</span><span class="o">.</span><span class="n">Edge</span><span class="p">(</span><span class="n">compNode</span><span class="p">,</span><span class="n">msgNode</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">_key</span><span class="p">,</span><span class="n">value</span> <span class="ow">in</span> <span class="n">compPorts</span><span class="p">[</span><span class="s1">&#39;subs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">msgType</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+                <span class="n">msgNode</span> <span class="o">=</span> <span class="n">findMsgNode</span><span class="p">(</span><span class="n">msgType</span><span class="p">,</span><span class="n">actorLocals</span><span class="p">,</span><span class="n">actorLocalMessageNodes</span><span class="p">,</span>
+                                      <span class="n">msgMap</span><span class="p">,</span><span class="n">msgMapUsed</span><span class="p">,</span><span class="n">localMsgSubgraph</span><span class="p">)</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">pydot</span><span class="o">.</span><span class="n">Edge</span><span class="p">(</span><span class="n">msgNode</span><span class="p">,</span><span class="n">compNode</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">_key</span><span class="p">,</span><span class="n">value</span> <span class="ow">in</span> <span class="n">compPorts</span><span class="p">[</span><span class="s1">&#39;qrys&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">msgType</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;req_type&#39;</span><span class="p">],</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;rep_type&#39;</span><span class="p">])</span>
+                <span class="n">msgNode</span> <span class="o">=</span> <span class="n">findMsgNodePair</span><span class="p">(</span><span class="n">msgType</span><span class="p">,</span><span class="n">actorLocals</span><span class="p">,</span><span class="n">actorLocalMessageNodes</span><span class="p">,</span>
+                                          <span class="n">msgMap</span><span class="p">,</span><span class="n">localMsgSubgraph</span><span class="p">,</span><span class="n">globalMsgSubgraph</span><span class="p">)</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">pydot</span><span class="o">.</span><span class="n">Edge</span><span class="p">(</span><span class="n">compNode</span><span class="p">,</span><span class="n">msgNode</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">_key</span><span class="p">,</span><span class="n">value</span> <span class="ow">in</span> <span class="n">compPorts</span><span class="p">[</span><span class="s1">&#39;anss&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">msgType</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;req_type&#39;</span><span class="p">],</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;rep_type&#39;</span><span class="p">])</span>
+                <span class="n">msgNode</span> <span class="o">=</span> <span class="n">findMsgNodePair</span><span class="p">(</span><span class="n">msgType</span><span class="p">,</span><span class="n">actorLocals</span><span class="p">,</span><span class="n">actorLocalMessageNodes</span><span class="p">,</span>
+                                          <span class="n">msgMap</span><span class="p">,</span><span class="n">localMsgSubgraph</span><span class="p">,</span><span class="n">globalMsgSubgraph</span><span class="p">)</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">pydot</span><span class="o">.</span><span class="n">Edge</span><span class="p">(</span><span class="n">msgNode</span><span class="p">,</span><span class="n">compNode</span><span class="p">))</span>
+                
+            <span class="k">for</span> <span class="n">_key</span><span class="p">,</span><span class="n">value</span> <span class="ow">in</span> <span class="n">compPorts</span><span class="p">[</span><span class="s1">&#39;reqs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">msgType</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;req_type&#39;</span><span class="p">],</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;rep_type&#39;</span><span class="p">])</span>
+                <span class="n">msgNode</span> <span class="o">=</span> <span class="n">findMsgNodePair</span><span class="p">(</span><span class="n">msgType</span><span class="p">,</span><span class="n">actorLocals</span><span class="p">,</span><span class="n">actorLocalMessageNodes</span><span class="p">,</span>
+                                          <span class="n">msgMap</span><span class="p">,</span><span class="n">localMsgSubgraph</span><span class="p">,</span><span class="n">globalMsgSubgraph</span><span class="p">)</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">pydot</span><span class="o">.</span><span class="n">Edge</span><span class="p">(</span><span class="n">compNode</span><span class="p">,</span><span class="n">msgNode</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">_key</span><span class="p">,</span><span class="n">value</span> <span class="ow">in</span> <span class="n">compPorts</span><span class="p">[</span><span class="s1">&#39;reps&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">msgType</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;req_type&#39;</span><span class="p">],</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;rep_type&#39;</span><span class="p">])</span>
+                <span class="n">msgNode</span> <span class="o">=</span> <span class="n">findMsgNodePair</span><span class="p">(</span><span class="n">msgType</span><span class="p">,</span><span class="n">actorLocals</span><span class="p">,</span><span class="n">actorLocalMessageNodes</span><span class="p">,</span>
+                                          <span class="n">msgMap</span><span class="p">,</span><span class="n">localMsgSubgraph</span><span class="p">,</span><span class="n">globalMsgSubgraph</span><span class="p">)</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">pydot</span><span class="o">.</span><span class="n">Edge</span><span class="p">(</span><span class="n">msgNode</span><span class="p">,</span><span class="n">compNode</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">_key</span><span class="p">,</span><span class="n">value</span> <span class="ow">in</span> <span class="n">compPorts</span><span class="p">[</span><span class="s1">&#39;clts&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">msgType</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;req_type&#39;</span><span class="p">],</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;rep_type&#39;</span><span class="p">])</span>
+                <span class="n">msgNode</span> <span class="o">=</span> <span class="n">findMsgNodePair</span><span class="p">(</span><span class="n">msgType</span><span class="p">,</span><span class="n">actorLocals</span><span class="p">,</span><span class="n">actorLocalMessageNodes</span><span class="p">,</span>
+                                          <span class="n">msgMap</span><span class="p">,</span><span class="n">localMsgSubgraph</span><span class="p">,</span><span class="n">globalMsgSubgraph</span><span class="p">)</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">pydot</span><span class="o">.</span><span class="n">Edge</span><span class="p">(</span><span class="n">compNode</span><span class="p">,</span><span class="n">msgNode</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">_key</span><span class="p">,</span><span class="n">value</span> <span class="ow">in</span> <span class="n">compPorts</span><span class="p">[</span><span class="s1">&#39;srvs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">msgType</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;req_type&#39;</span><span class="p">],</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;rep_type&#39;</span><span class="p">])</span>
+                <span class="n">msgNode</span> <span class="o">=</span> <span class="n">findMsgNodePair</span><span class="p">(</span><span class="n">msgType</span><span class="p">,</span><span class="n">actorLocals</span><span class="p">,</span><span class="n">actorLocalMessageNodes</span><span class="p">,</span>
+                                          <span class="n">msgMap</span><span class="p">,</span><span class="n">localMsgSubgraph</span><span class="p">,</span><span class="n">globalMsgSubgraph</span><span class="p">)</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">pydot</span><span class="o">.</span><span class="n">Edge</span><span class="p">(</span><span class="n">msgNode</span><span class="p">,</span><span class="n">compNode</span><span class="p">))</span>
+                           
+        <span class="n">host</span><span class="o">.</span><span class="n">add_subgraph</span><span class="p">(</span><span class="n">actorCluster</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_subgraph</span><span class="p">(</span><span class="n">host</span><span class="p">)</span> </div>
+
+<div class="viewcode-block" id="cleanupMessages"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.gviz.cleanupMessages">[docs]</a><span class="k">def</span> <span class="nf">cleanupMessages</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">msgMap</span><span class="p">,</span><span class="n">msgMapUsed</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">msgName</span><span class="p">,</span><span class="n">msgUsed</span> <span class="ow">in</span> <span class="n">msgMapUsed</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">msgUsed</span><span class="p">:</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">del_node</span><span class="p">(</span><span class="n">msgMap</span><span class="p">[</span><span class="n">msgName</span><span class="p">])</span></div>
+            
+<div class="viewcode-block" id="visualize"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.gviz.visualize">[docs]</a><span class="k">def</span> <span class="nf">visualize</span><span class="p">(</span><span class="n">deplo</span><span class="p">,</span><span class="n">models</span><span class="p">):</span>
+    <span class="n">appName</span> <span class="o">=</span> <span class="n">deplo</span><span class="o">.</span><span class="n">getAppName</span><span class="p">()</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">pydot</span><span class="o">.</span><span class="n">Dot</span><span class="p">(</span><span class="n">appName</span><span class="p">,</span> <span class="n">graph_type</span><span class="o">=</span><span class="s1">&#39;digraph&#39;</span><span class="p">,</span> <span class="n">rankdir</span><span class="o">=</span><span class="s1">&#39;TB&#39;</span><span class="p">,</span> <span class="n">nodesep</span> <span class="o">=</span> <span class="s2">&quot;0.1&quot;</span><span class="p">,</span>
+                  <span class="n">ranksep</span><span class="o">=</span><span class="s2">&quot;1.5&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;l&#39;</span><span class="p">)</span> <span class="c1"># , splines=&#39;ortho&#39;)</span>
+    <span class="n">appModel</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="n">appName</span><span class="p">]</span>
+    
+    <span class="c1"># Build a host map with all the actors</span>
+    <span class="n">hostMap</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+    <span class="n">allActors</span> <span class="o">=</span> <span class="p">[</span> <span class="p">]</span>
+    <span class="k">for</span> <span class="n">depl</span> <span class="ow">in</span> <span class="n">deplo</span><span class="o">.</span><span class="n">deployments</span><span class="p">:</span>
+        <span class="n">hosts</span> <span class="o">=</span> <span class="n">depl</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span>
+        <span class="n">actors</span> <span class="o">=</span> <span class="n">depl</span><span class="p">[</span><span class="s1">&#39;actors&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">hosts</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="n">allActors</span> <span class="o">=</span> <span class="n">allActors</span> <span class="o">+</span> <span class="n">actors</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">host</span> <span class="ow">in</span> <span class="n">hosts</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">host</span> <span class="ow">in</span> <span class="n">hostMap</span><span class="p">:</span>
+                    <span class="n">hostMap</span><span class="p">[</span><span class="n">host</span><span class="p">]</span> <span class="o">=</span> <span class="n">hostMap</span><span class="p">[</span><span class="n">host</span><span class="p">]</span> <span class="o">+</span> <span class="n">actors</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">hostMap</span><span class="p">[</span><span class="n">host</span><span class="p">]</span> <span class="o">=</span> <span class="n">actors</span>
+    
+    <span class="n">msgMap</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+    <span class="n">msgMapUsed</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span> 
+    <span class="n">msgSubgraph</span> <span class="o">=</span> <span class="n">visualize_messages</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">appModel</span><span class="p">,</span> <span class="n">msgMap</span><span class="p">,</span> <span class="n">msgMapUsed</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">allActors</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="n">visualize_actors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">appModel</span><span class="p">,</span><span class="s1">&#39;all&#39;</span><span class="p">,</span><span class="s1">&#39;- all -&#39;</span><span class="p">,</span><span class="n">allActors</span><span class="p">,</span><span class="n">msgMap</span><span class="p">,</span><span class="n">msgMapUsed</span><span class="p">,</span><span class="n">msgSubgraph</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">hostName</span> <span class="ow">in</span> <span class="n">hostMap</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">visualize_actors</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">appModel</span><span class="p">,</span><span class="n">hostName</span><span class="p">,</span><span class="n">hostName</span><span class="p">,</span><span class="n">hostMap</span><span class="p">[</span><span class="n">hostName</span><span class="p">],</span><span class="n">msgMap</span><span class="p">,</span><span class="n">msgMapUsed</span><span class="p">,</span><span class="n">msgSubgraph</span><span class="p">)</span>
+    
+    <span class="n">cleanupMessages</span><span class="p">(</span><span class="n">msgSubgraph</span><span class="p">,</span><span class="n">msgMap</span><span class="p">,</span><span class="n">msgMapUsed</span><span class="p">)</span>
+    
+    <span class="n">G</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">appName</span> <span class="o">+</span> <span class="s1">&#39;.dot&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;raw&#39;</span><span class="p">,</span> <span class="n">prog</span><span class="o">=</span><span class="s1">&#39;dot&#39;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">appName</span></div>
+    
+
+<div class="viewcode-block" id="gviz"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.gviz.gviz">[docs]</a><span class="k">def</span> <span class="nf">gviz</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">deplo</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">compileModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">verbose</span><span class="p">,</span><span class="n">generate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">deplo</span> <span class="o">=</span> <span class="n">DeploymentModel</span><span class="p">(</span><span class="n">deplo</span><span class="p">,</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">visualize</span><span class="p">(</span><span class="n">deplo</span><span class="p">,</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span> 
+        <span class="n">errMsg</span> <span class="o">=</span> <span class="s2">&quot;Unexpected error </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span><span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">())</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="n">errMsg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+        
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../riaps.lang.html#riaps.lang.gviz.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;model file&quot;</span><span class="p">)</span>       <span class="c1"># Model file argument</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;deplo&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;deployment file&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span><span class="s2">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;print JSON on console&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">gviz</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">model</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">deplo</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

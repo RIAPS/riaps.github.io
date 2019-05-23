@@ -1,0 +1,482 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.fabfile package &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="riaps.gen package" href="riaps.gen.html" />
+    <link rel="prev" title="riaps.discd package" href="riaps.discd.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">riaps</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="riaps.html">riaps package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="riaps.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="riaps.consts.html">riaps.consts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.ctrl.html">riaps.ctrl package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.deplo.html">riaps.deplo package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.discd.html">riaps.discd package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">riaps.fabfile package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.gen.html">riaps.gen package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.lang.html">riaps.lang package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.proto.html">riaps.proto package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.run.html">riaps.run package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.utils.html">riaps.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_actor">riaps.riaps_actor module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_ctrl">riaps.riaps_ctrl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_depll">riaps.riaps_depll module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_deplo">riaps.riaps_deplo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_device">riaps.riaps_device module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_disco">riaps.riaps_disco module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_gen">riaps.riaps_gen module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_gviz">riaps.riaps_gviz module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_lang">riaps.riaps_lang module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">riaps</a> &raquo;</li>
+        
+          <li><a href="riaps.html">riaps package</a> &raquo;</li>
+        
+      <li>riaps.fabfile package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/riaps.fabfile.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="riaps-fabfile-package">
+<h1>riaps.fabfile package<a class="headerlink" href="#riaps-fabfile-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-riaps.fabfile.deplo">
+<span id="riaps-fabfile-deplo-module"></span><h2>riaps.fabfile.deplo module<a class="headerlink" href="#module-riaps.fabfile.deplo" title="Permalink to this headline">¶</a></h2>
+<dl class="attribute">
+<dt id="riaps.fabfile.deplo.start">
+<code class="descclassname">riaps.fabfile.deplo.</code><code class="descname">start</code><a class="reference internal" href="_modules/riaps/fabfile/deplo.html#start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.deplo.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.deplo.startSlow">
+<code class="descclassname">riaps.fabfile.deplo.</code><code class="descname">startSlow</code><a class="reference internal" href="_modules/riaps/fabfile/deplo.html#startSlow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.deplo.startSlow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start service serially with delay:[delay]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.deplo.startManual">
+<code class="descclassname">riaps.fabfile.deplo.</code><code class="descname">startManual</code><a class="reference internal" href="_modules/riaps/fabfile/deplo.html#startManual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.deplo.startManual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start deplo on hosts without service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.deplo.restart">
+<code class="descclassname">riaps.fabfile.deplo.</code><code class="descname">restart</code><a class="reference internal" href="_modules/riaps/fabfile/deplo.html#restart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.deplo.restart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restart service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.deplo.stop">
+<code class="descclassname">riaps.fabfile.deplo.</code><code class="descname">stop</code><a class="reference internal" href="_modules/riaps/fabfile/deplo.html#stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.deplo.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.deplo.enable">
+<code class="descclassname">riaps.fabfile.deplo.</code><code class="descname">enable</code><a class="reference internal" href="_modules/riaps/fabfile/deplo.html#enable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.deplo.enable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.deplo.disable">
+<code class="descclassname">riaps.fabfile.deplo.</code><code class="descname">disable</code><a class="reference internal" href="_modules/riaps/fabfile/deplo.html#disable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.deplo.disable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.deplo.status">
+<code class="descclassname">riaps.fabfile.deplo.</code><code class="descname">status</code><a class="reference internal" href="_modules/riaps/fabfile/deplo.html#status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.deplo.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get systemctl service status:[# of lines],[grep args]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.deplo.journal">
+<code class="descclassname">riaps.fabfile.deplo.</code><code class="descname">journal</code><a class="reference internal" href="_modules/riaps/fabfile/deplo.html#journal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.deplo.journal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get journalctl service log:[# of lines],[grep args]</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.fabfile.riaps">
+<span id="riaps-fabfile-riaps-module"></span><h2>riaps.fabfile.riaps module<a class="headerlink" href="#module-riaps.fabfile.riaps" title="Permalink to this headline">¶</a></h2>
+<dl class="attribute">
+<dt id="riaps.fabfile.riaps.update">
+<code class="descclassname">riaps.fabfile.riaps.</code><code class="descname">update</code><a class="reference internal" href="_modules/riaps/fabfile/riaps.html#update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.riaps.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update RIAPS packages from official release</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.riaps.updateBBBKey">
+<code class="descclassname">riaps.fabfile.riaps.</code><code class="descname">updateBBBKey</code><a class="reference internal" href="_modules/riaps/fabfile/riaps.html#updateBBBKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.riaps.updateBBBKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rekey the BBBs with new generated keys</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.riaps.updateAptKey">
+<code class="descclassname">riaps.fabfile.riaps.</code><code class="descname">updateAptKey</code><a class="reference internal" href="_modules/riaps/fabfile/riaps.html#updateAptKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.riaps.updateAptKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update RIAPS apt key</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.riaps.install">
+<code class="descclassname">riaps.fabfile.riaps.</code><code class="descname">install</code><a class="reference internal" href="_modules/riaps/fabfile/riaps.html#install"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.riaps.install" title="Permalink to this definition">¶</a></dt>
+<dd><p>Install RIAPS packages from development host</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.riaps.uninstall">
+<code class="descclassname">riaps.fabfile.riaps.</code><code class="descname">uninstall</code><a class="reference internal" href="_modules/riaps/fabfile/riaps.html#uninstall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.riaps.uninstall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uninstall all RIAPS packages</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.riaps.kill">
+<code class="descclassname">riaps.fabfile.riaps.</code><code class="descname">kill</code><a class="reference internal" href="_modules/riaps/fabfile/riaps.html#kill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.riaps.kill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kills any hanging processes. deplo.stop should be called first</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.riaps.updateConfig">
+<code class="descclassname">riaps.fabfile.riaps.</code><code class="descname">updateConfig</code><a class="reference internal" href="_modules/riaps/fabfile/riaps.html#updateConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.riaps.updateConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>“Place local riaps.conf on all remote hosts</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.riaps.updateLogConfig">
+<code class="descclassname">riaps.fabfile.riaps.</code><code class="descname">updateLogConfig</code><a class="reference internal" href="_modules/riaps/fabfile/riaps.html#updateLogConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.riaps.updateLogConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>“Places local riaps-log.conf on all remote hosts</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.riaps.getLogs">
+<code class="descclassname">riaps.fabfile.riaps.</code><code class="descname">getLogs</code><a class="reference internal" href="_modules/riaps/fabfile/riaps.html#getLogs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.riaps.getLogs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get deployment logs and save them to logs/</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.riaps.ctrl">
+<code class="descclassname">riaps.fabfile.riaps.</code><code class="descname">ctrl</code><a class="reference internal" href="_modules/riaps/fabfile/riaps.html#ctrl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.riaps.ctrl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launch RIAPS controller</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.riaps.configRouting">
+<code class="descclassname">riaps.fabfile.riaps.</code><code class="descname">configRouting</code><a class="reference internal" href="_modules/riaps/fabfile/riaps.html#configRouting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.riaps.configRouting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configure BBBs to use this host as their default gateway</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.fabfile.sys">
+<span id="riaps-fabfile-sys-module"></span><h2>riaps.fabfile.sys module<a class="headerlink" href="#module-riaps.fabfile.sys" title="Permalink to this headline">¶</a></h2>
+<dl class="attribute">
+<dt id="riaps.fabfile.sys.check">
+<code class="descclassname">riaps.fabfile.sys.</code><code class="descname">check</code><a class="reference internal" href="_modules/riaps/fabfile/sys.html#check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.sys.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that hosts are communicating</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.sys.shutdown">
+<code class="descclassname">riaps.fabfile.sys.</code><code class="descname">shutdown</code><a class="reference internal" href="_modules/riaps/fabfile/sys.html#shutdown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.sys.shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shutdown the hosts:[when],[why]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.sys.reboot">
+<code class="descclassname">riaps.fabfile.sys.</code><code class="descname">reboot</code><a class="reference internal" href="_modules/riaps/fabfile/sys.html#reboot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.sys.reboot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reboot the hosts</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.sys.clearJournal">
+<code class="descclassname">riaps.fabfile.sys.</code><code class="descname">clearJournal</code><a class="reference internal" href="_modules/riaps/fabfile/sys.html#clearJournal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.sys.clearJournal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear system journal</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.sys.run">
+<code class="descclassname">riaps.fabfile.sys.</code><code class="descname">run</code><a class="reference internal" href="_modules/riaps/fabfile/sys.html#run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.sys.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute command as user:&lt;command&gt;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.sys.sudo">
+<code class="descclassname">riaps.fabfile.sys.</code><code class="descname">sudo</code><a class="reference internal" href="_modules/riaps/fabfile/sys.html#sudo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.sys.sudo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a command as root:&lt;command&gt;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.sys.hosts">
+<code class="descclassname">riaps.fabfile.sys.</code><code class="descname">hosts</code><a class="reference internal" href="_modules/riaps/fabfile/sys.html#hosts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.sys.hosts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load hosts from file:&lt;file name&gt;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.sys.get">
+<code class="descclassname">riaps.fabfile.sys.</code><code class="descname">get</code><a class="reference internal" href="_modules/riaps/fabfile/sys.html#get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.sys.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download file from host:&lt;file name&gt;,[local path],[use sudo]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.sys.put">
+<code class="descclassname">riaps.fabfile.sys.</code><code class="descname">put</code><a class="reference internal" href="_modules/riaps/fabfile/sys.html#put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.sys.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload file to hosts:&lt;file name&gt;,[remote path],[use sudo]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.sys.arch">
+<code class="descclassname">riaps.fabfile.sys.</code><code class="descname">arch</code><a class="reference internal" href="_modules/riaps/fabfile/sys.html#arch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.sys.arch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect architecture of host</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.sys.setup_cython">
+<code class="descclassname">riaps.fabfile.sys.</code><code class="descname">setup_cython</code><a class="reference internal" href="_modules/riaps/fabfile/sys.html#setup_cython"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.sys.setup_cython" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fix ‘Debugger speedups using cython not found’ warnings</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.fabfile.time">
+<span id="riaps-fabfile-time-module"></span><h2>riaps.fabfile.time module<a class="headerlink" href="#module-riaps.fabfile.time" title="Permalink to this headline">¶</a></h2>
+<dl class="attribute">
+<dt id="riaps.fabfile.time.compare">
+<code class="descclassname">riaps.fabfile.time.</code><code class="descname">compare</code><a class="reference internal" href="_modules/riaps/fabfile/time.html#compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.time.compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare clocks on hosts</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.time.checkPTP">
+<code class="descclassname">riaps.fabfile.time.</code><code class="descname">checkPTP</code><a class="reference internal" href="_modules/riaps/fabfile/time.html#checkPTP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.time.checkPTP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check to see if ptp is running on control host</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.time.config">
+<code class="descclassname">riaps.fabfile.time.</code><code class="descname">config</code><a class="reference internal" href="_modules/riaps/fabfile/time.html#config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.time.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change timesync configuration:[mode]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.time.status">
+<code class="descclassname">riaps.fabfile.time.</code><code class="descname">status</code><a class="reference internal" href="_modules/riaps/fabfile/time.html#status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.time.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get timesync status</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.time.restart">
+<code class="descclassname">riaps.fabfile.time.</code><code class="descname">restart</code><a class="reference internal" href="_modules/riaps/fabfile/time.html#restart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.time.restart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restart timesync</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.time.date">
+<code class="descclassname">riaps.fabfile.time.</code><code class="descname">date</code><a class="reference internal" href="_modules/riaps/fabfile/time.html#date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.time.date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the system time</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="riaps.fabfile.time.rdate">
+<code class="descclassname">riaps.fabfile.time.</code><code class="descname">rdate</code><a class="reference internal" href="_modules/riaps/fabfile/time.html#rdate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.fabfile.time.rdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the system time</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-riaps.fabfile">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-riaps.fabfile" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="riaps.gen.html" class="btn btn-neutral float-right" title="riaps.gen package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="riaps.discd.html" class="btn btn-neutral float-left" title="riaps.discd package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

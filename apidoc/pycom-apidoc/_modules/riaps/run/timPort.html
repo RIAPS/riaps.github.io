@@ -1,0 +1,485 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.run.timPort &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">riaps</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>riaps.run.timPort</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for riaps.run.timPort</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created on Oct 10, 2016</span>
+
+<span class="sd">@author: riaps</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">.port</span> <span class="k">import</span> <span class="n">Port</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">zmq</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">from</span> <span class="nn">.exc</span> <span class="k">import</span> <span class="n">OperationError</span>
+
+<div class="viewcode-block" id="TimerThread"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimerThread">[docs]</a><span class="k">class</span> <span class="nc">TimerThread</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">parent</span><span class="p">):</span>
+        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">instName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">context</span>
+        <span class="k">if</span> <span class="n">parent</span><span class="o">.</span><span class="n">period</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">periodic</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">period</span> <span class="o">*</span> <span class="mf">0.001</span> <span class="c1"># millisec</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">periodic</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waiting</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waiting</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">started</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        
+<div class="viewcode-block" id="TimerThread.run"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimerThread.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">PAIR</span><span class="p">)</span> <span class="c1"># PUB</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;inproc://timer_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>     
+        <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>                  <span class="c1"># Wait for activation</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span> <span class="k">break</span>      <span class="c1"># If terminated, we exit</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">periodic</span><span class="p">:</span>                       <span class="c1"># Periodic timer</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>  
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span> <span class="k">break</span>        
+                <span class="bp">self</span><span class="o">.</span><span class="n">waiting</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">)</span>      <span class="c1"># Wait for period</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span> <span class="k">break</span>  
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">waiting</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>           <span class="c1"># Period was cancelled</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">waiting</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>            <span class="c1"># Start next period, but do not send tick</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>            <span class="c1"># Send tick (if active)</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">send_pyobj</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>                                   <span class="c1"># One shot timer</span>
+                <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>         <span class="c1"># Wait for start</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span> <span class="k">break</span>
+                    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">!=</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">&gt;</span> <span class="mf">0.0</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">waiting</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delay</span><span class="p">)</span>   <span class="c1"># Wait for the delay</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span> <span class="p">:</span> <span class="k">break</span>  
+                    <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>            <span class="c1"># We are not started anymore</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">waiting</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>       <span class="c1"># Delay was cancelled</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">waiting</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>        <span class="c1"># Enable next waiting, but  do not send tick</span>
+                        <span class="k">continue</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>        <span class="c1"># Send tick (if active)</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">send_pyobj</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">pass</span></div>
+            
+<div class="viewcode-block" id="TimerThread.activate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimerThread.activate">[docs]</a>    <span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Activate the timer port</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">periodic</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="TimerThread.deactivate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimerThread.deactivate">[docs]</a>    <span class="k">def</span> <span class="nf">deactivate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Deactivate the timer port</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="TimerThread.terminate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimerThread.terminate">[docs]</a>    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Terminate the timer </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>          <span class="c1"># Get out of wait if we are not started</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminated</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="TimerThread.getPeriod"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimerThread.getPeriod">[docs]</a>    <span class="k">def</span> <span class="nf">getPeriod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Read out the period</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span></div>
+    
+<div class="viewcode-block" id="TimerThread.setPeriod"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimerThread.setPeriod">[docs]</a>    <span class="k">def</span> <span class="nf">setPeriod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">_period</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Set the period - will be changed after the next firing.</span>
+<span class="sd">        Period must be positive</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">_period</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span> <span class="ow">and</span> <span class="n">_period</span> <span class="o">&gt;</span> <span class="mf">0.0</span>  
+        <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">_period</span></div>
+    
+<div class="viewcode-block" id="TimerThread.getDelay"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimerThread.getDelay">[docs]</a>    <span class="k">def</span> <span class="nf">getDelay</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the current delay (for sporadic timer)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">delay</span></div>
+    
+<div class="viewcode-block" id="TimerThread.setDelay"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimerThread.setDelay">[docs]</a>    <span class="k">def</span> <span class="nf">setDelay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">_delay</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the current delay (for sporadic timer)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">_delay</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span> <span class="ow">and</span> <span class="n">_delay</span> <span class="o">&gt;</span> <span class="mf">0.0</span>  
+        <span class="bp">self</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="n">_delay</span></div>
+        
+<div class="viewcode-block" id="TimerThread.launch"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimerThread.launch">[docs]</a>    <span class="k">def</span> <span class="nf">launch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Launch (start) the sporadic timer</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="TimerThread.running"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimerThread.running">[docs]</a>    <span class="k">def</span> <span class="nf">running</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns True if the timer is running</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="TimerThread.cancel"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimerThread.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Cancel the sporadic timer</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">waiting</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>      <span class="c1"># Go to wait mode if started</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>                    <span class="c1"># Ignore if not started</span></div>
+        
+<div class="viewcode-block" id="TimerThread.halt"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimerThread.halt">[docs]</a>    <span class="k">def</span> <span class="nf">halt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Halt the timer</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div></div>
+        
+<div class="viewcode-block" id="TimPort"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort">[docs]</a><span class="k">class</span> <span class="nc">TimPort</span><span class="p">(</span><span class="n">Port</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Timer port</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parentPart</span><span class="p">,</span> <span class="n">portName</span><span class="p">,</span> <span class="n">portSpec</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Constructor</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TimPort</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parentPart</span><span class="p">,</span><span class="n">portName</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">portSpec</span><span class="p">[</span><span class="s2">&quot;period&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deadline</span> <span class="o">=</span> <span class="n">portSpec</span><span class="p">[</span><span class="s2">&quot;deadline&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.001</span> <span class="c1"># msec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="TimPort.setup"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="n">TimerThread</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> </div>
+    
+<div class="viewcode-block" id="TimPort.setupSocket"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.setupSocket">[docs]</a>    <span class="k">def</span> <span class="nf">setupSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">owner</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setOwner</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">instName</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">name</span>       
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">PAIR</span><span class="p">)</span> <span class="c1"># SUB</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;inproc://timer_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">instName</span><span class="p">)</span>
+        <span class="c1"># self.socket.setsockopt_string(zmq.SUBSCRIBE, u&#39;&#39;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;tim&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span></div>
+
+<div class="viewcode-block" id="TimPort.reset"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="TimPort.activate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.activate">[docs]</a>    <span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Activate the timer port</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span></div>
+        
+<div class="viewcode-block" id="TimPort.deactivate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.deactivate">[docs]</a>    <span class="k">def</span> <span class="nf">deactivate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Deactivate the timer port</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">deactivate</span><span class="p">()</span></div>
+        
+<div class="viewcode-block" id="TimPort.terminate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.terminate">[docs]</a>    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Terminate the timer </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;terminating&quot;</span><span class="p">)</span>
+            <span class="c1"># self.thread.halt()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;terminated&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimPort.getPeriod"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.getPeriod">[docs]</a>    <span class="k">def</span> <span class="nf">getPeriod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Read the period of the periodic timer</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">getPeriod</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+    
+<div class="viewcode-block" id="TimPort.setPeriod"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.setPeriod">[docs]</a>    <span class="k">def</span> <span class="nf">setPeriod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">_period</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Set the period - will be changed after the next firing.</span>
+<span class="sd">        Period must be positive</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">_period</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span> <span class="ow">and</span> <span class="n">_period</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">OperationError</span><span class="p">(</span><span class="s2">&quot;invalid argument </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">_period</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">setPeriod</span><span class="p">(</span><span class="n">_period</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="TimPort.getDelay"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.getDelay">[docs]</a>    <span class="k">def</span> <span class="nf">getDelay</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the current delay (for sporadic timer)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span> 
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">getDelay</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+    
+<div class="viewcode-block" id="TimPort.setDelay"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.setDelay">[docs]</a>    <span class="k">def</span> <span class="nf">setDelay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">_delay</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the current delay (for sporadic timer)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">_delay</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span> <span class="ow">and</span> <span class="n">_delay</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">OperationError</span><span class="p">(</span><span class="s2">&quot;invalid argument </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">_delay</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">setDelay</span><span class="p">(</span><span class="n">_delay</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="TimPort.launch"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.launch">[docs]</a>    <span class="k">def</span> <span class="nf">launch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Launch (start) the sporadic timer</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">launch</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TimPort.running"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.running">[docs]</a>    <span class="k">def</span> <span class="nf">running</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns True if the timer is running</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">running</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="TimPort.cancel"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Cancel the sporadic timer</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="TimPort.halt"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.halt">[docs]</a>    <span class="k">def</span> <span class="nf">halt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Halt the timer</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">halt</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TimPort.getSocket"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.getSocket">[docs]</a>    <span class="k">def</span> <span class="nf">getSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span></div>
+    
+<div class="viewcode-block" id="TimPort.inSocket"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.inSocket">[docs]</a>    <span class="k">def</span> <span class="nf">inSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+    
+<div class="viewcode-block" id="TimPort.recv_pyobj"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.recv_pyobj">[docs]</a>    <span class="k">def</span> <span class="nf">recv_pyobj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">recv_pyobj</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+    
+<div class="viewcode-block" id="TimPort.send_pyobj"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.send_pyobj">[docs]</a>    <span class="k">def</span> <span class="nf">send_pyobj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">OperationError</span><span class="p">(</span><span class="s2">&quot;attempt to send through a timer port&quot;</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="TimPort.recv"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.recv">[docs]</a>    <span class="k">def</span> <span class="nf">recv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Receive time stamp (a float) as a byte array</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">recv_pyobj</span><span class="p">()</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+    
+<div class="viewcode-block" id="TimPort.send"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">OperationError</span><span class="p">(</span><span class="s2">&quot;attempt to send through a timer port&quot;</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="TimPort.getInfo"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.timPort.TimPort.getInfo">[docs]</a>    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span></div></div>
+    
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

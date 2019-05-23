@@ -1,0 +1,46 @@
+riaps.fabfile package
+=====================
+
+Submodules
+----------
+
+riaps.fabfile.deplo module
+--------------------------
+
+.. automodule:: riaps.fabfile.deplo
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.fabfile.riaps module
+--------------------------
+
+.. automodule:: riaps.fabfile.riaps
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.fabfile.sys module
+------------------------
+
+.. automodule:: riaps.fabfile.sys
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+riaps.fabfile.time module
+-------------------------
+
+.. automodule:: riaps.fabfile.time
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: riaps.fabfile
+    :members:
+    :undoc-members:
+    :show-inheritance:

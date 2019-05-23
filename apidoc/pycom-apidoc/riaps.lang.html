@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.lang package &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="riaps.proto package" href="riaps.proto.html" />
+    <link rel="prev" title="riaps.gen.target.python package" href="riaps.gen.target.python.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">riaps</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="riaps.html">riaps package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="riaps.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="riaps.consts.html">riaps.consts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.ctrl.html">riaps.ctrl package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.deplo.html">riaps.deplo package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.discd.html">riaps.discd package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.fabfile.html">riaps.fabfile package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.gen.html">riaps.gen package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">riaps.lang package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.proto.html">riaps.proto package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.run.html">riaps.run package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.utils.html">riaps.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_actor">riaps.riaps_actor module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_ctrl">riaps.riaps_ctrl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_depll">riaps.riaps_depll module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_deplo">riaps.riaps_deplo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_device">riaps.riaps_device module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_disco">riaps.riaps_disco module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_gen">riaps.riaps_gen module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_gviz">riaps.riaps_gviz module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps.riaps_lang">riaps.riaps_lang module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="riaps.html#module-riaps">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">riaps</a> &raquo;</li>
+        
+          <li><a href="riaps.html">riaps package</a> &raquo;</li>
+        
+      <li>riaps.lang package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/riaps.lang.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="riaps-lang-package">
+<h1>riaps.lang package<a class="headerlink" href="#riaps-lang-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-riaps.lang.depl">
+<span id="riaps-lang-depl-module"></span><h2>riaps.lang.depl module<a class="headerlink" href="#module-riaps.lang.depl" title="Permalink to this headline">¶</a></h2>
+<p>Deployment language processor
+Created on Nov 7, 2016</p>
+<p>&#64;author: riaps</p>
+<dl class="exception">
+<dt id="riaps.lang.depl.DeplError">
+<em class="property">exception </em><code class="descclassname">riaps.lang.depl.</code><code class="descname">DeplError</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/depl.html#DeplError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.depl.DeplError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="riaps.lang.depl.DeploymentModel">
+<em class="property">class </em><code class="descclassname">riaps.lang.depl.</code><code class="descname">DeploymentModel</code><span class="sig-paren">(</span><em>fileName</em>, <em>debug=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/depl.html#DeploymentModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.depl.DeploymentModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Deployment model loader/parser</p>
+<dl class="method">
+<dt id="riaps.lang.depl.DeploymentModel.getActuals">
+<code class="descname">getActuals</code><span class="sig-paren">(</span><em>actuals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/depl.html#DeploymentModel.getActuals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.depl.DeploymentModel.getActuals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.depl.DeploymentModel.getAppName">
+<code class="descname">getAppName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/depl.html#DeploymentModel.getAppName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.depl.DeploymentModel.getAppName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.depl.DeploymentModel.getDeployments">
+<code class="descname">getDeployments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/depl.html#DeploymentModel.getDeployments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.depl.DeploymentModel.getDeployments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.depl.DeploymentModel.getNetwork">
+<code class="descname">getNetwork</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/depl.html#DeploymentModel.getNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.depl.DeploymentModel.getNetwork" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.depl.main">
+<code class="descclassname">riaps.lang.depl.</code><code class="descname">main</code><span class="sig-paren">(</span><em>standalone=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/depl.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.depl.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-riaps.lang.gviz">
+<span id="riaps-lang-gviz-module"></span><h2>riaps.lang.gviz module<a class="headerlink" href="#module-riaps.lang.gviz" title="Permalink to this headline">¶</a></h2>
+<p>Created on Mar 17, 2018</p>
+<p>&#64;author: riaps</p>
+<dl class="function">
+<dt id="riaps.lang.gviz.cleanupMessages">
+<code class="descclassname">riaps.lang.gviz.</code><code class="descname">cleanupMessages</code><span class="sig-paren">(</span><em>G</em>, <em>msgMap</em>, <em>msgMapUsed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/gviz.html#cleanupMessages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.gviz.cleanupMessages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.gviz.findMsgNode">
+<code class="descclassname">riaps.lang.gviz.</code><code class="descname">findMsgNode</code><span class="sig-paren">(</span><em>msgType</em>, <em>actorLocals</em>, <em>actorLocalMessageNodes</em>, <em>msgMap</em>, <em>msgMapUsed</em>, <em>msgGraph</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/gviz.html#findMsgNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.gviz.findMsgNode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.gviz.findMsgNodePair">
+<code class="descclassname">riaps.lang.gviz.</code><code class="descname">findMsgNodePair</code><span class="sig-paren">(</span><em>msgType</em>, <em>actorLocals</em>, <em>actorLocalMessageNodes</em>, <em>msgMap</em>, <em>localMsgGraph</em>, <em>globalMsgGraph</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/gviz.html#findMsgNodePair"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.gviz.findMsgNodePair" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.gviz.gviz">
+<code class="descclassname">riaps.lang.gviz.</code><code class="descname">gviz</code><span class="sig-paren">(</span><em>model</em>, <em>deplo</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/gviz.html#gviz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.gviz.gviz" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.gviz.main">
+<code class="descclassname">riaps.lang.gviz.</code><code class="descname">main</code><span class="sig-paren">(</span><em>debug=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/gviz.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.gviz.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.gviz.unique">
+<code class="descclassname">riaps.lang.gviz.</code><code class="descname">unique</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/gviz.html#unique"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.gviz.unique" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.gviz.visualize">
+<code class="descclassname">riaps.lang.gviz.</code><code class="descname">visualize</code><span class="sig-paren">(</span><em>deplo</em>, <em>models</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/gviz.html#visualize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.gviz.visualize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.gviz.visualize_actors">
+<code class="descclassname">riaps.lang.gviz.</code><code class="descname">visualize_actors</code><span class="sig-paren">(</span><em>G</em>, <em>appModel</em>, <em>hostName</em>, <em>hostLabel</em>, <em>actors</em>, <em>msgMap</em>, <em>msgMapUsed</em>, <em>globalMsgSubgraph</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/gviz.html#visualize_actors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.gviz.visualize_actors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.gviz.visualize_messages">
+<code class="descclassname">riaps.lang.gviz.</code><code class="descname">visualize_messages</code><span class="sig-paren">(</span><em>G</em>, <em>appModel</em>, <em>msgMap</em>, <em>msgMapUsed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/gviz.html#visualize_messages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.gviz.visualize_messages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-riaps.lang.lang">
+<span id="riaps-lang-lang-module"></span><h2>riaps.lang.lang module<a class="headerlink" href="#module-riaps.lang.lang" title="Permalink to this headline">¶</a></h2>
+<p>DSL for RIAPS software models
+Created on Oct 9, 2016
+Uses the textX parser
+&#64;author: riaps</p>
+<dl class="exception">
+<dt id="riaps.lang.lang.LangError">
+<em class="property">exception </em><code class="descclassname">riaps.lang.lang.</code><code class="descname">LangError</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#LangError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.LangError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="riaps.lang.lang.RiapsModel2JSON">
+<em class="property">class </em><code class="descclassname">riaps.lang.lang.</code><code class="descname">RiapsModel2JSON</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class to convert the RIAPS model (constructed by the parser) into a data structure
+suitable for generating JSON output.Dependent on the DSL syntax and the object structure
+built by the parser.</p>
+<dl class="staticmethod">
+<dt id="riaps.lang.lang.RiapsModel2JSON.convertMem">
+<em class="property">static </em><code class="descname">convertMem</code><span class="sig-paren">(</span><em>value</em>, <em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.convertMem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.convertMem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert all memory size values to kilobytes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.convertRate">
+<code class="descname">convertRate</code><span class="sig-paren">(</span><em>value</em>, <em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.convertRate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.convertRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert all rate values to bytes/sec</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="riaps.lang.lang.RiapsModel2JSON.convertTime">
+<em class="property">static </em><code class="descname">convertTime</code><span class="sig-paren">(</span><em>value</em>, <em>unit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.convertTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.convertTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert all time values to msec</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getActors">
+<code class="descname">getActors</code><span class="sig-paren">(</span><em>actors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getActors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getActors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getActuals">
+<code class="descname">getActuals</code><span class="sig-paren">(</span><em>actuals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getActuals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getActuals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getComponents">
+<code class="descname">getComponents</code><span class="sig-paren">(</span><em>components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getComponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getComponents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getFormals">
+<code class="descname">getFormals</code><span class="sig-paren">(</span><em>formals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getFormals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getFormals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getGroups">
+<code class="descname">getGroups</code><span class="sig-paren">(</span><em>groups</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getGroups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getGroups" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getIOComponents">
+<code class="descname">getIOComponents</code><span class="sig-paren">(</span><em>components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getIOComponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getIOComponents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getImpl">
+<code class="descname">getImpl</code><span class="sig-paren">(</span><em>comp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getImpl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getImpl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getInstances">
+<code class="descname">getInstances</code><span class="sig-paren">(</span><em>instances</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getInstances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getInstances" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getInternals">
+<code class="descname">getInternals</code><span class="sig-paren">(</span><em>internals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getInternals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getInternals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getLibraries">
+<code class="descname">getLibraries</code><span class="sig-paren">(</span><em>libraries</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getLibraries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getLibraries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getLocals">
+<code class="descname">getLocals</code><span class="sig-paren">(</span><em>locals_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getLocals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getLocals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getMessages">
+<code class="descname">getMessages</code><span class="sig-paren">(</span><em>messages</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getMessages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getMessages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getPorts">
+<code class="descname">getPorts</code><span class="sig-paren">(</span><em>ports</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getPorts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getPorts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="riaps.lang.lang.RiapsModel2JSON.getUsage">
+<code class="descname">getUsage</code><span class="sig-paren">(</span><em>usage</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#RiapsModel2JSON.getUsage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.RiapsModel2JSON.getUsage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.lang.compileModel">
+<code class="descclassname">riaps.lang.lang.</code><code class="descname">compileModel</code><span class="sig-paren">(</span><em>modelFileName</em>, <em>verbose=False</em>, <em>debug=False</em>, <em>generate=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#compileModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.compileModel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.lang.insport_obj_processor">
+<code class="descclassname">riaps.lang.lang.</code><code class="descname">insport_obj_processor</code><span class="sig-paren">(</span><em>insport</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#insport_obj_processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.insport_obj_processor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.lang.instance_obj_processor">
+<code class="descclassname">riaps.lang.lang.</code><code class="descname">instance_obj_processor</code><span class="sig-paren">(</span><em>instance</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#instance_obj_processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.instance_obj_processor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.lang.main">
+<code class="descclassname">riaps.lang.lang.</code><code class="descname">main</code><span class="sig-paren">(</span><em>debug=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.lang.op_port_obj_processor">
+<code class="descclassname">riaps.lang.lang.</code><code class="descname">op_port_obj_processor</code><span class="sig-paren">(</span><em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#op_port_obj_processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.op_port_obj_processor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.lang.timed_port_obj_processor">
+<code class="descclassname">riaps.lang.lang.</code><code class="descname">timed_port_obj_processor</code><span class="sig-paren">(</span><em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#timed_port_obj_processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.timed_port_obj_processor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="riaps.lang.lang.timport_obj_processor">
+<code class="descclassname">riaps.lang.lang.</code><code class="descname">timport_obj_processor</code><span class="sig-paren">(</span><em>timport</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/riaps/lang/lang.html#timport_obj_processor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#riaps.lang.lang.timport_obj_processor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-riaps.lang">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-riaps.lang" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="riaps.proto.html" class="btn btn-neutral float-right" title="riaps.proto package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="riaps.gen.target.python.html" class="btn btn-neutral float-left" title="riaps.gen.target.python package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

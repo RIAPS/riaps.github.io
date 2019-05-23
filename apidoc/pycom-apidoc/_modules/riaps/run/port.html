@@ -1,0 +1,591 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.run.port &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">riaps</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>riaps.run.port</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for riaps.run.port</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;Base class for all Port objects</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">zmq</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">from</span> <span class="nn">.exc</span> <span class="k">import</span> <span class="n">SetupError</span><span class="p">,</span><span class="n">OperationError</span><span class="p">,</span><span class="n">PortError</span>
+<span class="kn">from</span> <span class="nn">riaps.utils.config</span> <span class="k">import</span> <span class="n">Config</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">cPickle</span>
+    <span class="n">pickle</span> <span class="o">=</span> <span class="n">cPickle</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">cPickle</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="kn">import</span> <span class="nn">pickle</span>
+    
+<div class="viewcode-block" id="Port"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port">[docs]</a><span class="k">class</span> <span class="nc">Port</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Base class for all Port objects. </span>
+<span class="sd">    </span>
+<span class="sd">        Port objects are used by a component to communicate with other components,</span>
+<span class="sd">        in the same process, on the same host, or on the same network. Ports</span>
+<span class="sd">        encapsulate low-level communication objects (zeromq sockets).</span>
+<span class="sd">        </span>
+<span class="sd">        :param parentPart: the Part object that owns this port.</span>
+<span class="sd">        :type parentPart: Part</span>
+<span class="sd">        </span>
+<span class="sd">        :param portName: the name of the port (from the model)</span>
+<span class="sd">        :type portName: str</span>
+<span class="sd"> </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parentPart</span><span class="p">,</span> <span class="n">portName</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Constructor</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parentPart</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">portName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">parentPart</span><span class="o">.</span><span class="n">appContext</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">public_key</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">private_key</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">parentPart</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">public_key</span><span class="p">,</span><span class="n">parentPart</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">private_key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">security</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">public_key</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">private_key</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">localIface</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">globalIface</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sendTimeout</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">SEND_TIMEOUT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recvTimeout</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">RECV_TIMEOUT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sendTime</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recvTime</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isTimed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deadline</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="kc">None</span>
+    
+<div class="viewcode-block" id="Port.setupCurve"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.setupCurve">[docs]</a>    <span class="k">def</span> <span class="nf">setupCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">server</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">security</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">curve_secretkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">private_key</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">curve_publickey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">public_key</span>
+            <span class="k">if</span> <span class="n">server</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">curve_server</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">curve_serverkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">public_key</span></div>
+                
+<div class="viewcode-block" id="Port.setupSocket"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.setupSocket">[docs]</a>    <span class="k">def</span> <span class="nf">setupSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">owner</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Setup the socket. Abstract, subclasses must implement this method.</span>
+<span class="sd">        </span>
+<span class="sd">        :param owner: The Component the port belongs to. This operation must be called from the component thread only. </span>
+<span class="sd">        :type owner: Component</span>
+<span class="sd">         </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Port.setOwner"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.setOwner">[docs]</a>    <span class="k">def</span> <span class="nf">setOwner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">owner</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Save owner thread into a data member.</span>
+<span class="sd">        </span>
+<span class="sd">        :param owner: The ComponentThread the port is handled in.</span>
+<span class="sd">        :type owner: ComponentThread</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">owner</span></div>
+    
+<div class="viewcode-block" id="Port.reset"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Reset the port object. Subclasses can override this method.</span>
+<span class="sd">        </span>
+<span class="sd">        Reset is to be used when a send or receive operation fails and the port needs to be re-initialized.  </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Port.getDeadline"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.getDeadline">[docs]</a>    <span class="k">def</span> <span class="nf">getDeadline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Return the deadline parameter associated with the port&#39;s operation</span>
+<span class="sd">        </span>
+<span class="sd">        :return: Deadline for the operation associated with the port, in seconds. </span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">deadline</span></div>
+
+<div class="viewcode-block" id="Port.getLocalIface"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.getLocalIface">[docs]</a>    <span class="k">def</span> <span class="nf">getLocalIface</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Return the IP address of the local network interface (typically 127.0.0.1)</span>
+<span class="sd">        </span>
+<span class="sd">        The operation retrieves the result from the parent actor and caches it.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: Local IP address of the form xxx.xxx.xxx.xxx</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">localIface</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">localIface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">getLocalIface</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">localIface</span></div>
+    
+<div class="viewcode-block" id="Port.getGlobalIface"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.getGlobalIface">[docs]</a>    <span class="k">def</span> <span class="nf">getGlobalIface</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Return the IP address of the global network interface</span>
+<span class="sd">        </span>
+<span class="sd">        The operation retrieves the result from the parent actor and caches it.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: Global IP address of the form xxx.xxx.xxx.xxx</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">globalIface</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">globalIface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">getGlobalIface</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">globalIface</span></div>
+    
+<div class="viewcode-block" id="Port.setup"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Initialize the port object (after construction but before socket creation).</span>
+<span class="sd">        Abstract, subclasses must implement this method.</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">raise</span> <span class="n">SetupError</span></div>
+            
+<div class="viewcode-block" id="Port.getSocket"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.getSocket">[docs]</a>    <span class="k">def</span> <span class="nf">getSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Return the socket(s) used by the port object. </span>
+<span class="sd">        Abstract, subclasses must implement this method.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: a low-level socket</span>
+<span class="sd">        :rtype: zmq.Socket</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">raise</span> <span class="n">SetupError</span></div>
+    
+<div class="viewcode-block" id="Port.inSocket"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.inSocket">[docs]</a>    <span class="k">def</span> <span class="nf">inSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Return True if the socket can be used for input. </span>
+<span class="sd">        Abstract, subclasses must implement this method.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: logical value indicating whether the socket is for input.</span>
+<span class="sd">        :type: bool</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">raise</span> <span class="n">SetupError</span></div>
+    
+<div class="viewcode-block" id="Port.getInfo"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.getInfo">[docs]</a>    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Retrieve configuration information about the port.</span>
+<span class="sd">        Abstract, subclasses must implement this method.</span>
+<span class="sd">        </span>
+<span class="sd">        :returns: a tuple containing the name of the port&#39;s type: </span>
+<span class="sd">                req,rep,clt,srv,qry,ans,pub,sub,ins,or tim; the name of the</span>
+<span class="sd">                port object, and the name of the message type the port handles.  </span>
+<span class="sd">        :rtype: a tuple (portType, portName, msgType)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Port.update"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Update the socket with information from the discovery service.</span>
+<span class="sd">        Abstract, subclasses must implement this method.</span>
+<span class="sd">        </span>
+<span class="sd">        Called when the discovery service notifies the actor about a new</span>
+<span class="sd">        service provide (e.g. server, publisher, etc.) the port needs to</span>
+<span class="sd">        connect to. The operation will perform the connection.</span>
+<span class="sd">        </span>
+<span class="sd">        :param host: IP address of the service provider</span>
+<span class="sd">        :type host: str </span>
+<span class="sd">        :param port: port number of the service provider</span>
+<span class="sd">        :type port: int</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">raise</span> <span class="n">OperationError</span><span class="p">(</span><span class="s2">&quot;abstract op&quot;</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Port.activate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.activate">[docs]</a>    <span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Activate the port object.</span>
+<span class="sd">        Subclasses can override this method.</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Port.deactivate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.deactivate">[docs]</a>    <span class="k">def</span> <span class="nf">deactivate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Deactivate the port object.</span>
+<span class="sd">        Subclasses can override this method.</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Port.terminate"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.terminate">[docs]</a>    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Terminate all activities of the port.</span>
+<span class="sd">        Subclasses can override this method.</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Port.send_pyobj"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.send_pyobj">[docs]</a>    <span class="k">def</span> <span class="nf">send_pyobj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Send a Python data object (if possible) out through the port. </span>
+<span class="sd">        Abstract, subclasses must implement this method.</span>
+<span class="sd">        </span>
+<span class="sd">        The object is serialized using pickle and sent. Messages sent using</span>
+<span class="sd">        this method are received using the ``recv_pyobj`` method.</span>
+<span class="sd">         </span>
+<span class="sd">        :param msg: the message to be sent. </span>
+<span class="sd">        :type msg: any Python data type</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Port.recv_pyobj"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.recv_pyobj">[docs]</a>    <span class="k">def</span> <span class="nf">recv_pyobj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Receive a Python data object (if possible) through the port. </span>
+<span class="sd">        Abstract, subclasses must implement this method.</span>
+<span class="sd">        </span>
+<span class="sd">        The raw message received is deserialized using pickle and returned.</span>
+<span class="sd">        Messages received this way had to be sent using the ``send_pyobj`` method.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: a Python data object</span>
+<span class="sd">        :type: any Python data type</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Port.send_capnp"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.send_capnp">[docs]</a>    <span class="k">def</span> <span class="nf">send_capnp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;DEPRECATED. Send a byte array (if possible) out through the port</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;send_capnp: deprecated, use send() instead&quot;</span><span class="p">)</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Port.recv_capnp"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.recv_capnp">[docs]</a>    <span class="k">def</span> <span class="nf">recv_capnp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;DEPRECATED. Receive an object (if possible) through the port</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;recv_capnp: deprecated, use recv() instead&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+    
+<div class="viewcode-block" id="Port.send"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Send a byte array (if possible) out through the port.</span>
+
+<span class="sd">        Used for sending a message that has been serialized into a bytearray</span>
+<span class="sd">        previously.</span>
+<span class="sd">        </span>
+<span class="sd">        :param msg: the message packed into a bytearray</span>
+<span class="sd">        :rtype: bytearray</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span></div>
+    
+<div class="viewcode-block" id="Port.recv"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.recv">[docs]</a>    <span class="k">def</span> <span class="nf">recv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Receive a byte array (if possible) through the port</span>
+<span class="sd">        </span>
+<span class="sd">        Used for receiving a message that is subsequently deserialized.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: a message packed into a bytearray.</span>
+<span class="sd">        :rtype: bytearray</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+    
+<div class="viewcode-block" id="Port.port_send"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.port_send">[docs]</a>    <span class="k">def</span> <span class="nf">port_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">,</span><span class="n">is_pyobj</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Lowest level message sending operation.</span>
+<span class="sd">        Subclasses can override this operation.</span>
+<span class="sd">        </span>
+<span class="sd">        If the message is to be sent as a Python object, it is pickled; otherwise</span>
+<span class="sd">        it is assumed to be a bytearray. The message is packed into a frame, and, </span>
+<span class="sd">        if the port is &#39;timed&#39; a current timestamp is appended as another frame.</span>
+<span class="sd">        The message is sent as a multi-part message. </span>
+<span class="sd">        </span>
+<span class="sd">        :param msg: message to be sent</span>
+<span class="sd">        :type msg: either a bytearray or any Python data object  </span>
+<span class="sd">        :param is_pyobj: flag to indicate if the message is a Python object.</span>
+<span class="sd">        :type is_pyobj: bool </span>
+<span class="sd">        </span>
+<span class="sd">        :return: True</span>
+<span class="sd">        </span>
+<span class="sd">        :except: Throws a ``PortError`` exception when the underlying network operation fails.  </span>
+<span class="sd">           </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_pyobj</span><span class="p">:</span>
+                <span class="n">sendMsg</span> <span class="o">=</span> <span class="p">[</span><span class="n">zmq</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">msg</span><span class="p">))]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sendMsg</span> <span class="o">=</span> <span class="p">[</span><span class="n">zmq</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">msg</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isTimed</span><span class="p">:</span>
+                <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">now</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
+                <span class="n">nowFrame</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>
+                <span class="n">sendMsg</span> <span class="o">+=</span> <span class="p">[</span><span class="n">nowFrame</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">send_multipart</span><span class="p">(</span><span class="n">sendMsg</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">zmq</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">ZMQError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PortError</span><span class="p">(</span><span class="s2">&quot;send error (</span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+    
+<div class="viewcode-block" id="Port.port_recv"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.port_recv">[docs]</a>    <span class="k">def</span> <span class="nf">port_recv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">is_pyobj</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Lowest level message receiving operation.</span>
+<span class="sd">        Subclasses can override this operation.</span>
+<span class="sd">        </span>
+<span class="sd">        The message is received as a multi-part message.If the receiving port is</span>
+<span class="sd">        timed, the current timestamp is saved as the time of message reception.</span>
+<span class="sd">        If the message is to be received as a Python object, it is unpickled,</span>
+<span class="sd">        otherwise the message is returned as is (as a bytearray).</span>
+<span class="sd">        If the message included a timestamp, it is retrieved and saved as the</span>
+<span class="sd">        time of message sending.         </span>
+<span class="sd"> </span>
+<span class="sd">        :param is_pyobj: flag to indicate if the expected message is a Python data object.</span>
+<span class="sd">        :type is_pyobj: bool </span>
+<span class="sd">        </span>
+<span class="sd">        :return: the message received </span>
+<span class="sd">        :type msg: either a bytearray or any Python data object </span>
+<span class="sd">        </span>
+<span class="sd">        :except: Throws a ``PortError`` exception when the underlying network operation fails.  </span>
+<span class="sd">           </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">msgFrames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">recv_multipart</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">zmq</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">ZMQError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PortError</span><span class="p">(</span><span class="s2">&quot;recv error (</span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isTimed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recvTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">is_pyobj</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">msgFrames</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">msgFrames</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msgFrames</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">rawMsg</span> <span class="o">=</span> <span class="n">msgFrames</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">rawTuple</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">rawMsg</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sendTime</span> <span class="o">=</span> <span class="n">rawTuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+        
+<div class="viewcode-block" id="Port.get_recvTime"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.get_recvTime">[docs]</a>    <span class="k">def</span> <span class="nf">get_recvTime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Return the timestamp taken at the last receive operation.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: time of the last message receive operation</span>
+<span class="sd">        :rtype: float </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">recvTime</span></div>
+    
+<div class="viewcode-block" id="Port.get_sendTime"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.get_sendTime">[docs]</a>    <span class="k">def</span> <span class="nf">get_sendTime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Return the timestamp of the sending time of the last message receive.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: time when the last message received was sent  </span>
+<span class="sd">        :rtype: float </span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sendTime</span></div>
+    
+<div class="viewcode-block" id="Port.get_recv_timeout"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.get_recv_timeout">[docs]</a>    <span class="k">def</span> <span class="nf">get_recv_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Retrieve the receive timeout parameter for the port.</span>
+<span class="sd">        </span>
+<span class="sd">        Receive timeout determines how long a receive operation will block before</span>
+<span class="sd">        throwing a PortError.EAGAIN exception. None means infinite timeout. </span>
+<span class="sd">        </span>
+<span class="sd">        :return: None (if no timeout is set) or the timeout value in seconds. </span>
+<span class="sd">        :rtype: None or float</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">rto</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recvTimeout</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">recvTimeout</span> <span class="o">*</span> <span class="mf">0.001</span>
+        <span class="k">return</span> <span class="n">rto</span></div>
+        
+<div class="viewcode-block" id="Port.get_send_timeout"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.get_send_timeout">[docs]</a>    <span class="k">def</span> <span class="nf">get_send_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Retrieve the send timeout parameter for the port.</span>
+<span class="sd">        </span>
+<span class="sd">        Send timeout determines how long a send operation will block before</span>
+<span class="sd">        throwing a PortError.EAGAIN exception. None means infinite timeout.</span>
+<span class="sd">         </span>
+<span class="sd">        :return: None (if no timeout is set) or the timeout value in seconds. </span>
+<span class="sd">        :rtype: None or float</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">sto</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sendTimeout</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">sendTimeout</span> <span class="o">*</span> <span class="mf">0.001</span>
+        <span class="k">return</span> <span class="n">sto</span></div>
+    
+<div class="viewcode-block" id="Port.set_recv_timeout"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.set_recv_timeout">[docs]</a>    <span class="k">def</span> <span class="nf">set_recv_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">rto</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Set the receive timeout for the port.</span>
+<span class="sd">        </span>
+<span class="sd">        Receive timeout determines how long a receive operation will block before</span>
+<span class="sd">        throwing a PortError.EAGAIN exception. None means infinite timeout. </span>
+<span class="sd">        </span>
+<span class="sd">        :param rto: None (if no timeout is set) or the timeout value in seconds. </span>
+<span class="sd">        :type rto: None or float</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">assert</span> <span class="n">rto</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">rto</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span> <span class="ow">and</span> <span class="n">rto</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recvTimeout</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">rto</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">rto</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">RCVTIMEO</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">recvTimeout</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Port.set_send_timeout"><a class="viewcode-back" href="../../../riaps.run.html#riaps.run.port.Port.set_send_timeout">[docs]</a>    <span class="k">def</span> <span class="nf">set_send_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sto</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Set the send timeout for the port.</span>
+<span class="sd">        </span>
+<span class="sd">        Send timeout determines how long a send operation will block before</span>
+<span class="sd">        throwing a PortError.EAGAIN exception. None means infinite timeout. </span>
+<span class="sd">        </span>
+<span class="sd">        :param sto: None (if no timeout is set) or the timeout value in seconds. </span>
+<span class="sd">        :type sto: None or float</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">assert</span> <span class="n">sto</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">sto</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span> <span class="ow">and</span> <span class="n">sto</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sendTimeout</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">sto</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">sto</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">SNDTIMEO</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">sendTimeout</span><span class="p">)</span></div></div>
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

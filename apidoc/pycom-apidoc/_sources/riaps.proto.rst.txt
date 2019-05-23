@@ -1,0 +1,10 @@
+riaps.proto package
+===================
+
+Module contents
+---------------
+
+.. automodule:: riaps.proto
+    :members:
+    :undoc-members:
+    :show-inheritance:

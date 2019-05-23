@@ -1,0 +1,548 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps package &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="riaps.consts package" href="riaps.consts.html" />
+    <link rel="prev" title="riaps" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">riaps</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">riaps package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="riaps.consts.html">riaps.consts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.ctrl.html">riaps.ctrl package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.deplo.html">riaps.deplo package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.discd.html">riaps.discd package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.fabfile.html">riaps.fabfile package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.gen.html">riaps.gen package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.lang.html">riaps.lang package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.proto.html">riaps.proto package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.run.html">riaps.run package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.utils.html">riaps.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-riaps.riaps_actor">riaps.riaps_actor module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-riaps.riaps_ctrl">riaps.riaps_ctrl module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-riaps.riaps_depll">riaps.riaps_depll module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-riaps.riaps_deplo">riaps.riaps_deplo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-riaps.riaps_device">riaps.riaps_device module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-riaps.riaps_disco">riaps.riaps_disco module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-riaps.riaps_gen">riaps.riaps_gen module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-riaps.riaps_gviz">riaps.riaps_gviz module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-riaps.riaps_lang">riaps.riaps_lang module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-riaps">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">riaps</a> &raquo;</li>
+        
+      <li>riaps package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/riaps.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="riaps-package">
+<h1>riaps package<a class="headerlink" href="#riaps-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="riaps.consts.html">riaps.consts package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="riaps.consts.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.consts.html#module-riaps.consts.const">riaps.consts.const module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.consts.html#module-riaps.consts.defs">riaps.consts.defs module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.consts.html#module-riaps.consts">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="riaps.ctrl.html">riaps.ctrl package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="riaps.ctrl.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.ctrl.html#module-riaps.ctrl.ctrl">riaps.ctrl.ctrl module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.ctrl.html#module-riaps.ctrl.ctrlcli">riaps.ctrl.ctrlcli module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.ctrl.html#module-riaps.ctrl.ctrlgui">riaps.ctrl.ctrlgui module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.ctrl.html#module-riaps.ctrl.ctrlsrv">riaps.ctrl.ctrlsrv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.ctrl.html#module-riaps.ctrl.main">riaps.ctrl.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.ctrl.html#module-riaps.ctrl.origin">riaps.ctrl.origin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.ctrl.html#module-riaps.ctrl">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="riaps.deplo.html">riaps.deplo package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="riaps.deplo.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.deplo.html#module-riaps.deplo.appdb">riaps.deplo.appdb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.deplo.html#module-riaps.deplo.cpumon">riaps.deplo.cpumon module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.deplo.html#module-riaps.deplo.deplo">riaps.deplo.deplo module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.deplo.html#module-riaps.deplo.depm">riaps.deplo.depm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.deplo.html#module-riaps.deplo.fm">riaps.deplo.fm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.deplo.html#module-riaps.deplo.main">riaps.deplo.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.deplo.html#module-riaps.deplo.memmon">riaps.deplo.memmon module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.deplo.html#module-riaps.deplo.netmon">riaps.deplo.netmon module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.deplo.html#module-riaps.deplo.procm">riaps.deplo.procm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.deplo.html#module-riaps.deplo.resm">riaps.deplo.resm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.deplo.html#module-riaps.deplo.spcmon">riaps.deplo.spcmon module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.deplo.html#module-riaps.deplo">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="riaps.discd.html">riaps.discd package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="riaps.discd.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.discd.html#module-riaps.discd.dbase">riaps.discd.dbase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.discd.html#module-riaps.discd.discs">riaps.discd.discs module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.discd.html#module-riaps.discd.main">riaps.discd.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.discd.html#module-riaps.discd">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="riaps.fabfile.html">riaps.fabfile package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="riaps.fabfile.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.fabfile.html#module-riaps.fabfile.deplo">riaps.fabfile.deplo module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.fabfile.html#module-riaps.fabfile.riaps">riaps.fabfile.riaps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.fabfile.html#module-riaps.fabfile.sys">riaps.fabfile.sys module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.fabfile.html#module-riaps.fabfile.time">riaps.fabfile.time module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.fabfile.html#module-riaps.fabfile">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="riaps.gen.html">riaps.gen package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="riaps.gen.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="riaps.gen.target.html">riaps.gen.target package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="riaps.gen.target.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="riaps.gen.target.capnp.html">riaps.gen.target.capnp package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.capnp.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.capnp.html#module-riaps.gen.target.capnp.capnpfilters">riaps.gen.target.capnp.capnpfilters module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.capnp.html#module-riaps.gen.target.capnp.capnpgen">riaps.gen.target.capnp.capnpgen module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.capnp.html#module-riaps.gen.target.capnp.sync_capnp">riaps.gen.target.capnp.sync_capnp module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.capnp.html#module-riaps.gen.target.capnp">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="riaps.gen.target.cpp.html">riaps.gen.target.cpp package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.cpp.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.cpp.html#module-riaps.gen.target.cpp.ccfilters">riaps.gen.target.cpp.ccfilters module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.cpp.html#module-riaps.gen.target.cpp.cppgen">riaps.gen.target.cpp.cppgen module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.cpp.html#module-riaps.gen.target.cpp.sync_cpp">riaps.gen.target.cpp.sync_cpp module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.cpp.html#module-riaps.gen.target.cpp">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="riaps.gen.target.python.html">riaps.gen.target.python package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.python.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.python.html#module-riaps.gen.target.python.pygen">riaps.gen.target.python.pygen module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.python.html#module-riaps.gen.target.python.sync_python">riaps.gen.target.python.sync_python module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="riaps.gen.target.python.html#module-riaps.gen.target.python">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="riaps.gen.target.html#module-riaps.gen.target">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.gen.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.gen.html#module-riaps.gen.gen">riaps.gen.gen module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.gen.html#module-riaps.gen">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="riaps.lang.html">riaps.lang package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="riaps.lang.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.lang.html#module-riaps.lang.depl">riaps.lang.depl module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.lang.html#module-riaps.lang.gviz">riaps.lang.gviz module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.lang.html#module-riaps.lang.lang">riaps.lang.lang module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.lang.html#module-riaps.lang">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="riaps.proto.html">riaps.proto package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="riaps.proto.html#module-riaps.proto">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="riaps.run.html">riaps.run package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.actor">riaps.run.actor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.ansPort">riaps.run.ansPort module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.cltPort">riaps.run.cltPort module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.comp">riaps.run.comp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.deplc">riaps.run.deplc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.device">riaps.run.device module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.disco">riaps.run.disco module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.dmain">riaps.run.dmain module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.exc">riaps.run.exc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.insPort">riaps.run.insPort module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.main">riaps.run.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.part">riaps.run.part module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.peripheral">riaps.run.peripheral module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.port">riaps.run.port module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.pubPort">riaps.run.pubPort module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.qryPort">riaps.run.qryPort module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.repPort">riaps.run.repPort module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.reqPort">riaps.run.reqPort module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.srvPort">riaps.run.srvPort module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.subPort">riaps.run.subPort module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run.timPort">riaps.run.timPort module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.run.html#module-riaps.run">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="riaps.utils.html">riaps.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="riaps.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.utils.html#module-riaps.utils.appdesc">riaps.utils.appdesc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.utils.html#module-riaps.utils.config">riaps.utils.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.utils.html#module-riaps.utils.ifaces">riaps.utils.ifaces module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.utils.html#module-riaps.utils.names">riaps.utils.names module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.utils.html#module-riaps.utils.origin">riaps.utils.origin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.utils.html#module-riaps.utils.singleton">riaps.utils.singleton module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.utils.html#module-riaps.utils.spdlog_setup">riaps.utils.spdlog_setup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.utils.html#module-riaps.utils.sudo">riaps.utils.sudo module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.utils.html#module-riaps.utils.trace">riaps.utils.trace module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riaps.utils.html#module-riaps.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-riaps.riaps_actor">
+<span id="riaps-riaps-actor-module"></span><h2>riaps.riaps_actor module<a class="headerlink" href="#module-riaps.riaps_actor" title="Permalink to this headline">¶</a></h2>
+<p>Top level wrapper script for a RIAPS actor.</p>
+<p>Example:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">riaps_actor</span> <span class="pre">app</span> <span class="pre">model</span> <span class="pre">actor</span> <span class="pre">args</span> <span class="pre">[-t|--trace</span> <span class="pre">host:port]</span></code></p>
+</div></blockquote>
+<p>The actor is started and terminated by the deployment manager.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">app</span></code>:    Name of application</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model</span></code>:  Name of .json model file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">actor</span></code>:  Name of actor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">args</span></code>:   List of arguments of the form: -keyword value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-t|--trace</span> <span class="pre">host:port</span></code> : starts the actor in trace mode; it connects to a debug server running on the host and listening on the port.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="module-riaps.riaps_ctrl">
+<span id="riaps-riaps-ctrl-module"></span><h2>riaps.riaps_ctrl module<a class="headerlink" href="#module-riaps.riaps_ctrl" title="Permalink to this headline">¶</a></h2>
+<p>Top level script to start the controller</p>
+<p>Example:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">riaps_ctrl</span> <span class="pre">[-p|--port</span> <span class="pre">port]</span> <span class="pre">[-t|--trace</span> <span class="pre">host:port]</span> <span class="pre">[script|-]</span></code></p>
+</div></blockquote>
+<p>The controller runs on the control node and it manages all target nodes.
+Unless the <code class="docutils literal notranslate"><span class="pre">port</span></code> argument is specified, the rpyc_registry service must 
+be running somewhere on the subnet accessible to both the controller and 
+the target nodes.</p>
+<dl class="simple">
+<dt>Arguments</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-p|--port</span> <span class="pre">port</span></code> : port number to access the controller from the target nodes (if no registry)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-t|--trace</span> <span class="pre">host:port</span></code> : starts the controller in trace mode; it connects to a debug server running on the host and listening on the port.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">script|-</span></code> : executes the script file via the built-in command line interpreter. - reads from standard input.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="module-riaps.riaps_depll">
+<span id="riaps-riaps-depll-module"></span><h2>riaps.riaps_depll module<a class="headerlink" href="#module-riaps.riaps_depll" title="Permalink to this headline">¶</a></h2>
+<p>Top-level script of the deployment language processor</p>
+<dl class="simple">
+<dt>Example:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">riaps_depll</span> <span class="pre">model</span> <span class="pre">[-v</span> <span class="pre">|</span> <span class="pre">--verbose]</span> <span class="pre">[-g|--generate]</span></code></p>
+</dd>
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">model</span></code>: name of model file to be processed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-v|--verbose</span></code>: print the resulting JSON file on the console</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-g</span></code>: generate a JSON file</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="module-riaps.riaps_deplo">
+<span id="riaps-riaps-deplo-module"></span><h2>riaps.riaps_deplo module<a class="headerlink" href="#module-riaps.riaps_deplo" title="Permalink to this headline">¶</a></h2>
+<p>Top level script to start the deployment manager (deplo)</p>
+<p>Example:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">riaps_deplo</span> <span class="pre">[-p|--port</span> <span class="pre">port]</span> <span class="pre">[-n|--node</span> <span class="pre">node]</span> <span class="pre">[-t|--trace</span> <span class="pre">host:port]</span></code></p>
+</div></blockquote>
+<p>The deployment manager runs on each target nodes and it manages all actors and services.
+Unless the <code class="docutils literal notranslate"><span class="pre">port</span></code> and <code class="docutils literal notranslate"><span class="pre">node</span></code> are specified, the rpyc_registry service must 
+be running somewhere on the subnet accessible to both the controller and 
+the target nodes.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-p|--port</span> <span class="pre">port</span></code>: Port number for the controller node (if no registry)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-n|--node</span> <span class="pre">node</span></code>: Host name for the controller node (if no registry)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-t|--trace</span> <span class="pre">host:port</span></code> : starts the manager in trace mode; it connects to a debug server running on the host and listening on the port.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="module-riaps.riaps_device">
+<span id="riaps-riaps-device-module"></span><h2>riaps.riaps_device module<a class="headerlink" href="#module-riaps.riaps_device" title="Permalink to this headline">¶</a></h2>
+<p>Top level script to start a device actor</p>
+<p>Example:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">riaps_device</span> <span class="pre">app</span> <span class="pre">model</span> <span class="pre">actor</span> <span class="pre">args</span> <span class="pre">[-t|--trace</span> <span class="pre">host:port]</span></code></p>
+</div></blockquote>
+<p>The device actor is started and terminated by the deployment manager.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">app</span></code>:    Name of application</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model</span></code>:  Name of .json model file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">actor</span></code>:  Name of actor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">args</span></code>:   List of arguments of the form: -keyword value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-t|--trace</span> <span class="pre">host:port</span></code> : starts the device actor in trace mode; it connects to a debug server running on the host and listening on the port.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="module-riaps.riaps_disco">
+<span id="riaps-riaps-disco-module"></span><h2>riaps.riaps_disco module<a class="headerlink" href="#module-riaps.riaps_disco" title="Permalink to this headline">¶</a></h2>
+<p>Top-level script to start the discovery service (disco)</p>
+<dl class="simple">
+<dt>Example:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">riaps_disco</span> <span class="pre">[-d|--database</span> <span class="pre">location]</span> <span class="pre">[-t|--trace</span> <span class="pre">host:port]</span></code></p>
+</dd>
+</dl>
+<p>The discovery service is started by the deployment manager.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-d|--database</span> <span class="pre">location</span></code> : location of the discovery service database. Fore the redis-based implementation this is of the form <code class="docutils literal notranslate"><span class="pre">host:port</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-t|--trace</span> <span class="pre">host:port</span></code> : starts the service in trace mode; it connects to a debug server running on the host and listening on the port.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="module-riaps.riaps_gen">
+<span id="riaps-riaps-gen-module"></span><h2>riaps.riaps_gen module<a class="headerlink" href="#module-riaps.riaps_gen" title="Permalink to this headline">¶</a></h2>
+<p>Top-level script to start the language processor (‘lang’) for app models
+Created on Nov 15, 2018</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><p>-m,   –model        : Full path of the model.json.
+-o,   –output       : Output directory. Default is the directory of the model file.
+-cpp, –cpp          : List of components to be generated in C++.
+-py,  –python       : List of components to be generated in Python.
+-s,   –ser          : Message serializer (‘capnp’ or ‘pickle’).
+-w,   –overwrite    : Overwrite existing code (no sync).</p>
+</dd>
+</dl>
+<p>&#64;author: riaps</p>
+</div>
+<div class="section" id="module-riaps.riaps_gviz">
+<span id="riaps-riaps-gviz-module"></span><h2>riaps.riaps_gviz module<a class="headerlink" href="#module-riaps.riaps_gviz" title="Permalink to this headline">¶</a></h2>
+<p>Top-level script to start the graphic visualization processor (‘gviz’)</p>
+<p>Example:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">riaps_gviz</span> <span class="pre">model</span> <span class="pre">deplo</span> <span class="pre">[-v|--verbose]</span></code></p>
+</div></blockquote>
+<p>The script generates a .dot file shown the allocation of components and actors 
+to target nodes based on the model and deployment files.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><p>-<code class="docutils literal notranslate"><span class="pre">model</span></code>: name of application model file to be processed
+- <code class="docutils literal notranslate"><span class="pre">deplo</span></code>: name of deployment model file to be processed
+- <code class="docutils literal notranslate"><span class="pre">-v|--verbose</span></code>: prints the JSON produced from the deployment model</p>
+</dd>
+<dt>Output:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">appname.dot</span></code> : graphviz-style dot file for the name application (based on the model)</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="module-riaps.riaps_lang">
+<span id="riaps-riaps-lang-module"></span><h2>riaps.riaps_lang module<a class="headerlink" href="#module-riaps.riaps_lang" title="Permalink to this headline">¶</a></h2>
+<p>Top-level script to start the language processor (‘lang’) for app models</p>
+<dl class="simple">
+<dt>Example:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">riaps_lang</span> <span class="pre">model</span> <span class="pre">[-v|--verbose]</span></code></p>
+</dd>
+</dl>
+<p>The program analyzes the model file and generates a JSON file.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">model</span></code> : Name of model file to be processed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-v|--verbose</span></code>: print the resulting JSON file on the console</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="module-riaps">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-riaps" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="riaps.consts.html" class="btn btn-neutral float-right" title="riaps.consts package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="riaps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

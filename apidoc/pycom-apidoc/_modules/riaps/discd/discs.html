@@ -1,0 +1,538 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>riaps.discd.discs &mdash; RIAPS  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> RIAPS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">riaps</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RIAPS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>riaps.discd.discs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for riaps.discd.discs</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Discovery Service main class</span>
+<span class="sd">Created on Oct 19, 2016</span>
+
+<span class="sd">@author: riaps</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">zmq</span>
+<span class="kn">import</span> <span class="nn">capnp</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">.dbase</span> <span class="k">import</span> <span class="n">DiscoDbase</span>
+<span class="kn">from</span> <span class="nn">riaps.proto</span> <span class="k">import</span> <span class="n">disco_capnp</span>
+<span class="kn">from</span> <span class="nn">riaps.consts.defs</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">riaps.utils.ifaces</span> <span class="k">import</span> <span class="n">getNetworkInterfaces</span>
+<span class="kn">from</span> <span class="nn">riaps.run.exc</span> <span class="k">import</span> <span class="n">DatabaseError</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<div class="viewcode-block" id="DiscoService"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService">[docs]</a><span class="k">class</span> <span class="nc">DiscoService</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Discovery service main class. </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dbase</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setupIfaces</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suffix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">macAddress</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbase</span> <span class="o">=</span> <span class="n">DiscoDbase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">,</span><span class="n">dbase</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">registrations</span> <span class="o">=</span> <span class="p">{}</span>
+    
+<div class="viewcode-block" id="DiscoService.setupIfaces"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.setupIfaces">[docs]</a>    <span class="k">def</span> <span class="nf">setupIfaces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Find the IP addresses of the (host-)local and network(-global) interfaces</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="p">(</span><span class="n">globalIPs</span><span class="p">,</span><span class="n">globalMACs</span><span class="p">,</span><span class="n">_globalNames</span><span class="p">,</span><span class="n">_localIP</span><span class="p">)</span> <span class="o">=</span> <span class="n">getNetworkInterfaces</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">globalIPs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">globalMACs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error: no active network interface&quot;</span><span class="p">)</span>
+            <span class="k">raise</span>
+        <span class="n">globalIP</span> <span class="o">=</span> <span class="n">globalIPs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">globalMAC</span> <span class="o">=</span> <span class="n">globalMACs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hostAddress</span> <span class="o">=</span> <span class="n">globalIP</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">macAddress</span> <span class="o">=</span> <span class="n">globalMAC</span></div>
+        
+<div class="viewcode-block" id="DiscoService.start"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;starting&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">REP</span><span class="p">)</span>              <span class="c1"># Create main server socket for client requests</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="n">const</span><span class="o">.</span><span class="n">discoEndpoint</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">endpoint</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbase</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>                                      <span class="c1"># Start database</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.0001</span><span class="p">)</span>                                      <span class="c1"># Yield to database so that it can start</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">poller</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Poller</span><span class="p">()</span>                              <span class="c1"># Set up initial poller (only on the main server socket)  </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poller</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span><span class="n">zmq</span><span class="o">.</span><span class="n">POLLIN</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clients</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>  
+        <span class="bp">self</span><span class="o">.</span><span class="n">clientUpdates</span> <span class="o">=</span> <span class="p">[]</span></div>
+    
+<div class="viewcode-block" id="DiscoService.run"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Main loop of the discovery service</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;running&quot;</span><span class="p">)</span>
+        <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clientUpdates</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">sockets</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">poller</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="mf">1000.0</span><span class="p">))</span>            <span class="c1"># Poll client messages, with timeout 1 sec</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sockets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>                               <span class="c1"># If no message but timeout expired, </span>
+                <span class="k">try</span><span class="p">:</span> 
+                    <span class="bp">self</span><span class="o">.</span><span class="n">clientUpdates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbase</span><span class="o">.</span><span class="n">fetchUpdates</span><span class="p">()</span>  <span class="c1"># then fetch updates from database</span>
+                <span class="k">except</span> <span class="n">DatabaseError</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;reconnecting database&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">dbase</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.0001</span><span class="p">)</span>     
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="ow">in</span> <span class="n">sockets</span><span class="p">:</span>                        <span class="c1"># else check if there is a server request, handle it </span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">del</span> <span class="n">sockets</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clientUpdates</span><span class="p">:</span>                     <span class="c1"># Handle all client updates (received from the </span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">handleNote</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>                           <span class="c1"># database and generated by the server requests</span></div>
+
+<div class="viewcode-block" id="DiscoService.appActorName"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.appActorName">[docs]</a>    <span class="k">def</span> <span class="nf">appActorName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">appName</span><span class="p">,</span><span class="n">appActorName</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">appName</span><span class="p">),</span><span class="nb">repr</span><span class="p">(</span><span class="n">appActorName</span><span class="p">))</span> </div>
+    
+<div class="viewcode-block" id="DiscoService.setupClient"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.setupClient">[docs]</a>    <span class="k">def</span> <span class="nf">setupClient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">appName</span><span class="p">,</span><span class="n">appVersion</span><span class="p">,</span><span class="n">appActorName</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set up a new client of the discovery service. The client actors are to register with</span>
+<span class="sd">        the service using the &#39;server&#39; (REQ/REP) socket. The service will then create a dedicated</span>
+<span class="sd">        (PAIR) socket for the client to connect to. This socket is used as a private communication</span>
+<span class="sd">        channel between a specific client actor and the service.   </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">sock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">PAIR</span><span class="p">)</span>
+        <span class="n">port</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">bind_to_random_port</span><span class="p">(</span><span class="s1">&#39;tcp://127.0.0.1&#39;</span><span class="p">)</span>
+        <span class="n">clientKeyBase</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">appName</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">appActorName</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">clientKeyBase</span><span class="p">]</span> <span class="o">=</span> <span class="n">sock</span>
+        <span class="n">clientKeyLocal</span> <span class="o">=</span> <span class="n">clientKeyBase</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">macAddress</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">clientKeyLocal</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="n">clientKeyGlobal</span> <span class="o">=</span> <span class="n">clientKeyBase</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostAddress</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">clientKeyGlobal</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">registrations</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">appActorName</span><span class="p">(</span><span class="n">appName</span><span class="p">,</span><span class="n">appActorName</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">port</span></div>
+    
+<div class="viewcode-block" id="DiscoService.unsetupClient"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.unsetupClient">[docs]</a>    <span class="k">def</span> <span class="nf">unsetupClient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">appName</span><span class="p">,</span><span class="n">appVersion</span><span class="p">,</span><span class="n">appActorName</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Remove a client   </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">clientKeyBase</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">appName</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">appActorName</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+        <span class="k">if</span> <span class="n">clientKeyBase</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>                                   <span class="c1"># Client has already been removed</span>
+        <span class="n">sock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">clientKeyBase</span><span class="p">]</span>
+        <span class="n">clientKeyLocal</span> <span class="o">=</span> <span class="n">clientKeyBase</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">macAddress</span>
+        <span class="k">assert</span> <span class="n">clientKeyLocal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span>
+        <span class="n">port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">clientKeyLocal</span><span class="p">]</span>
+        <span class="n">clientKeyGlobal</span> <span class="o">=</span> <span class="n">clientKeyBase</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostAddress</span>
+        <span class="k">assert</span> <span class="n">clientKeyGlobal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span>
+        <span class="c1"># port = self.clients[clientKeyGlobal]         # Must have the same value</span>
+        <span class="n">sock</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s1">&#39;tcp://127.0.0.1:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">port</span><span class="p">))</span>
+        <span class="c1"># Remove all services registered by this client  </span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">clientKeyBase</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">clientKeyLocal</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">clientKeyGlobal</span><span class="p">]</span>
+        <span class="n">actorKey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">appActorName</span><span class="p">(</span><span class="n">appName</span><span class="p">,</span><span class="n">appActorName</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">actorKey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">registrations</span>
+        <span class="n">registration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">registrations</span><span class="p">[</span><span class="n">actorKey</span><span class="p">]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">registration</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dbase</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">registrations</span><span class="p">[</span><span class="n">actorKey</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">port</span></div>
+    
+<div class="viewcode-block" id="DiscoService.handleActorReg"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.handleActorReg">[docs]</a>    <span class="k">def</span> <span class="nf">handleActorReg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handle the registration of an application actor with the service. </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">actReg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">actorReg</span>
+        <span class="n">appName</span> <span class="o">=</span> <span class="n">actReg</span><span class="o">.</span><span class="n">appName</span>
+        <span class="n">appVersion</span> <span class="o">=</span> <span class="n">actReg</span><span class="o">.</span><span class="n">version</span>   
+        <span class="n">appActorName</span> <span class="o">=</span> <span class="n">actReg</span><span class="o">.</span><span class="n">actorName</span>
+         
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;handleActorReg: </span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">appName</span><span class="p">,</span> <span class="n">appVersion</span><span class="p">,</span> <span class="n">appActorName</span><span class="p">))</span>
+        
+        <span class="n">clientPort</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setupClient</span><span class="p">(</span><span class="n">appName</span><span class="p">,</span><span class="n">appVersion</span><span class="p">,</span><span class="n">appActorName</span><span class="p">)</span>
+        
+        <span class="c1"># OptionL store in db host.app.vers.actr -&gt; port? </span>
+        
+        <span class="n">rsp</span> <span class="o">=</span> <span class="n">disco_capnp</span><span class="o">.</span><span class="n">DiscoRep</span><span class="o">.</span><span class="n">new_message</span><span class="p">()</span>
+        <span class="n">rspMessage</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">&#39;actorReg&#39;</span><span class="p">)</span>
+        <span class="n">rspMessage</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;ok&quot;</span>
+        <span class="n">rspMessage</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">clientPort</span>
+        <span class="n">rspBytes</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">rspBytes</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="DiscoService.handleActorUnreg"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.handleActorUnreg">[docs]</a>    <span class="k">def</span> <span class="nf">handleActorUnreg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handle the unregistration of an application actor with the service. </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">actReg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">actorUnreg</span>
+        <span class="n">appName</span> <span class="o">=</span> <span class="n">actReg</span><span class="o">.</span><span class="n">appName</span>
+        <span class="n">appVersion</span> <span class="o">=</span> <span class="n">actReg</span><span class="o">.</span><span class="n">version</span>   
+        <span class="n">appActorName</span> <span class="o">=</span> <span class="n">actReg</span><span class="o">.</span><span class="n">actorName</span>
+         
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;handleActorUnreg: </span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">appName</span><span class="p">,</span> <span class="n">appVersion</span><span class="p">,</span> <span class="n">appActorName</span><span class="p">))</span>
+        
+        <span class="n">clientPort</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsetupClient</span><span class="p">(</span><span class="n">appName</span><span class="p">,</span><span class="n">appVersion</span><span class="p">,</span><span class="n">appActorName</span><span class="p">)</span>
+        
+        <span class="c1"># OptionL store in db host.app.vers.actr -&gt; port? </span>
+        
+        <span class="n">rsp</span> <span class="o">=</span> <span class="n">disco_capnp</span><span class="o">.</span><span class="n">DiscoRep</span><span class="o">.</span><span class="n">new_message</span><span class="p">()</span>
+        <span class="n">rspMessage</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">&#39;actorUnreg&#39;</span><span class="p">)</span>
+        <span class="n">rspMessage</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;ok&quot;</span>
+        <span class="n">rspMessage</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">clientPort</span>
+        <span class="n">rspBytes</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">rspBytes</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="DiscoService.buildInsertKeyValuePair"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.buildInsertKeyValuePair">[docs]</a>    <span class="k">def</span> <span class="nf">buildInsertKeyValuePair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">appName</span><span class="p">,</span><span class="n">msgType</span><span class="p">,</span><span class="n">kind</span><span class="p">,</span><span class="n">scope</span><span class="p">,</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Construct a database key,value pair to be used when a service is registered.</span>
+<span class="sd">        The key allows the identifying the specific object in the actor the service</span>
+<span class="sd">        is provided through. The value is a host:port pair.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">appName</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">msgType</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">kind</span>
+        <span class="k">if</span> <span class="n">scope</span> <span class="o">==</span> <span class="s2">&quot;local&quot;</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">macAddress</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">host</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="DiscoService.buildLookupKey"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.buildLookupKey">[docs]</a>    <span class="k">def</span> <span class="nf">buildLookupKey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">appName</span><span class="p">,</span><span class="n">msgType</span><span class="p">,</span><span class="n">kind</span><span class="p">,</span><span class="n">scope</span><span class="p">,</span><span class="n">clientHost</span><span class="p">,</span><span class="n">clientActorName</span><span class="p">,</span><span class="n">clientInstanceName</span><span class="p">,</span><span class="n">clientPortName</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Construct a key used to lookup a service. Construct also a string that identifies the client of the lookup </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Map the requestor&#39;s kind into the provider&#39;s kind</span>
+        <span class="n">kindMap</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;sub&quot;</span> <span class="p">:</span> <span class="s2">&quot;pub&quot;</span> <span class="p">,</span> <span class="s2">&quot;clt&quot;</span> <span class="p">:</span> <span class="s2">&quot;srv&quot;</span><span class="p">,</span> <span class="s2">&quot;req&quot;</span> <span class="p">:</span> <span class="s2">&quot;rep&quot;</span><span class="p">,</span> <span class="s2">&quot;rep&quot;</span> <span class="p">:</span> <span class="s2">&quot;req&quot;</span><span class="p">,</span> <span class="s2">&quot;qry&quot;</span> <span class="p">:</span> <span class="s2">&quot;ans&quot;</span><span class="p">}</span> 
+        <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">appName</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">msgType</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">kindMap</span><span class="p">[</span><span class="n">kind</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">scope</span> <span class="o">==</span> <span class="s2">&quot;local&quot;</span><span class="p">:</span>                        <span class="c1"># If the request is host-local, add the mac address to the end. Used to </span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">macAddress</span><span class="p">)</span>  <span class="c1"># distinguish node-specific local requests. (The database is shared!)</span>
+        
+        <span class="n">client</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">appName</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">clientActorName</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">clientHost</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">clientInstanceName</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">clientPortName</span> 
+        <span class="k">if</span> <span class="n">scope</span> <span class="o">==</span> <span class="s2">&quot;local&quot;</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="n">client</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">macAddress</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">client</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DiscoService.handleServiceReg"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.handleServiceReg">[docs]</a>    <span class="k">def</span> <span class="nf">handleServiceReg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handle the service registration message</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">reqMsg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">serviceReg</span>                             <span class="c1"># Parse the message</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">reqMsg</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">appName</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">appName</span> 
+        <span class="n">appActorName</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">actorName</span>
+        <span class="n">msgType</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">msgType</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span>
+        <span class="n">scope</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">scope</span><span class="p">)</span>
+        
+        <span class="n">socket</span> <span class="o">=</span> <span class="n">reqMsg</span><span class="o">.</span><span class="n">socket</span>
+        <span class="n">host</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">host</span>
+        <span class="n">port</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">port</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;handleServiceReg: </span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">appName</span><span class="p">,</span><span class="n">appActorName</span><span class="p">,</span><span class="n">msgType</span><span class="p">,</span><span class="n">kind</span><span class="p">,</span><span class="n">scope</span><span class="p">,</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">))</span>
+
+        <span class="n">regKey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">appActorName</span><span class="p">(</span><span class="n">appName</span><span class="p">,</span> <span class="n">appActorName</span><span class="p">)</span>
+        <span class="n">clients</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c1"># if regKey not in self.registrations:</span>
+        <span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buildInsertKeyValuePair</span><span class="p">(</span><span class="n">appName</span><span class="p">,</span> <span class="n">msgType</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">scope</span><span class="p">,</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+        <span class="n">clients</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbase</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">registrations</span><span class="p">[</span><span class="n">regKey</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">))</span>
+        
+        <span class="n">rep</span> <span class="o">=</span> <span class="n">disco_capnp</span><span class="o">.</span><span class="n">DiscoRep</span><span class="o">.</span><span class="n">new_message</span><span class="p">()</span>            <span class="c1"># Construct response</span>
+        <span class="n">repMsg</span> <span class="o">=</span> <span class="n">rep</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">&#39;serviceReg&#39;</span><span class="p">)</span>
+        <span class="n">repMsg</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;ok&quot;</span>
+        <span class="n">repBytes</span> <span class="o">=</span> <span class="n">rep</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">repBytes</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">clients</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clientUpdates</span> <span class="o">=</span> <span class="p">[(</span><span class="n">key</span><span class="p">,(</span><span class="n">value</span><span class="p">),</span><span class="n">clients</span><span class="p">)]</span></div>
+    
+<div class="viewcode-block" id="DiscoService.handleServiceLookup"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.handleServiceLookup">[docs]</a>    <span class="k">def</span> <span class="nf">handleServiceLookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handle a service lookup message</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">reqMsg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">serviceLookup</span>                          <span class="c1"># Parse the message</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">reqMsg</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">appName</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">appName</span>
+        <span class="n">msgType</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">msgType</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span>
+        <span class="n">scope</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">scope</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">reqMsg</span><span class="o">.</span><span class="n">client</span>
+        <span class="n">clientActorHost</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">actorHost</span>
+        <span class="n">clientActorName</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">actorName</span>
+        <span class="n">clientInstanceName</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instanceName</span>
+        <span class="n">clientPortName</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">portName</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="p">(</span><span class="n">appName</span><span class="p">,</span><span class="n">clientActorHost</span><span class="p">,</span><span class="n">clientActorName</span><span class="p">,</span><span class="n">clientInstanceName</span><span class="p">,</span><span class="n">clientPortName</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;handleServiceLookup:</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">&quot;</span> 
+                            <span class="o">%</span> <span class="p">(</span><span class="n">appName</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">client</span><span class="p">),</span><span class="n">msgType</span><span class="p">,</span><span class="n">kind</span><span class="p">,</span><span class="n">scope</span><span class="p">,</span><span class="n">clientInstanceName</span><span class="p">))</span>
+        <span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">client</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buildLookupKey</span><span class="p">(</span><span class="n">appName</span><span class="p">,</span> <span class="n">msgType</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">scope</span><span class="p">,</span>
+                                           <span class="n">clientActorHost</span><span class="p">,</span> <span class="n">clientActorName</span><span class="p">,</span> 
+                                           <span class="n">clientInstanceName</span><span class="p">,</span><span class="n">clientPortName</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbase</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">client</span><span class="p">)</span>
+        
+        <span class="n">rep</span> <span class="o">=</span> <span class="n">disco_capnp</span><span class="o">.</span><span class="n">DiscoRep</span><span class="o">.</span><span class="n">new_message</span><span class="p">()</span>            <span class="c1"># Construct the response: all providers of the requested service</span>
+        <span class="n">repMsg</span> <span class="o">=</span> <span class="n">rep</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">&#39;serviceLookup&#39;</span><span class="p">)</span>
+        <span class="n">repMsg</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;ok&quot;</span>
+        <span class="n">sockets</span> <span class="o">=</span> <span class="n">repMsg</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">&#39;sockets&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">pair</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">elt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+            <span class="n">sockets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">sockets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">repBytes</span> <span class="o">=</span> <span class="n">rep</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">repBytes</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="DiscoService.handle"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.handle">[docs]</a>    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msgBytes</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Dispatch the request based on the message type</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">disco_capnp</span><span class="o">.</span><span class="n">DiscoReq</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">msgBytes</span><span class="p">)</span>
+        <span class="n">which</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">which</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">which</span> <span class="o">==</span> <span class="s1">&#39;actorReg&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handleActorReg</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">which</span> <span class="o">==</span> <span class="s2">&quot;serviceReg&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handleServiceReg</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">which</span> <span class="o">==</span> <span class="s2">&quot;serviceLookup&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handleServiceLookup</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">which</span> <span class="o">==</span> <span class="s1">&#39;actorUnreg&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handleActorUnreg</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+        
+<div class="viewcode-block" id="DiscoService.handleNote"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.handleNote">[docs]</a>    <span class="k">def</span> <span class="nf">handleNote</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handle a notification message received from the database.</span>
+<span class="sd">        The notification triggers the notification of client actors about the new service provider</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;handleNote: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
+        <span class="p">(</span><span class="n">_key</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">clients</span><span class="p">)</span> <span class="o">=</span> <span class="n">msg</span>                       <span class="c1"># Parse notification message</span>
+        <span class="n">pair</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">host</span> <span class="o">=</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">port</span> <span class="o">=</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">clients</span><span class="p">:</span>                          <span class="c1"># For each client:</span>
+            <span class="n">clientString</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>           <span class="c1"># Parse the client string</span>
+            <span class="n">spl</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span><span class="n">clientString</span><span class="p">)</span>
+            <span class="n">_skip</span> <span class="o">=</span> <span class="n">spl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">appName</span> <span class="o">=</span> <span class="n">spl</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">actorName</span> <span class="o">=</span> <span class="n">spl</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">actorHost</span> <span class="o">=</span> <span class="n">spl</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">instanceName</span> <span class="o">=</span> <span class="n">spl</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+            <span class="n">portMacPair</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="n">spl</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+            <span class="n">portName</span> <span class="o">=</span> <span class="n">portMacPair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">portMacPair</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">macAddr</span> <span class="o">=</span> <span class="n">portMacPair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">macAddr</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">clientKeyBase</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">appName</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">actorName</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+            <span class="k">if</span> <span class="n">clientKeyBase</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostAddress</span> <span class="o">!=</span> <span class="n">actorHost</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">clientSocket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="n">clientKeyBase</span><span class="p">]</span>
+
+            <span class="n">updMsg</span> <span class="o">=</span> <span class="n">disco_capnp</span><span class="o">.</span><span class="n">DiscoUpd</span><span class="o">.</span><span class="n">new_message</span><span class="p">()</span> <span class="c1"># Construct the notification message to be sent to the client actor</span>
+            <span class="n">updMsgPortUpd</span> <span class="o">=</span> <span class="n">updMsg</span><span class="o">.</span><span class="n">portUpdate</span>
+            <span class="n">updMsgClient</span> <span class="o">=</span> <span class="n">updMsgPortUpd</span><span class="o">.</span><span class="n">client</span>
+            <span class="n">updMsgClient</span><span class="o">.</span><span class="n">actorHost</span> <span class="o">=</span> <span class="n">actorHost</span>
+            <span class="n">updMsgClient</span><span class="o">.</span><span class="n">actorName</span> <span class="o">=</span> <span class="n">actorName</span>
+            <span class="n">updMsgClient</span><span class="o">.</span><span class="n">instanceName</span> <span class="o">=</span> <span class="n">instanceName</span>
+            <span class="n">updMsgClient</span><span class="o">.</span><span class="n">portName</span> <span class="o">=</span> <span class="n">portName</span>
+            <span class="n">updMsgPortUpd</span><span class="o">.</span><span class="n">scope</span> <span class="o">=</span> <span class="s1">&#39;local&#39;</span> <span class="k">if</span> <span class="n">macAddr</span> <span class="o">!=</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;global&#39;</span>
+            <span class="n">updMsgPortUpd</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span> 
+            <span class="n">updMsgPortUpd</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+            
+            <span class="n">msgBytes</span> <span class="o">=</span> <span class="n">updMsg</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;send update to actor </span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> 
+                             <span class="o">%</span> <span class="p">(</span><span class="n">actorHost</span><span class="p">,</span><span class="n">actorName</span><span class="p">,</span><span class="n">instanceName</span><span class="p">,</span><span class="n">portName</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">host</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">port</span><span class="p">)))</span>
+            <span class="n">clientSocket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msgBytes</span><span class="p">)</span>                     <span class="c1"># Send message to client </span></div>
+
+<div class="viewcode-block" id="DiscoService.terminate"><a class="viewcode-back" href="../../../riaps.discd.html#riaps.discd.discs.DiscoService.terminate">[docs]</a>    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;terminating&quot;</span><span class="p">)</span>
+        <span class="c1"># Clean up everything</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;terminated&quot;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">_exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div></div>
+
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, RIAPS Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
