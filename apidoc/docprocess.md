@@ -88,12 +88,14 @@ https://github.com/RIAPS/riaps-timesync.git
 
 1. Build documentation
 
-  From within the riaps-timesync/doc/ folder, run the following commands:
+  From within the riaps-timesync/ folder, run the following commands:
 ```
+mkdir build
+cd build
+cmake ..
 make doc
-sudo make install
 ```
 
 2. Transfer HTML documentation to github.io site
 
-  Copy the contents of the /usr/local/share/doc/html folder to the riaps.github.io/apidoc/timesync-apidoc.
+  Copy the contents of the riaps-timesync/build/doc/html folder to the riaps.github.io/apidoc/timesync-apidoc.

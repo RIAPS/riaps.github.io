@@ -1,0 +1,5 @@
+<map id="rep_tracking" name="rep_tracking">
+<area shape="rect" id="node2" href="$structchrony__float__t.html" title="Chrony&#39;s 32&#45;bit floating point type. " alt="" coords="5,5,109,32"/>
+<area shape="rect" id="node3" href="$structtimeval__t.html" title="Definition of timeval_t using 32&#45;bit integers. " alt="" coords="168,5,243,32"/>
+<area shape="rect" id="node4" href="$structipaddr__t.html" title="ipaddr_t" alt="" coords="267,5,335,32"/>
+</map>
