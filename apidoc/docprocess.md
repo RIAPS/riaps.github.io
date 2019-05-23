@@ -2,7 +2,7 @@
 
 This document indicates how the API documentation is created.  There are two different types of documentation used: Sphinx and Doxygen.  Riaps-pycom uses Sphinx, while riaps-core and riaps-timesync use Doxygen.
 
-## Sphinx Documentation Process
+## RIAPS Pycom Sphinx Documentation Process
 
 ### Environment Setup
 
@@ -34,9 +34,7 @@ sphinx-build -b html doc/source doc/build
   Copy the contents of the riaps-pycom/doc/build folder to the riaps.github.io/apidoc/pycom-apidoc.
 
 
-## Doxygen Documentation Process
-
->MM TODO :  still determining
+## RIAPS Core Doxygen Documentation Process
 
 ### Environment Setup
 
@@ -46,9 +44,56 @@ sphinx-build -b html doc/source doc/build
 sudo apt-get install doxygen
 ```
 
+2. Clone riaps-core repository:
 
+  This is a working copy to create the documentation.  The resulting content in the build and source folders is never intended to be pushed back to the repository.
 
+```
 https://github.com/RIAPS/riaps-core.git
-https://github.com/RIAPS/riaps-timesync.git
+```
 
 ### Documentation Creation
+
+1. Build documentation
+
+  From within the riaps-core/ folder, run the following command:
+```
+doxygen Doxyfile
+```
+
+2. Transfer HTML documentation to github.io site
+
+  Copy the contents of the riaps-core/doc/html folder to the riaps.github.io/apidoc/core-apidoc.
+
+
+## RIAPS Timesync Doxygen Documentation Process
+
+### Environment Setup
+
+1. Download Doxygen tool
+
+```
+sudo apt-get install doxygen
+```
+
+2. Clone riaps-timesync repository:
+
+  This is a working copy to create the documentation.  The resulting content in the build and source folders is never intended to be pushed back to the repository.
+
+```
+https://github.com/RIAPS/riaps-timesync.git
+```
+
+### Documentation Creation
+
+1. Build documentation
+
+  From within the riaps-timesync/doc/ folder, run the following commands:
+```
+make doc
+sudo make install
+```
+
+2. Transfer HTML documentation to github.io site
+
+  Copy the contents of the /usr/local/share/doc/html folder to the riaps.github.io/apidoc/timesync-apidoc.
