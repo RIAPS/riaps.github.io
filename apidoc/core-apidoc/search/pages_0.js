@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['riaps_20framework_20in_20c_2b_2b',['RIAPS Framework in C++',['../index.html',1,'']]]
+  ['welcome_20to_20the_20c_2b_2b_20component_20framework_20documentation',['Welcome to the C++ component framework documentation',['../index.html',1,'']]]
 ];
