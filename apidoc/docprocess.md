@@ -9,7 +9,7 @@ This document indicates how the API documentation is created.  There are two dif
 1. Setup Sphinx tools:
 ```
 sudo pip3 install Sphinx
-sudo pip install sphinx_rtd_theme
+sudo pip3 install sphinx_rtd_theme
 ```
 
 2. Clone riaps-pycom repository:
