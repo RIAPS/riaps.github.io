@@ -1,7 +1,6 @@
 ## RIAPS Tutorials
 
-RIAPS applications are built from distributed computing components that work together.  The configuration and interactions of the components, and how they are combined to create processes (called actors) are defined within a RIAPS model file (.riaps).  The defined actors are then allocated to the specific system nodes in the network using a deployment model file (.deplo).  Here is a short video showing [how to create, deploy and run a simple RIAPS application]
-(tutorials/app-examples/hello-world.md or youtube video) utilizing Eclipse development tool and a RIAPS plug-in to assist in the file creation.
+RIAPS applications are built from distributed computing components that work together.  The configuration and interactions of the components, and how they are combined to create processes (called actors) are defined within a RIAPS model file (.riaps).  The defined actors are then allocated to the specific system nodes in the network using a deployment model file (.deplo).  Here is a short video showing [how to create, deploy and run a simple RIAPS application](tutorials/app-examples/hello-world.md) utilizing Eclipse development tool and a RIAPS plug-in to assist in the file creation.
 
 Component implementation can be written in either Python or C++.  Python allow quick prototyping of algorithms using a simple language.  Those not requiring fast update rates or actions are well suited for a Python implementation.  For components requiring fast timing or developers wanting to use C++, refer to the [C++ Component Development Tutorial](https://github.com/RIAPS/riaps-core/wiki).
 
