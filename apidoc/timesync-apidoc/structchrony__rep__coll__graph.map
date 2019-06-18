@@ -1,7 +1,0 @@
-<map id="chrony_rep" name="chrony_rep">
-<area shape="rect" id="node2" href="$structrep__tracking.html" title="Chrony CMD protocol tracking datagram format. " alt="" coords="159,212,252,239"/>
-<area shape="rect" id="node3" href="$structchrony__float__t.html" title="Chrony&#39;s 32&#45;bit floating point type. " alt="" coords="5,5,109,32"/>
-<area shape="rect" id="node4" href="$structtimeval__t.html" title="Definition of timeval_t using 32&#45;bit integers. " alt="" coords="168,5,243,32"/>
-<area shape="rect" id="node5" href="$structipaddr__t.html" title="ipaddr_t" alt="" coords="267,5,335,32"/>
-<area shape="rect" id="node6" href="$structrep__null.html" title="rep_null" alt="" coords="276,212,343,239"/>
-</map>

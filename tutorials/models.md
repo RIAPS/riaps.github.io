@@ -275,6 +275,23 @@ app TestApp {
     on all ActorName1, ActorName2;
 ```
 
+To control access to network resources, a ***host*** definition can be added to indicate the network connections allowed for ***all*** hosts or specific hosts (indicated by either IP address or hostname).  Below is an example of this definition added with several different levels of access specified.  The keyword of ***any*** can be used after the ***network*** keyword to allow full access to any Internet node, while ***dns*** will restrict connects to the existing subnet. Restrictions can also be set down to a specific host node by specifying the desired IP address or hostname.
+
+```
+app DistributedEstimator {
+  host 192.168.57.1 {
+    network any;          // Actors on this host may connect to any Internet nodes
+  }
+  host all {
+    network dns;          // All hosts may connect to the domain name service
+  }
+  host bbb-452e.local {
+    network 198.168.1.1;  // This host may connect to the specified IP address
+  }
+  on all Estimator;       // Estimator actor deployed to all nodes
+  on (192.168.57.1) Aggregator(posArg=123);  // Aggregator on 192.168.57.1 only
+}
+
 ### Component Configuration Using Parameters
 
 Components can be customized by using parameter passing to setup key features of the component.  A good example of the utilization of parameter passing can be found in the [DistributedEstimatorGpio test example](https://github.com/RIAPS/riaps-apps/tree/master/apps-vu/DistributedEstimatorGPIO).  Here you have two customized components:
