@@ -126,3 +126,6 @@ If an application model includes a RIAPS node specification for a node that is n
 When deploying an application, the available RIAPS node's ssh keys (public and private) should match the ssh keys of the controller node.  These keys are located in '/usr/local/riaps/keys' folder (id_rsa.pub and id_rsa.key).  If they do not match (even when security is turned off on both the controller and the RIAPS node), then an **App download fault** will occur with and indication that there was an **Error while verifying app 'appName'** (see image below).  It will also indicate the RIAPS node where the deploy issue occurred.
 
 ![SSH Key Issue with RIAPS Node](../img/riaps-ctrl-deploy-appfault.png)
+
+>MM TODO:  Need to think about other common user mistakes to address there
+1) what to do if an application was not removed before killing the controller and you want to restart the application with a new controller instance - use riaps.kill
