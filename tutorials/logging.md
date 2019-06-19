@@ -2,7 +2,7 @@
 
 The RIAPS framework utilizes spdlog (a fast C++ logging library) to provide a logging mechanism for both the RIAPS framework and the application components.  There are 3 ways to log information within a component:  default, actor-level, and customizable component-level logging.  
 
-## Default Logging
+## <a name="logging-default">Default Logging</a>
 
 Use of logging within a component is simple.  Utilize the RIAPS component ```self.logger.<log level>``` function to provide user information.  Here is an example:
 
@@ -50,7 +50,7 @@ The BBB nodes run **riaps_deplo** as a systemd service, so the console log infor
   ```
 
 
-## Actor-Level Logging
+## <a name="logging-actor">Actor-Level Logging</a>
 
 A global way to log **Actor** information to a file in the deployed application directory is to turn on the RIAPS Framework application log option in the [RIAPS Framework Configuration file](https://github.com/RIAPS/riaps-pycom/tree/develop/src/riaps/etc/README.md).  This is done by adding the 'log' designations to the 'app_logs =' configuration line, as shown below.  This file is located on each RIAPS node in **/usr/local/riaps/etc/riaps.conf**.  Each actor defined in the application model file will have a log file in ```/home/riaps/riaps_apps/<app name>/```.  
 
@@ -73,7 +73,7 @@ sys.get:riaps_apps/DistributedEstimator/log/*,.,true -H bbb-8014.local
 
 > Note: It is not recommended to leave actor-level logging on in a real system deployed application unless the logging is for errors and warnings only, in order to minimize disk usage.  Consider using customizable component-level logging instead.
 
-## Customizable Component-Level Logging
+## <a name="logging-custom">Customizable Component-Level Logging</a>
 
 The application developer can customize the logging setup for each application component instance by defining a **riaps-log.conf** file and placing it in the application directory with the components.  This file defines the logging configuration and output pattern for each of the application components instances, thus providing flexibility for the developer to direct and format the output of each component instance individually.  
 
@@ -161,6 +161,6 @@ The ```/home/riaps/riaps_apps/<app name>``` directory is only available when the
 Each application can specify resource limits on each actor instance, one of which is disk usage (or file space).  This limit is specified in the application model file, see the [Resource Management Specifications section](models.md#rm-model-spec).  All components that create log files will be managed by their respective actor-level file space limitation, where the specified limit applies to the combined file space use of all the components that make up the specific actor instance.
 
 
-## RIAPS Framework Logging
+## <a name="logging-framework">RIAPS Framework Logging</a>
 
 By default, minimal logging is configured to indicate the current system status and any errors encountered by the RIAPS framework.  More logging is available for each of the RIAPS framework modules to assist in debugging issues.  The logging configuration file for the RIAPS framework can be found on each of the RIAPS nodes in **/usr/local/riaps/etc/riaps-log.conf**.  Additional module information can be added by including the desired module (such as riaps.deplo.depm) in the comma separated **keys** list.  The default [framework riaps-log.conf file](https://github.com/RIAPS/riaps-pycom/blob/master/src/riaps/etc/riaps-log.conf) is available in the RIAPS Github repository.
