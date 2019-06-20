@@ -1,6 +1,6 @@
 # Contributing to RIAPS
 
-The following is a set of guidelines for contributing to RIAPS, which are hosted in the 
+The following is a set of guidelines for contributing to RIAPS whose code base is hosted in the 
 [RIAPS Organization](https://github.com/RIAPS) on GitHub. These are mostly guidelines, not rules. 
 Use your best judgment, and feel free to propose changes to this document in a pull request.
 
