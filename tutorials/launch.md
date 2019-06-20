@@ -18,7 +18,7 @@ Starting the RIAPS control app (riaps_ctrl) will launch a controller graphical a
 
 ![Controller Graphical Application](../img/riaps-ctrl.png)
 
-The control app also starts ***redis-server*** in the background.  If the control application started up successfully, the logging information (in the window where the application is started) will state that it is **"Ready to accept connections"**.  If the control app was not shutdown properly and left the redis-server process running, restarting the control app will indicate that the socket at port 6379 has the **"Address already in use"**.  The control app should be shutdown and the running redis-server process should then be removed (using ```sudo pkill -9 redis-server```).  The riaps_ctrl tool can then be restarted to find the correct port connection.
+The control app also starts ***redis-server*** in the background.  If the control application started up successfully, the logging information (in the terminal where the riaps_ctrl was started) will state that it is **"Ready to accept connections"**.  If the control app was not shutdown properly and left the redis-server process running, restarting the control app will indicate that the socket at port 6379 has the **"Address already in use"**.  The control app should be shutdown and the running redis-server process should then be removed (using ```sudo pkill -9 redis-server```).  The riaps_ctrl tool can then be restarted to find the correct port connection.
 
 * Successful launch of riaps_ctrl
 
@@ -68,11 +68,11 @@ The control app also starts ***redis-server*** in the background.  If the contro
 
 Once the control application is running, available RIAPS nodes will begin to register and be revealed as a column in the App/Node section.  The bottom section of the controller will also log the registration of a node by indicate plus sign and the IP address of the node added: **+192.168.1.103**. When nodes are removed, the node's column will be removed and the logging section will show a minus sign and the IP address of the node being removed: **-192.168.1.103**.
 
-If security is enabled on the controller node, then only the RIAPS nodes with security enabled and with the correct key configuration will be found by the controller.  If security is turned off, then only the RIAPS nodes with security disabled will be located by the RIAPS Control, secure RIAPS nodes will not be available.  Once all the desired nodes are available, the application can then be selected and deployed to these nodes (per the deployment model).
+If security is enabled on the controller node, then only the RIAPS nodes with security enabled and with the correct key configuration will be found by the controller.  If security is turned off, then only the RIAPS nodes with security disabled will be located by the RIAPS Control, secure RIAPS nodes will not be available.  Once all the desired nodes are available, the application can then be selected and deployed to these nodes (per the deployment model file).
 
 ### <a name="app-select">Application Selection</a>
 
-The file selection (the file folder under the menus) is the location of the component code that will be downloaded to the available RIAPS nodes when the application is launched.  If you are working with Python components only, selecting the appropriate folder is all that is necessary.  If you are working with C++ components, then make sure to compile the component code to create library file (.so) to the appropriate hardware architecture (amd64 or armhf) and have them available in the selected folder.  During development, if changes are made to the component code be sure to recompile the library file.
+The file selection (the file folder under the menus) is the location of the component code that will be downloaded to the available RIAPS nodes when the application is launched.  If you are working with Python components only, selecting the appropriate folder is all that is necessary.  If you are working with C++ components, then make sure to compile the component code to create library files (.so) to the appropriate hardware architecture (amd64 or armhf) and have them available in the selected folder.  During development, if changes are made to the component code be sure to recompile the library file.
 
 When selecting the **Model** and **Depl** (or deployment) files, the selected files are compiled as they are loaded.  If the file is valid and compiles correctly, as message will appear in the lower portion of the application to indicate that the file has been compiled and no errors are presented.  If there is an error in these files as they get loaded, an error will be presented in addition to the compiling message.  This error message should provide information on the first error found while compiling.  Another method to check the validity of these model files is to scripts to individually compile these files.  ```riaps_lang <model filename>``` can be used to check the model file (.riaps) and ```riaps_depll <depl filename>``` can be used to check the deployment file.  Using these check tools will also provide more information on the location of the first error found.
 
@@ -112,7 +112,7 @@ To see the application logging activity on the remote nodes, ssh into the desire
 
 ### <a name="remote-reset">Remote Node Reset</a>
 
-During application development, there may be several ways a system may appear to be non-responsive.  A component may not be handling request/reply communication appropriately and the application hangs up (i.e. request made and then another request made before a reply is received).  Or when developing a device component that utilizes system ports (such as UART) is not functioning as desired and the port is now stuck open.  These are just a couple of instances to consider.  To reset the system, there are two way to reset the RIAPS framework on the RIAPS nodes:  using the RIAPS Controller application or riaps_fab command.  
+During application development, there may be several ways a system may appear to be non-responsive.  A component may not be handling request/reply communication appropriately and the application hangs up (i.e. request made and then another request made before a reply is received).  Or when developing a device component that utilizes system ports (such as UART) is not functioning as desired and the port is now stuck open.  These are just a couple of instances to consider.  To reset the system, there are two ways to reset the RIAPS framework on the RIAPS nodes:  using the RIAPS Controller application or riaps_fab command.  
 
 #### Kill using RIAPS Control Application
 
@@ -141,7 +141,7 @@ riaps_fab deplo.start
 
 ### <a name="missing-node">Missing RIAPS Node</a>
 
-If an application model includes a RIAPS node specification for a node that is not currently available, the application can be deployed on the available nodes.  The missing node will be indicated in the controller log section by **?** and the node name specified by the deployment model (.depl).  Either determine why this node is offline or pick an available node.
+If an application model includes a RIAPS node specification for a node that is not currently available, the application can be deployed on the available nodes.  The missing node will be indicated in the controller log section by a **?** and the node name specified by the deployment model (.depl).  Either determine why this node is offline or pick an available node.
 
 ![Missing RIAPS Node](../img/riaps-ctrl-deploy-missing.png)
 
