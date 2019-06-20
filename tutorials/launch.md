@@ -1,7 +1,8 @@
 # RIAPS Application Management Tutorial
 
-Each RIAPS system includes a dedicated control node that will launch and control applications using the RIAPS control app (**riaps_ctrl**) to interact with available RIAPS hosts.  Each available RIAPS host runs a deployment control application (**riaps_deplo**), which is typically running as a background process on the remote hardware.  This tutorial will explain how to deploy a RIAPS application using the control app and how to verify the system is working as desired.
->MM TODO:  update summary after developing more of below
+Each RIAPS system includes a dedicated control node that will launch and control applications using the RIAPS control app (**riaps_ctrl**) to interact with available RIAPS hosts.  Each available RIAPS host runs a deployment control application (**riaps_deplo**), which is typically running as a background process on the remote hardware.  This tutorial will explain tips and tricks for the application management process and verifying the system is working as desired.
+
+[TOC]
 
 ## RIAPS Control App (riaps_ctrl)
 
@@ -101,17 +102,40 @@ The easiest way to grab log files from RIAPS node is use [***riaps_fab***](https
 
 When an application is deployed in the field, the available RIAPS nodes are typically remote computing nodes (such as the Beaglebone Black).  But developers may choose to debug component code locally on the controller node (or VM), which is handled slightly differently (indicated below).  The remote computing nodes are configured to automatically run the ***riaps-deplo.service*** when the system is booted up.  This allows easy remote startup of applications.
 
+When debugging applications on the controller node, the RIAPS deployment application needs to be started manually using ```sudo -E riaps_deplo```.  To communicate with this deployment instance using riaps_fab, utilize the local reference for the node:  i.e. ```riaps_fab sys.check -H localhost```.  Never put "localhost" in the "riaps-host.conf" file.
+
+### <a name="sys-check">Remote Node Status Check</a>
+
 To verify if the desired remote nodes are available for communication, utilize the ```riaps_fab sys.check``` command, see [RIAPS Fabric File Information](https://github.com/RIAPS/riaps-pycom/tree/master/src/riaps/fabfile) for setting up the riaps-host.conf file.  Successful communication will be when all remote nodes indicate their hostnames and kernel information.  It is possible to reboot or shutdown a specific host using the following commands respectively:  ```sys.reboot -H <hostname>``` and ```sys.shutdown -H <hostname>```.
 
 To see the application logging activity on the remote nodes, ssh into the desired node and look at the system logs (see [Default Logging tutorial](tutorial/logging.md#logging-default)).
 
-During application development, there may be several ways a system may appear to be non-responsive.  A component may not be handling request/reply communication appropriately and the application hangs up (i.e. request made and then another request made before a reply is received).  Or when developing a device component that utilizes system ports (such as UART) is not functioning as desired and the port is now stuck open.  These are just a couple of instances to consider.  To reset the system, there are two way to reset the RIAPS framework on the RIAPS nodes:  using the RIAPS Controller application or riaps_fab command.
+### <a name="remote-reset">Remote Node Reset</a>
 
->MM TODO: - Using kill in control app (image available - riaps-ctrl-menu1.png) or fab scripts: riaps.kill, deplo.stop/deplo.start
+During application development, there may be several ways a system may appear to be non-responsive.  A component may not be handling request/reply communication appropriately and the application hangs up (i.e. request made and then another request made before a reply is received).  Or when developing a device component that utilizes system ports (such as UART) is not functioning as desired and the port is now stuck open.  These are just a couple of instances to consider.  To reset the system, there are two way to reset the RIAPS framework on the RIAPS nodes:  using the RIAPS Controller application or riaps_fab command.  
 
-When debugging applications on the controller node, the RIAPS deployment application needs to be started manually using ```sudo -E riaps_deplo```.  To communicate with this deployment instance using riaps_fab, utilize the local reference for the node:  i.e. ```riaps_fab sys.check -H localhost```.  Never put "localhost" in the "riaps-host.conf" file.
+#### Kill using RIAPS Control Application
 
->MM TODO:  Discuss Configuration file updates to RIAPS nodes and riaps_fab command that is useful
+On the RIAPS Control application, the **Select** menu item contains a **Kill** option that will send a command to all registered RIAPS nodes to kill the riaps processes (such as running actors and the deployment service).  On the remote RIAPS nodes, the deployment service is setup to restart if it stops.  Therefore after the RIAPS processes are killed, the system will be reset and the RIAPS node will be removed from the available node list and then added again once the deployment service starts again.  The manually started RIAPS deployment services will not be restarted automatically.
+
+![Kill Menu Item](../img/riaps-ctrl-menu1.png)
+
+#### Kill using Fabric Command
+
+ Another way to reset the RIAPS node is to run ```riaps_fab riaps.kill```.  This will kill the RIAPS processes on the remote nodes identified in the ***riaps-hosts.conf*** file.  Once again, the deployment service will restart after this process is complete.
+
+### <a name="remote-config">Remote Node Configuration</a>
+
+At times, the configuration setup of the remote nodes needs to be modified.  This can be accomplished by editing a local copy of the [***riaps.conf*** file](https://github.com/RIAPS/riaps-pycom/blob/master/src/riaps/etc/riaps.conf) and then transferring this file to the remote nodes using the ***riaps_fab*** command below to put the file on the remote node.  The same can be done with the ***/usr/local/riaps/etc/riaps-log.conf*** file.
+
+```riaps_fab sys.put:./riaps.conf,/usr/local/riaps/etc/,true```
+
+The deployment service reads in the configure files at the beginning of execution of this service.  Therefore changes made to the configurations will not take effect until the deployment service is restarted.  Methods described in the [previous kill discussion](launch.md#remote-reset) can be used to restart the deployment service.  Or the following sequence of ***riaps_fab*** commands can be used:
+
+```
+riaps_fab deplo.stop
+riaps_fab deplo.start
+```
 
 ## Application Deployment Debugging Tips
 
@@ -126,6 +150,3 @@ If an application model includes a RIAPS node specification for a node that is n
 When deploying an application, the available RIAPS node's ssh keys (public and private) should match the ssh keys of the controller node.  These keys are located in '/usr/local/riaps/keys' folder (id_rsa.pub and id_rsa.key).  If they do not match (even when security is turned off on both the controller and the RIAPS node), then an **App download fault** will occur with and indication that there was an **Error while verifying app 'appName'** (see image below).  It will also indicate the RIAPS node where the deploy issue occurred.
 
 ![SSH Key Issue with RIAPS Node](../img/riaps-ctrl-deploy-appfault.png)
-
->MM TODO:  Need to think about other common user mistakes to address there
-1) what to do if an application was not removed before killing the controller and you want to restart the application with a new controller instance - use riaps.kill
