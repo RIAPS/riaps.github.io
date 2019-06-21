@@ -49,7 +49,7 @@ class PMUSampler(Component):
     def on_clock(self):
         timestamp = self.clock.recv_pyobj()
         measurement = self.takeSample(timestamp)
-        self.logger.info("Measured %f volts and %f amps")
+        self.logger.info("Measured %f volts and %f amps" % measurement)
 # riaps:keep_clock:end
 
 # riaps:keep_impl:begin
