@@ -4,6 +4,8 @@
  
  [RIAPS Tutorials Episode 1](https://youtu.be/18AmX5FRCXo "RIAPS Tutorials Episode 1")
  
+ {% include youtube.html id=18AmX5FRCXo %}
+ 
 ## Model File (SmartGrid.riaps)
 ```
 app SmartGrid {
