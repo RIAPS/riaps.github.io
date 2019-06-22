@@ -67,7 +67,7 @@ A global way to log **Actor** information to a file in the deployed application 
 app_logs = log
 ```
 
-For the remote RIAPS nodes, the *riaps.conf* can be modified on the development VM and then moved to the remote nodes using the [fabfile utility](https://github.com/RIAPS/riaps-pycom/tree/master/bin#fabric-file-for-handling-multiple-bbb-setup). Start with [original *riaps.conf* file](https://github.com/RIAPS/riaps-pycom/blob/master/src/riaps/etc/riaps.conf) and configure appropriately for your system configuration (including the NIC name). Make sure the RIAPS nodes are accessible from the fab command (see ```fab sys.check```). Then use the ```fab riaps.updateConfig``` command to transfer the locally edited *riaps.conf* file to the remote nodes.
+For the remote RIAPS nodes, the *riaps.conf* can be modified on the development VM and then moved to the remote nodes using the [fabfile utility](https://github.com/RIAPS/riaps-pycom/tree/master/src/riaps/fabfile). Start with [original *riaps.conf* file](https://github.com/RIAPS/riaps-pycom/blob/master/src/riaps/etc/riaps.conf) and configure appropriately for your system configuration (including the NIC name). Make sure the RIAPS nodes are accessible from the fab command (see ```fab sys.check```). Then use the ```fab riaps.updateConfig``` command to transfer the locally edited *riaps.conf* file to the remote nodes.
 
 Since applications are deployed under a generated username, the developer must have root access to view the log messages in the */home/riaps/riaps_apps/\<app name>* directory.  When writing to a log file, output to this file happens in batches so it can take some time for the data to appear in the desired file (on the order of a minute or more).
 
