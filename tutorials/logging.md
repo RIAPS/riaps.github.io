@@ -16,7 +16,7 @@ Use of logging within a component is simple.  Utilize the RIAPS component ```sel
 self.logger.info("on_tempupdate(): Temperature:%s, PID %s, Timestamp:%s" % (temperatureValue, str(now), temperatureTime))
 ```
 
-The available **log levels** are listed below in order of priority (from low to high).  The RIAPS platform sets a log level of **info** by default.  At this level, you will receive all messages at the info level and others of higher priority (such as warn, error and critical).
+The available **log levels** are listed below in order of priority (from low to high).  All logging higher than the level set will be provided (i.e. for warn level setting, the error and critical messages will also be provided).  The RIAPS platform sets a log level of **info** by default.  At this level, you will receive all messages at the info level and others of higher priority (such as warn, error and critical).
 - trace
 - debug
 - info
@@ -24,13 +24,14 @@ The available **log levels** are listed below in order of priority (from low to 
 - error
 - critical
 
-For debugging, you can adjust the logging level using the following in the application component code.
+For initial debugging efforts, the component logging level can be adjusted using the following statements in the application component code.
 
 ```python
 import spdlog as spd
 
 logger.set_level(spd.LogLevel.INFO)
 ```
+>Note:  Once component code works and matures, it is preferred to set the level using the Customizable Component-Level Logging described below so that tested code does not have to change.
 
 The log messages are sent to the console output on the node.  If working on the development VM and starting the ***riaps_deplo*** using either Eclipse or ```sudo -E riaps_deplo``` in a terminal window, the console output will be available.  The information provided will be both the RIAPS platform and the application component logging information.
 
@@ -90,6 +91,25 @@ The logging configuration ('[[logger]]') indicates the component instance for th
        {  // TempSensor publishes 'TempData' messages
           sensor : TempSensor;
        }
+    }
+```
+Device components are handled slightly differently in the RIAPS platform.  The device component instance is identified by the device component name followed by the same name.  Using the [DistributedEstimatorGPIO example application](https://github.com/RIAPS/riaps-apps/tree/master/apps-vu/DistributedEstimatorGPIO/Python/DistributedEstimatorGpio.riaps), an actor definition (shown below) would be called by a **name** of **GPIODevice.GPIODevice**.
+
+```
+    device GPIODevice() {
+        sub blink : Blink;
+    }
+
+    // Estimator actor
+    actor Estimator (freqArg,value=0.0) {
+        local SensorReady, SensorQuery, SensorValue, Blink;    // Local message types
+        {  // Sensor component
+            sensor : Sensor(value=value);								
+            // Local estimator, publishes global message 'Estimate'
+            filter : LocalEstimator(frqArg=freqArg);
+            // GPIO component to blink
+            gpio : GPIODevice();
+        }
     }
 ```
 
