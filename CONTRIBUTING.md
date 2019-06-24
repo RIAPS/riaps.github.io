@@ -1,6 +1,8 @@
 # Contributing to RIAPS
 
-The following is a set of guidelines for contributing to RIAPS whose code base is hosted in the [RIAPS Organization](https://github.com/RIAPS) on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
+The following is a set of guidelines for contributing to RIAPS whose code base is hosted in the
+[RIAPS Organization](https://github.com/RIAPS) on GitHub. These are mostly guidelines, not rules.
+Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 #### Table Of Contents
 
@@ -29,14 +31,21 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 # <a name="code-of-conduct">Code of Conduct</a>
 
-This project and everyone participating in it is governed by the [RIAPS Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [riaps+owner@lists.lfenergy.org](mailto:riaps+owner@lists.lfenergy.org).
+This project and everyone participating in it is governed by the [RIAPS Code of Conduct](CODE_OF_CONDUCT.md).
+By participating, you are expected to uphold this code. Please report unacceptable behavior
+to [riaps+owner@lists.lfenergy.org](mailto:riaps+owner@lists.lfenergy.org).
 
 
 ## <a name="license-and-developer-certificate-of-origin">License and Developer Certificate of Origin</a>
 
-RIAPS is an open source framework licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0). By contributing to RIAPS, you accept and agree to the terms and conditions for your present and future contributions submitted to RIAPS.
+RIAPS is an open source framework licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+By contributing to RIAPS, you accept and agree to the terms and conditions for your present and future contributions
+submitted to RIAPS.
 
-The project also uses a mechanism known as a [Developer Certificate of Origin (DCO)](https://developercertificate.org/) to manage the process of ensuring that we are legally allowed to distribute all the code and assets for the project. A DCO is a legally binding statement that asserts that you are the creator of your contribution, and that you wish to allow RIAPS to use your work.
+The project also uses a mechanism known as a [Developer Certificate of Origin (DCO)](https://developercertificate.org/)
+to manage the process of ensuring that we are legally allowed to distribute all the code and assets for the project.
+A DCO is a legally binding statement that asserts that you are the creator of your contribution, and that you wish to
+allow RIAPS to use your work.
 
 Contributors sign-off that they adhere to these requirements by adding a ```Signed-off-by``` line to commit messages.
 All commits of all repositories of the RIAPS community have to be signed-off like this:
@@ -140,7 +149,8 @@ projects within the energy and electricity sectors.
 Committers are contributors who have made several valuable contributions to the project and are now relied upon to
 both write code directly to the repository and screen the contributions of others. In many cases they are programmers,
 but it is also possible that they contribute in a different role. Typically, a committer will focus on a specific aspect
-of the project, and will bring a level of expertise and understanding that earns them the respect of the community and the project owner.
+of the project, and will bring a level of expertise and understanding that earns them the respect of the community and
+the project owner.
 
 #### <a name="technical-steering-committee">Technical Steering Committee</a>
 
