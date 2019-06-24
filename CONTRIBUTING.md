@@ -8,7 +8,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
 
 [Code of Conduct](#code-of-conduct)
 
-[License and developer Certificate of Origin](#license-and-developer-certificate-of-origin)
+[License and Developer Certificate of Origin](#license-and-developer-certificate-of-origin)
 
 [How Can I Contribute?](#how-can-i-contribute)
   * [Reporting Bugs and Suggesting Enhancements](#reporting-bugs-and-suggesting-enhancements)
@@ -48,7 +48,7 @@ A DCO is a legally binding statement that asserts that you are the creator of yo
 allow RIAPS to use your work.
 
 Contributors sign-off that they adhere to these requirements by adding a ```Signed-off-by``` line to commit messages.
-All commits of all repositories of the RIAPS community have to be signed-off like this :
+All commits of all repositories of the RIAPS community have to be signed-off like this:
 
 ```
 This is my commit message.
@@ -93,7 +93,7 @@ been reported. If it has **and the issue is still open**, add a comment to the e
 
 You can also contact the team directly to talk about your ideas at [riaps@lists.lfenergy.org](mailto:riaps@lists.lfenergy.org).
 
-> **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
+>**Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
 ### <a name="contributing-code">Contributing Code</a>
 
@@ -115,7 +115,7 @@ Please follow these steps to have your contribution considered by the maintainer
 5. Request a GitHub review by one of the core developers (e.g. @adubey14 @imadari @MMetelko)
 6. Follow their instructions or discuss about the requested changes. Please don't take criticism personally,
 it is normal to iterate on this step several times.
-7. Repeat step 6 until the pull request is merged !
+7. Repeat step 6 until the pull request is merged!
 
 Continuous integration is setup to run on all branches automatically and will often report problems,
 so don't worry about getting everything perfect on the first try.
