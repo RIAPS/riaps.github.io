@@ -50,34 +50,34 @@ allow RIAPS to use your work.
 Contributors sign-off that they adhere to these requirements by adding a ``Signed-off-by`` line to commit messages.
 All commits of all repositories of the RIAPS community have to be signed-off like this :
 
-````
+```
 This is my commit message.
 
 Signed-off-by: John Doe <john.doe@github.com>
-````
+```
 You can write it manually but Git even has a -s command line option to append this automatically to your commit message:
-````
+```
 $ git commit -s -m 'This is my commit message'
-````
+```
 
 Note that a check will be performed during the integration, indicating whether or not commits in a
-Pull Request do not contain a valid ````Signed-off-by```` line.
+Pull Request do not contain a valid ```Signed-off-by``` line.
 
-The ````Signed-off-by```` line at the end of the commit message can be written automatically.
-You just have to configure the ```` .gitconfig```` file with the following alias :
-````
+The ```Signed-off-by``` line at the end of the commit message can be written automatically.
+You just have to configure the ``` .gitconfig``` file with the following alias :
+```
 [alias]
     ci = commit -s
-````
+```
 and instead of
-````
+```
 $ git commit -m "This is my message"
-````
+```
 you just have to write
-````
+```
 $ git ci -m "This is my message"
-````
-Note that most IDEs can be configured to add a ````Signed-off-by```` line at the end of the
+```
+Note that most IDEs can be configured to add a ```Signed-off-by``` line at the end of the
 commit message (Intellij IDEA and Eclipse IDE for example, do not hesitate to ask us).
 
 ## How Can I Contribute?
@@ -89,12 +89,11 @@ Create an issue and provide the following information by filling in [the templat
 
 Before creating bug reports or suggesting enhancement, please
 **perform a [cursory search](https://github.com/search?q=+is%3Aissue+user%3ARIAPS)** to see if the problem has already
-been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one..
+been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one.
 
 You can also contact the team directly to talk about your ideas at [riaps@lists.lfenergy.org](mailto:riaps@lists.lfenergy.org).
 
-> **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue
-and include a link to the original issue in the body of your new one.
+> **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
 ### Contributing Code
 
