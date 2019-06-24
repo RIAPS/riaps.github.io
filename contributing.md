@@ -64,7 +64,7 @@ Note that a check will be performed during the integration, indicating whether o
 Pull Request do not contain a valid ```Signed-off-by``` line.
 
 The ```Signed-off-by``` line at the end of the commit message can be written automatically.
-You just have to configure the ``` .gitconfig``` file with the following alias :
+You just have to configure the ``` .gitconfig``` file with the following alias:
 ```
 [alias]
     ci = commit -s
