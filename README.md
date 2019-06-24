@@ -37,7 +37,7 @@ The original project website is located at: https://riaps.isis.vanderbilt.edu Th
 
 ## [Tutorials](tutorials.md)
 
-## [Contributing](CONTRIBUTING.md)
+## [Contributing](contributing.md)
 
 ## [API Documentation](apidoc.md)
 
