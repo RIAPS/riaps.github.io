@@ -29,25 +29,25 @@ Use your best judgment, and feel free to propose changes to this document in a p
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
-# Code of Conduct
+# <a name="code-of-conduct">Code of Conduct</a>
 
 This project and everyone participating in it is governed by the [RIAPS Code of Conduct](CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report unacceptable behavior
 to [riaps+owner@lists.lfenergy.org](mailto:riaps+owner@lists.lfenergy.org).
 
 
-## License and developer Certificate of Origin
+## <a name="license-and-developer-certificate-of-origin">License and Developer Certificate of Origin</a>
 
 RIAPS is an open source framework licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 By contributing to RIAPS, you accept and agree to the terms and conditions for your present and future contributions
 submitted to RIAPS.
 
-The project also uses a mechansim known as a [Developer Certificate of Origin (DCO)](https://developercertificate.org/)
+The project also uses a mechanism known as a [Developer Certificate of Origin (DCO)](https://developercertificate.org/)
 to manage the process of ensuring that we are legally allowed to distribute all the code and assets for the project.
 A DCO is a legally binding statement that asserts that you are the creator of your contribution, and that you wish to
 allow RIAPS to use your work.
 
-Contributors sign-off that they adhere to these requirements by adding a ``Signed-off-by`` line to commit messages.
+Contributors sign-off that they adhere to these requirements by adding a ```Signed-off-by``` line to commit messages.
 All commits of all repositories of the RIAPS community have to be signed-off like this :
 
 ```
@@ -80,9 +80,9 @@ $ git ci -m "This is my message"
 Note that most IDEs can be configured to add a ```Signed-off-by``` line at the end of the
 commit message (Intellij IDEA and Eclipse IDE for example, do not hesitate to ask us).
 
-## How Can I Contribute?
+## <a name="how-can-i-contribute">How Can I Contribute?</a>
 
-### Reporting Bugs and Suggesting Enhancements
+### <a name="reporting-bugs-and-suggesting-enhancements">Reporting Bugs and Suggesting Enhancements</a>
 
 Bugs and enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/).
 Create an issue and provide the following information by filling in [the template](ISSUE_TEMPLATE.md).
@@ -95,7 +95,7 @@ You can also contact the team directly to talk about your ideas at [riaps@lists.
 
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
-### Contributing Code
+### <a name="contributing-code">Contributing Code</a>
 
 Code Contribution is tracked as [GitHub Pull Requests](https://help.github.com/en/articles/about-pull-requests).
 Crafting a good pull request takes time and energy and we will help as much as we can, but be prepared to follow
@@ -121,7 +121,7 @@ Continuous integration is setup to run on all branches automatically and will of
 so don't worry about getting everything perfect on the first try.
 Until you add a reviewer, you can trigger as many builds as you want by amending your commits.
 
-### Tools for contributions
+### <a name="tools-for-contributions">Tools for contributions</a>
 
 Continuous integration is setup automatically on all contributions. However, it's faster to iterate locally to fix
 problems than waiting for the status checks to finish. There are many tools that can be used to do the verifications
@@ -129,23 +129,22 @@ that are enforced by all status checks. The most simple and universal tool is ma
 used to get more immediate feedback. Most of the team uses Eclipse, but others IDEs can be used, for example
 Visual Studio Code.
 
-## Styleguides
+## <a name="styleguides">Styleguides</a>
 
-### Git Commit Messages
+### <a name="git-commit-messages">Git Commit Messages</a>
 
 As usual, please start the commit message with a short line describing the commit, then leave a blank line,
 then give more context and explanations. You can use GitHub's integrations, for example to link to existing issues.
 In general, pull requests with more than one commits will be squashed when merged in master.
 
+## <a name="project-governance">Project Governance</a>
 
-## Project Governance
-
-#### Project Owner
+#### <a name="project-owner">Project Owner</a>
 
 RIAPS is part of the LF Energy Foundation, a project of The Linux Foundation that supports open source innovation
 projects within the energy and electricity sectors.
 
-#### Committers
+#### <a name="committers">Committers</a>
 
 Committers are contributors who have made several valuable contributions to the project and are now relied upon to
 both write code directly to the repository and screen the contributions of others. In many cases they are programmers,
@@ -153,7 +152,7 @@ but it is also possible that they contribute in a different role. Typically, a c
 of the project, and will bring a level of expertise and understanding that earns them the respect of the community and
 the project owner.
 
-#### Technical Steering Committee
+#### <a name="technical-steering-committee">Technical Steering Committee</a>
 
 The Technical Steering Committee (TSC) is composed of voting members elected by the active Committers as described in
 the project’s Technical Charter.
@@ -169,7 +168,7 @@ RIAPS TSC voting members are:
 Some committers are specialized in some field: please refer to [the maintainers table](MAINTAINERS.md) before
 submitting a pull request.
 
-#### Contributors
+#### <a name="contributors">Contributors</a>
 
 Contributors include anyone in the technical community that contributes code, documentation, or other technical
 artifacts to the Project.
@@ -177,9 +176,9 @@ artifacts to the Project.
 Anyone can become a contributor. There is no expectation of commitment to the project, no specific skill requirements
 and no selection process. To become a contributor, a community member simply has to perform one or more actions that are beneficial to the project.
 
-## Roadmap
+## <a name="roadmap">Roadmap</a>
 
-### Documentation
+### <a name="documentation">Documentation</a>
 - Functional documentation;
 - User stories;
 - More and more tutorials;
