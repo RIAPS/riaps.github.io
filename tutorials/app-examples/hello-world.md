@@ -33,7 +33,7 @@ app SmartGrid {
 ```python
 # riaps:keep_import:begin
 from riaps.run.comp import Component
-import logging
+import spdlog
 import capnp
 import smartgrid_capnp
 from math import sin, pi
