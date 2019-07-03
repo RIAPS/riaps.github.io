@@ -4,7 +4,7 @@
 
  [RIAPS Tutorials Episode 1](https://youtu.be/18AmX5FRCXo "RIAPS Tutorials Episode 1")
 
- {% include_relative youtube.html id=18AmX5FRCXo %}
+ {% include_relative youtube.html id=Vc9fXGLHNqU %}
 
 ### Model File (SmartGrid.riaps)
 ```
