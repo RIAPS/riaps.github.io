@@ -2,7 +2,7 @@
 
  The RIAPS "Hello World" example features a single actor, component, and timer port running on a single RIAPS node. Tutorial 1 introduces distributed applications and the actor model of distributed programming, then walks through building the "Hello World" of Smart Grid applications. This application (called "SmartGrid") uses a timer port to trigger a component, which then generates a measurement from an imagined Phase Measurement Unit (PMU).
 
- [RIAPS Tutorials Episode 1](https://youtu.be/18AmX5FRCXo "RIAPS Tutorials Episode 1")
+ [RIAPS Tutorials Episode 1](https://youtu.be/Vc9fXGLHNqU "RIAPS Tutorials Episode 1")
 
  {% include_relative youtube.html id=Vc9fXGLHNqU %}
 
