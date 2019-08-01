@@ -38,11 +38,12 @@ There is also a [Debugging RIAPS Apps Tutorial](tutorials/debug.md) that can pro
 
 ### RIAPS Feature Tutorials
 
-Here is a set of videos describing different features of the RIAPS platform and how they can be utilized in application development.  When possible both a Python and C++ implementation will be available.
-
->NOTE:  YET TO BE DEVELOPED:  expect to have a short videos for these and accompanying code snippets
+Here is a set of videos describing different features of the RIAPS platform and how they can be utilized in application development.  The code used in the video is provided.
 
 * [Simple Publish/Subscribe App](tutorials/app-examples/pub-sub.md)
+
+>NOTE:  Upcoming Tutorials
+
 * [Simple Request/Reply App](tutorials/app-examples/req-rep.md)
 * [Complex example: Distributed Estimator App](tutorials/app-examples/complex-app.md)
 * [Utilizing Parameters in Application Definitions](tutorials/app-examples/parameters-app.md)

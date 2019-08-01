@@ -1,4 +1,4 @@
-## Publish/Subscribe from RIAPS Tutorials Episode 2
+## "Publish/Subscribe" from RIAPS Tutorials Episode 2
 
 The RIAPS Pub/Sub example expands upon the application from [Episode 1](https://riaps.github.io/tutorials/app-examples/hello-world.html "Link to Episode 1") to add a RIAPS node logging data from the PMU. Tutorial 2 introduces messages, message topics, and the publish/subscribe messaging pattern. It then adds these features to the application from Episode 1, which then samples (rather, simulates sampling) a PMU and publishes the measurement on a RIAPS message topic, which is received by a subscriber, then logged. 
 
