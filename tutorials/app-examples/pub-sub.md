@@ -10,7 +10,7 @@ The RIAPS Pub/Sub example expands upon the application from [Episode 1](https://
 ```
 app SmartGrid {
 	
-	message PmuData;
+  message PmuData;
 
   component PMUSampler {
     timer clock 1000;
@@ -18,7 +18,7 @@ app SmartGrid {
   }
   
   component PhaseDataListener {
-  	sub subport : PmuData;
+    sub subport : PmuData;
   }
 
   actor PMU {
@@ -28,9 +28,9 @@ app SmartGrid {
   }
   
   actor DataLogger {
-  	{
-  	  myListener : PhaseDataListener;
-  	}
+    {
+      myListener : PhaseDataListener;
+    }
   }
 }
 ```
