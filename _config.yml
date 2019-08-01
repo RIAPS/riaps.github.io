@@ -2,4 +2,20 @@ theme: jekyll-theme-minimal
 logo: /img/riaps.jpg
 title: RIAPS Platform Information
 description: RIAPS is a Resilient Middleware for Smart Grids. See riaps.isis.vanderbilt.edu for more information.
+include: 
+  - contributing.md
+  - CODE_OF_CONDUCT.md
+  - apidoc.md
+  - arch.md
+  - CODE_OF_CONDUCT.md
+  - contributing.md
+  - distro.md
+  - impl.md
+  - ISSUE_TEMPLATE.md
+  - MAINTAINERS.md
+  - PULL_REQUEST_TEMPLATE.md
+  - repos.md
+  - setup.md
+  - SUPPORT.md
+  - tutorials.md
 site.github.is_user_page: false
