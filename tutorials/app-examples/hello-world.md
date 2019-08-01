@@ -4,6 +4,7 @@
 
 ### [RIAPS Tutorials Episode 1](https://youtu.be/Vc9fXGLHNqU "RIAPS Tutorials Episode 1")
 
+Learn more about RIAPS by reusing this application in [Episode 2](https://riaps.github.io/tutorials/app-examples/pub-sub.html "Link to Episode 2")
 
 ### Model File (SmartGrid.riaps)
 ```
