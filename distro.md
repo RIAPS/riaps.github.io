@@ -20,9 +20,7 @@ Package                 | Content                              | Comment
 ------------------------|--------------------------------------|---------
 riaps-core-ARCH         | Binaries for the C++ component framework and dht-based discovery service. |
 riaps-pycom-ARCH        | Python libraries for all apps and component framework. |
-riaps-externals-ARCH    | 3rd part support libraries for RIAPS  | Typically installed once, rarely updated.
 riaps-timesync-ARCH     | Scripts and tools for time-sync service | For amd64 a physical machine with PTP-enabled NIC is required.
-riaps-systemd-ARCH      | Systemd setup scripts to launch riaps_deplo <br> as a service |
 
 To add this repository to an existing setup with the appropriate architecture indication (amd64 or armhf):
 
