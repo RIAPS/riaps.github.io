@@ -15,8 +15,12 @@ Applications are described using a model file (*.riaps*) that define component p
     * [Inside Ports](#inside-def)
   * [Actor Definitions](#actor-def)
     * [Resource Management Specifications](#rm-model-spec)
-  * [Application Deployment File (*.depl*)](#depl-def)
-  * [Component Configuration Using Parameters](#comp-conf-def)
+* [Application Deployment File (*.depl*)](#depl-def)
+  * [Network specification](#rm-model-spec)
+* [Component Configuration Using Parameters](#comp-conf-def)
+* [Advanced Modeling Options](#adv-model-opts)
+  * [Message Scheduling](#adv-sched)
+  * [Distributed Coordination (Groups)](#adv-groups)
 
 ### <a name="riaps-def">Application Model File (*.riaps*)</a>
 
@@ -308,6 +312,23 @@ app DistributedEstimator {
 }
 ```
 
+#### <a name="rm-model-spec">Network specification</a>
+
+example
+app DistributedEstimator {
+	host 192.168.57.1 {
+		network any;			// Actors on this host may connect to any Internet node
+	}
+	host all {
+		network dns;			// Actors on this may connect to the domain name service
+	}
+	host 192.168.57.3 {
+		network 192.168.1.1;	// Actors on this host may connect to 192.168.1.1
+	}
+	on all Estimator;
+	on (192.168.57.1) Aggregator(posArg=123,optArg="fromDeployment");
+}
+
 ### <a name="comp-conf-def">Component Configuration Using Parameters</a>
 
 Components can be customized by using parameter passing to setup key features of the component.  A good example of the utilization of parameter passing can be found in the [DistributedEstimatorGpio test example](https://github.com/RIAPS/riaps-apps/tree/master/apps-vu/DistributedEstimatorGPIO).  Here you have two customized components:
@@ -350,3 +371,10 @@ app DistributedEstimatorGpio {
     on (192.168.1.101) Aggregator();  
 }
 ```
+
+### <a name="adv-model-opts">Advanced Modeling Options</a>
+
+In addition to the basic modeling language elements described above, there are additional features available in RIAPS that can be configured in the model file.
+
+* <a name="adv-sched">[Message Scheduling](sched.md)</a>
+* <a name="adv-groups">[Distributed Coordination (Groups)](groups.md)</a>
