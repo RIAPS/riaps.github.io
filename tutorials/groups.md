@@ -15,22 +15,22 @@ multiple different group definitions or multiple instances of the same group def
 a RIAPS application that tests the communication within groups. This example application defines a
 **group** keyword with a group name of 'TheGroup' that is expected to send a messages between the joined
 nodes using the defined 'Msg' message. The **group** keyword should be defined after the **message**
-definitions and prior to component definitions in the model file. The group kind is **leader** in this
-example after the keyword of  **with**. A group can be formed without a leader using a group kind of
-**consensus**. To timestamp the
+definitions and prior to component definitions in the model file. A group may or may not have a leader.
+Groups with no leader perform simple in-group publish/subscribe messaging. This keeps the messaging overhead
+low. If a leader is desired, then add **with leader** to the group definition. Time stamping can be setup to
+determine when a message is sent to the group and when this message is received by the a group member by
+adding a **timed** keyword to the end of the group definition.
 
 ```
+Leaderless group
+================
 message Msg;
+group TheGroup using Msg;
+
+Group with a leader
+===================
 group TheGroup with leader using Msg;
 ```
-
-Time stamping can be setup to determine when a message is sent to the group and when this message is received
-by the a group member by adding a **timed** keyword to the end of the group definition.
-
-
-***MM TODO: Questions:***
-1) it looks like "with leader/consensus" is optional, is that correct?  If not using, group.kind.kind becomes 'default' or coordinated=false
-2) consensus does a leader election, is that expected?
 
 ### Group Formation and Communication
 
@@ -39,7 +39,7 @@ form logical groups during operation. The components are able to send messages t
 
 The model file provided the definition of the available group types. One or more instances of a group type can be initiated with the component code. For the example code, the developer chose to make each group instance a one letter name and provide multiple names in each actor setup by passing in a list of instance names ("'gs='12'"). How the group instance(s) are named and determined is at the discretion of the application developer.
 
-Components are started with an activation state which will invoke the **handleActivate** function. This is a function which should be included in the application specific component code and will be the location to call the **joinGroup** function to create the desired group instances. The 'groupName' is the name of the group defined in the model file and the developer provides an instance name ('instName'). When utilizing the message scheduling features, the group message can include a 'groupPriority' with values between 1 and 256.  
+Components are started with an activation state which will invoke the **handleActivate** function. This is a function which should be included in the application specific component code and will be the location to call the **joinGroup** function to create the desired group instances. The 'groupName' is the name of the group defined in the model file and the developer provides an instance name ('instName'). When utilizing the message scheduling features, the group message can include a 'groupPriority' with values between 1 and 256 to indicate how to prioritize the these messages along with the other component port messages.
 
 Syntax:
 ```
@@ -69,14 +69,13 @@ handleMemberJoined(group, memberId)
 handleMemberLeft(group, memberId)
 ```
 
->***MM TODO: Questions:***
-I see that these are still a work in progress.  
-1) Why is groupPriority value defaulted to 256, when the message priority is a value from 0-99?
-2) Should the developer include a handleDeactivate and call leaveGroup?  Or do you intend to do that automatically as part of the component cleanup?
+When components are in the process of being destroyed, a **handleDeactivate** function is called. The developer should utilize this event handler to explicitly leave the group (**leaveGroup**).  
 
-handleDectivate()
-Default activation handler
-  - leave group:  leaveGroup(group)
+Syntax:
+```
+def handleDectivate():
+    leaveGroup(group)
+```
 
 ### Leader Elections
 Once a group is formed, a leader can be elected from one of the members. Choosing a leader is a process
@@ -161,7 +160,7 @@ def handleMessageToLeader(self,group):
 Group members form agreement on a set of data values using a consensus vote. During consensus, N components
 work to agree on a value, where the participating components are members of a group instance. A valid leader
 must be present to start and complete the consensus process, otherwise an error message is returned. There
-are four stages to this complete consensus voting:
+are four stages to consensus voting:
 
 1) Request a vote: Components propose a value to the leader. This value must be considered by all
    group members and they can agree or disagree.
@@ -175,7 +174,7 @@ are four stages to this complete consensus voting:
 To start a consensus voting process, any group member can request a vote using either **requestVote** or **requestVote_pyobj**
 with a topic. This message will be forwarded to the group leader. By default the voting is a majority vote, but a consensus vote can
 be requested by adding 'Poll.CONSENSUS' in the requestVote call. For time sensitive votes, a 'timeout' value can be provided with
-this request. A a generated id string identifier will be returned on successful requests.
+this request. A generated id string identifier will be returned for successful requests.
 
 Syntax:
 ```
@@ -186,35 +185,42 @@ or
 rfcId = g.requestVote_pyobj("some topic",Poll.CONSENSUS,timeoutValue) # Consensus vote
 ```
 
+When the leader receives the request for a vote, messages will be sent individually to each component in the group to request them
+to vote. These components will receive the requests in the **handleVoteRequest** handler. The requests include an ID of the
+component that requested the vote and the group instance name. Each member must immediately call **recv**/**recv_pyobj** on the
+group instance to obtain the topic of the vote. The component will then determine their vote (true or false) and send the vote back
+to the leader using **sendVote**, including the ID provided of the component who originally requested the vote.
 
->MM TODO: Stopped here in writing - the rest are notes on what is expected to be written about 
+Syntax:
+```
+def handleVoteRequest(group, rfvId):
+    msg = group.recv_pyobj()
+    vote = random.uniform(0,1) > 0.51        
+    self.logger.info('handleVoteRequest[%s] = %s -->  %s' % (str(rfcId),str(msg), str(vote)))
+    group.sendVote(rfcId,vote)
+```
 
-- handleVoteRequest(group, rfvId)
-Default handler for vote requests (in member) Implementation must recv/recv_pyobj to obtain the topic.
- - receive vote request (to member from leader)
-        msg = group.recv_pyobj()
-        vote = random.uniform(0,1) > 0.51        
-        self.logger.info('handleVoteRequest[%s] = %s -->  %s' % (str(rfcId),str(msg), str(vote)))
- - send vote back to leader
-        group.sendVote(rfcId,vote)
+The leader will gather the votes and determine if the vote passes or fails. The results of the votes will then be sent back to the
+group members. The result message will be received by the **handleVoteResult** handler within each group member component.
 
-- handleVoteResult(group, rfvId, vote)
-Default handler for the result of a vote (in member)
-
-Request a vote: rfcId = g.requestVote_pyobj("some topic")
-        # rfcId = g.requestVote_pyobj("some topic",Poll.CONSENSUS)
-         requestVote_pyobj(topic, kind='majority', timeout=None)
-
+Syntax:
+```
+handleVoteResult(group, rfvId, vote)
+  where vote = true or false
+```
 
 ### Time-synchronized Coordinated Action
 
-Coordinate agreement amongst distributed nodes regard-
-ing when a time-synchronized action should be performed. Agree on when to schedule the task.
+Group leaders can coordinate agreement amongst the group members regarding when a time-synchronized action should be performed.
+All members must agree on when to schedule the task, in other words full consensus among the members. The time-synchronized
+coordinated action is a complex consensus problem. The agreement is not just about deciding (i) when the action must be executed,
+but also implies an exact decision about (ii) what actions will occur and (iii) who will perform these actions. Moreover, before
+the participants agree on a time-synchronized coordinated action, they may need to agree on the current (iv) global state of the system.
 
-The time-synchronized coordinated action is a complex consensus problem. The agreement is not just
-about deciding (i) when the action must be executed, but also implies an exact decision about (ii) what
-actions will occur and (iii) who will perform these actions. Moreover, before the participants agree on a
-time-synchronized coordinated action, they may need to agree on the current (iv) global state of the system.
+
+
+
+>MM TODO:  Stopped working Here
 
 Instead of agreeing on all four questions sequentially, RIAPS oers to pack all agreement criteria into
 one RIAPS message. The consensus algorithm is able to use this complex message during the ballot process.
