@@ -52,7 +52,7 @@ To send messages to other members of a group, indicate the group instance and ca
 Syntax:
 ```
 g.send_pyobj(msg)
-where g is the group instance name
+  where g is the group instance name
 ```
 ```
 def handleGroupMessage(self,group):
@@ -125,7 +125,7 @@ message, call the **getGroupName** function.
 Syntax:
 ```
 g.sendToLeader_pyobj(msg)
-where g is the group instance name
+  where g is the group instance name
 ```
 ```
 def handleMessageFromLeader(self,group):
@@ -144,7 +144,7 @@ member that should receive the message. If the identity is not provided, the las
 Syntax:
 ```
 g.sendToLeader_pyobj(msg)
-where g is the group instance name
+  where g is the group instance name
 ```
 ```
 def handleMessageToLeader(self,group):

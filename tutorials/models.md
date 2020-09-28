@@ -19,8 +19,8 @@ Applications are described using a model file (*.riaps*) that define component p
   * [Network specification](#rm-model-spec)
 * [Component Configuration Using Parameters](#comp-conf-def)
 * [Advanced Modeling Options](#adv-model-opts)
-  * [Message Scheduling](#adv-sched)
-  * [Distributed Coordination (Groups)](#adv-groups)
+  * [Message Scheduling](sched.md)
+  * [Distributed Coordination (Groups)](groups.md)
 
 ### <a name="riaps-def">Application Model File (*.riaps*)</a>
 
