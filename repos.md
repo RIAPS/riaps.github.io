@@ -16,4 +16,4 @@ Repository        | Content
 [spdlog-python](https://github.com/RIAPS/spdlog-python) | A fork of the same package with a few minor changes in Python logger
 [apparmor_monkeys](https://github.com/RIAPS/apparmor_monkeys.git)  | More secure and simple AppArmor profiles for Python
 [python-prctl](https://github.com/RIAPS/python-prctl)  | A fork of the same package which enables changing the 'ambient capability' set in a more pythonic interface method. |
-[butter](https://github.com/RIAPS/butter) | A fork to fix an installation issue on Ubuntu 20.04  
+[butter](https://github.com/RIAPS/butter) | A fork to fix an installation issue on Ubuntu 20.04 |  

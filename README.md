@@ -41,7 +41,9 @@ The original project website is located at: https://riaps.isis.vanderbilt.edu Th
 
 ## [API Documentation](apidoc.md)
 
-## Acknowledgment:
+## [Roadmap](roadmap.md)
+
+## Acknowledgment
 The information, data, or work presented herein was funded in part by the Advanced Research Projects Agency-Energy (ARPA-E), U.S. Department of Energy, under Award Number DE-AR0000666. The views and opinions of authors expressed herein do not necessarily state or reflect those of the United States Government or any agency thereof.
 
 Credit is due to the developers of the open source packages RIAPS is built on. The core list includes: [Zeromq](http://zeromq.org/) and its related packages, [Eclipse](http://www.eclipse.org/), [Python](https://www.python.org/), and, most fundamentally, [Linux](https://www.linux.org/).
