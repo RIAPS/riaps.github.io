@@ -189,7 +189,7 @@ When the leader receives the request for a vote, messages will be sent individua
 to vote. These components will receive the requests in the **handleVoteRequest** handler. The requests include an ID of the
 component that requested the vote and the group instance name. Each member must immediately call **recv**/**recv_pyobj** on the
 group instance to obtain the topic of the vote. The component will then determine their vote (true or false) and send the vote back
-to the leader using **sendVote**, including the ID provided of the component who originally requested the vote.
+to the leader using **sendVote**, including the ID provided for the component who originally requested the vote.
 
 Syntax:
 ```
@@ -211,36 +211,41 @@ handleVoteResult(group, rfvId, vote)
 
 ### Time-synchronized Coordinated Action
 
-Group leaders can coordinate agreement amongst the group members regarding when a time-synchronized action should be performed.
-All members must agree on when to schedule the task, in other words full consensus among the members. The time-synchronized
-coordinated action is a complex consensus problem. The agreement is not just about deciding (i) when the action must be executed,
-but also implies an exact decision about (ii) what actions will occur and (iii) who will perform these actions. Moreover, before
-the participants agree on a time-synchronized coordinated action, they may need to agree on the current (iv) global state of the system.
+Group leaders can coordinate agreement amongst the group members regarding when a time-synchronized action should be performed in
+the future. Most coordinated actions require the agreement from all members to make sure the impact of the action is understood and
+expected by all group members. So, the default voting type is concensus. It is possible to setup an action vote that is only
+needing a majority vote and can be setup by adding 'Poll.MAJORITY' in the request for action request.
 
+This voting process starts with a group member requesting a vote on an action and the desired time in the future to execute the
+action, using either a **requestActionVote** or **requestActionVote_pyobj** call. For time sensitive votes, a 'timeout' value can
+be provided with this request. A generated id string identifier will be returned for successful requests.
 
+Syntax:
+```
+rfcId = g.requestActionVote_pyobj("some action", when, timeout) # Consensus vote
+```
 
+When the leader receives the request for a vote, messages will be sent individually to each component in the group to request them
+to vote. These components will receive the requests in the **handleActionVoteRequest** handler. The requests include an ID of the
+component that requested the vote, the group instance name and when the action should be executed. Each member must immediately
+call **recv**/**recv_pyobj** on the group instance to obtain the action that the members are voting on. The component will then
+determine their vote (true or false) and send the vote back to the leader using **sendVote**, including the ID provided for the
+component who originally requested the vote.
 
->MM TODO:  Stopped working Here
+Syntax:
+```
+def handleActionVoteRequest(group, rfvId, when):
+    msg = group.recv_pyobj()
+    vote = random.uniform(0,1) > 0.51        
+    self.logger.info('handleActionVoteRequest[%s] = %s @ %s -->  %s' % (str(rfcId),str(msg),str(when),str(vote)))
+    group.sendVote(rfcId,vote)
+```
 
-Instead of agreeing on all four questions sequentially, RIAPS oers to pack all agreement criteria into
-one RIAPS message. The consensus algorithm is able to use this complex message during the ballot process.
+The leader will gather the votes and determine if the vote passes or fails. The results of the votes will then be sent back to the
+group members. The result message will be received by the **handleVoteResult** handler within each group member component.
 
-
-action defaults to consensus: action,when,kind=Poll.CONSENSUS,timeout=None
-                        rfcId = g.requestActionVote_pyobj("some action",when) # CONSENSUS vote
-                        # rfcId = g.requestVote_pyobj("some topic",Poll.CONSENSUS)
-
-- handleActionVoteRequest(group, rfvId, when)[source]
-Default handler for request to vote an action in the future (in member) Implementation must recv/recv_pyobj to obtain the action topic.
-
-handleActionVoteRequest(group, rfvId, when)
-Default handler for request to vote an action in the future (in member) Implementation must recv/recv_pyobj to obtain the action topic.
- - same as vote request
-        msg = group.recv_pyobj()
-        vote = random.uniform(0,1) > 0.51        
-        self.logger.info('handleActionVoteRequest[%s] = %s @ %s -->  %s' % (str(rfcId),str(msg),str(when),str(vote)))
-        group.sendVote(rfcId,vote)
-- sendActionVote(rfvId, vote)
-
-Request an action:  rfcId = g.requestActionVote_pyobj("some action",when)
-               requestActionVote_pyobj(action, when, kind='consensus', timeout=None)
+Syntax:
+```
+handleVoteResult(group, rfvId, vote)
+  where vote = true or false
+```
