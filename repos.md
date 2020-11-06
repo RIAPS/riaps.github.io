@@ -14,4 +14,6 @@ Repository        | Content
 [riaps-library](https://github.com/RIAPS/riaps-library) | Source for some device components with standard protocols
 [riaps.github.io](https://github.com/RIAPS/riaps.github.io) | Content of this website
 [spdlog-python](https://github.com/RIAPS/spdlog-python) | A fork of the same package with a few minor changes in Python logger
-[apparmor_monkeys](https://github.com/RIAPS/apparmor_monkeys.git)  | More secure and simple AppArmor profiles for Python  |  
+[apparmor_monkeys](https://github.com/RIAPS/apparmor_monkeys.git)  | More secure and simple AppArmor profiles for Python
+[python-prctl](https://github.com/RIAPS/python-prctl)  | A fork of the same package which enables changing the 'ambient capability' set in a more pythonic interface method. |
+[butter](https://github.com/RIAPS/butter) | A fork to fix an installation issue on Ubuntu 20.04 |  
