@@ -20,9 +20,9 @@ RIAPS applications are built from distributed computing components that work tog
 
 #### Application Development
 
-Component implementation can be written in either Python or C++.  Python allow quick prototyping of algorithms using a simple language.  Those not requiring fast update rates or actions are well suited for a Python implementation.  For components requiring fast timing or developers wanting to use C++, refer to the [C++ Component Development Tutorial](https://github.com/RIAPS/riaps-core/wiki).
+Component implementation can be written in either Python or C++.  Python implementations allow quick prototyping of algorithms using a simple language and works well for those not requiring fast update rates or actions. An explanation of the language used to create RIAPS model and deployment files can be found in the [Application Model and Deployment Files Tutorial](tutorials/models.md).  
 
-An explanation of the language used to create these RIAPS model and deployment files can be found in the [Application Model and Deployment Files Tutorial](tutorials/models.md).  
+>Note:  At the moment, the C++ capability has been table and will be included again in the future. The RIAPS hooks are still included in the application definition, so the explanations will remain in this tutorial. For components requiring fast timing or developers wanting to use C++, refer to the [C++ Component Development Tutorial](https://github.com/RIAPS/riaps-core/wiki).
 
 The RIAPS Eclipse plug-in utilizes a code generation tool that can also be used from the command line.  Information on the ***riaps_gen*** code generation tool can be found in the [RIAPS Code Generation Tutorial](https://github.com/RIAPS/riaps-pycom/tree/master/src/riaps/gen/README.md).
 
@@ -53,3 +53,14 @@ Here is a set of videos describing different features of the RIAPS platform and 
 * [Advanced Device Component Example](tutorials/app-examples/multithread-device.md)
 * [Device Component Library](tutorials/app-examples/device-library.md)
 * [Time Synchronization Example](tutorials/app-examples/time-sync.md)
+
+#### Summary of Tutorial Links
+
+* [Hello World App](https://riaps.github.io/tutorials/app-examples/hello-world.html)
+* [Application Model and Deployment Files](https://riaps.github.io/tutorials/models.html)
+* [Code Generation Tool](https://github.com/RIAPS/riaps-pycom/blob/master/src/riaps/gen/README.md)
+* [Application Management](https://riaps.github.io/tutorials/launch.html)
+* [Component Logging](https://riaps.github.io/tutorials/logging.html)
+* [Component Debugging](https://riaps.github.io/tutorials/debug.html)
+* [Message Scheduling](https://riaps.github.io/tutorials/sched.html)
+* [Distributed Coordination - Groups](https://riaps.github.io/tutorials/groups.html)
