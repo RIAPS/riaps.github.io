@@ -120,10 +120,8 @@ Console and file sink types available are:
 - ConsoleLogger
   - Standard output: 'stdout_sink (_mt or _st)'
   - Colored standard output: 'stdout_color_sink (_mt or _st)'
-  - Standard error output: 'stderr_sink (_mt or _st)'
-  - Colored standard error output: 'stderr_color_sink (_mt or _st)'
 - FileLogger
-  - Basic file sink that writes to a given log file: 'simple_file_sink (_mt or _st)'
+  - Basic file sink that writes to a given log file: 'basic_file_sink (_mt or _st)'
   - Rotating log files: 'rotating_file_sink (_mt or _st)'
   - Create new file every day at a specified time: 'daily_file_sink_st (_mt or _st)'
 
@@ -170,7 +168,7 @@ To configure a file sink, include the log filename and logging level.  If creati
 ```
 [[sink]]
 name = "weather_indicator_file_mt"
-type = "simple_file_sink_mt"
+type = "basic_file_sink_mt"
 filename = "log/windicator_file.log"
 level = "info"
 create_parent_dir = true
@@ -178,7 +176,7 @@ create_parent_dir = true
 
 >Note:  When writing to a log file, output to this file happens in batches so it can take some time for the data to appear in the desired file (on the order of a minute or more).  It is highly recommended to write each component instance to a separate file.  If multiple components are writing to the same file, each batch output will write logs for a single component rotating until all components output a batch set (not interleaved based on time).  During the batch transitions, the component output can become mixed together with another component output.  While all data remains present, batch transition lines become hard to parse for desired information.
 
-Example configuration files for various sink types can be found at under [TOML Configuration Example](https://github.com/guangie88/spdlog_setup#toml-configuration-example).  If a log folder is desired for daily and rotating log files, a simple file sink definition will be needed to create this folder using the 'create_parent_dir' indicator since application folders are dynamically created when the RIAPS application is deployed (not by a system administrator).  The simple file log will be created in the desired log directory, but will not be used if it is not specified by a component logger definition.
+Example configuration files for various sink types can be found at under [TOML Configuration Example](https://github.com/guangie88/spdlog_setup#toml-configuration-example).  If a log folder is desired for daily and rotating log files, a basic file sink definition will be needed to create this folder using the 'create_parent_dir' indicator since application folders are dynamically created when the RIAPS application is deployed (not by a system administrator).  The basic file log will be created in the desired log directory, but will not be used if it is not specified by a component logger definition.
 
 The console information output can be viewed as indicated in the [Default Logging](#logging-default) section.  Like the actor-level logging, the log files will be stored in the deployed application location (*/home/riaps/riaps_apps/\<app name>/*).  To access the files, the developer must have root access.
 
