@@ -201,7 +201,7 @@ actor ActorName1 {
 }
 ```
 
-If a request/reply pattern exists in one or more of the component definitions and the messages need to stay local to the RIAPS node where the actor resides, then the **local** keyword is added to indicate specific messages stay within the node communication, shown below.
+If a message pattern (such as request/reply) exists in one or more of the component definitions and the messages need to stay local to the RIAPS node where the actor resides, then the **local** keyword is added to indicate specific messages stay within the node communication, shown below.
 
 ```
 actor ActorName1 {
@@ -213,13 +213,35 @@ actor ActorName1 {
 }
 ```
 
-If two or more actors on the same RIAPS node exchange a local message, it is specified as **local** in both actors.  Device components can only exchange messages with local actors, therefore an application specification may be as follows:
+If two or more actors on the same RIAPS node exchange a local message, it is specified as **local** in both actors.  Then both actors will see each of the local messages.  Device components can only exchange messages with local actors, therefore an application specification may be as follows:
 
 ```
 actor ActorName1 {
    local aRequestMesssage, aReplyMessage;  
    {  
       componentInstanceName1 : RequestComponent;
+   }
+}
+
+actor ActorName2 {
+   local aRequestMesssage, aReplyMessage;  
+   {  
+      componentInstanceName1 : RequestComponent;
+      deviceInstanceName : ADevice;  // Reply to aRequestMessage
+   }
+}
+```
+
+To keep messages visible only to the other components within an actor, the **internal** keyword can be used.  This can be used in combination with the **internal** keyword as shown below where the request/reply messaging will be seen by both actors on the RIAPS node and the query/answer messages will only be visible to **ActorName1**.
+
+```
+actor ActorName1 {
+   local aRequestMesssage, aReplyMessage;  
+   internal aQueryMessage, anAnswerMessage;
+   {  
+      componentInstanceName1 : RequestComponent;
+      componentInstanceName2 : QueryComponent;
+      componentInstanceName3 : AnsComponent;
    }
 }
 
