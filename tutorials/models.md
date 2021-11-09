@@ -226,7 +226,6 @@ actor ActorName1 {
 actor ActorName2 {
    local aRequestMesssage, aReplyMessage;  
    {  
-      componentInstanceName1 : RequestComponent;
       deviceInstanceName : ADevice;  // Reply to aRequestMessage
    }
 }
@@ -248,7 +247,6 @@ actor ActorName1 {
 actor ActorName2 {
    local aRequestMesssage, aReplyMessage;  
    {  
-      componentInstanceName1 : RequestComponent;
       deviceInstanceName : ADevice;  // Reply to aRequestMessage
    }
 }
