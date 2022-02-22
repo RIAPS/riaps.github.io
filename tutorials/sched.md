@@ -2,10 +2,9 @@
 
 RIAPS application actors and components are scheduled using the scheduling features available
 in Linux. An actor is a Linux process, and each component runs in its own thread. Python components
-run in a Python thread, C++ components run in a pthread. Each actor has a main thread (that is always
-the main thread of the Python interpreter), as well as ZeroMQ communication threads (that are pthreads).
-When a Python component is activated it gets its own thread, when a C++ component is activated the
-master (Python) thread creates a pthread that will run the component code.
+run in a Python thread. Each actor has a main thread (that is always the main thread of the Python
+interpreter), as well as ZeroMQ communication threads (that are pthreads).
+When a Python component is activated it gets its own thread.
 
 Scheduling of actors (processes) and component (threads) is under the control of the Linux scheduler.
 Each component inherits the scheduling properties of the actor the component is running in, and all
