@@ -1,8 +1,8 @@
 ## Implementation details
 
-RIAPS relies on an underlying Linux operating system - currently we are using Ubuntu 18.04. Any hardware platform that runs this OS will likely run (most of) RIAPS. One of the RIAPS services: the time-synchronization service requires that the network interface of the hardware platform supports the IEEE-1558 (Precision Time Protocol). This is necessary for high-precision (read: better than NTP) time synchronization only.
+RIAPS relies on an underlying Linux operating system - currently we are using Ubuntu 20.04. Any hardware platform that runs this OS will likely run (most of) RIAPS. One of the RIAPS services: the time-synchronization service requires that the network interface of the hardware platform supports the IEEE-1558 (Precision Time Protocol). This is necessary for high-precision (read: better than NTP) time synchronization only.
 
-The two main implementation languages are Python (3.6) and C++ (as supported by gcc-7).
+The two main implementation languages are Python (3.8) and C++ (as supported by gcc-9).
 
 Application components can be implemented in Python and in C++. In both cases the developer has to follow a structure for the components.
 
@@ -59,7 +59,7 @@ riaps_deplo is typically started automatically (by systemd, for instance) on the
 
 ## Installation
 
-A RIAPS installation includes one development / control host, and a network of target hosts. For the former, a pre-configured virtual machine is provided: an x86_64 (or amd64) machine (although a physical machine can be used as well, after some serious configuration). For the latter, we provide a bootable SD card image for a Beaglebone Black (BBB) board.  
+A RIAPS installation includes one development / control host, and a network of target hosts. For the former, a pre-configured virtual machine is provided: an x86_64 (or amd64) machine (although a physical machine can be used as well, after some serious configuration). For the latter, we provide a bootable SD card image for a Beaglebone Black (BBB), Raspberry Pi 4 (RPi) and Jetson Nano boards.  
 
 The development host and the target nodes must be on the same subnet.
 
@@ -75,7 +75,7 @@ As discussed above, development runs riaps_ctrl (and rpyc_registry), while the t
 
 ### Some configuration
 
-If a host has multiple physical NICs, riaps_ctrl and riaps_deplo must know which NIC to use. This is controlled by a configuration file: /usr/local/riaps/etc/riaps.conf via an entry called 'nic_name'. This has to be set to the name of the NIC, e.g. eth0 on the BBBs, enp0s3 for VMs. If not set, RIAPS will attempt to use the first NIC which it finds on the machine.
+If a host has multiple physical NICs, riaps_ctrl and riaps_deplo must know which NIC to use. This is controlled by a configuration file: /riaps/etc/riaps.conf via an entry called 'nic_name'. This has to be set to the name of the NIC, e.g. eth0 on the BBBs, enp0s3 for VMs. If not set, RIAPS will attempt to use the first NIC which it finds on the machine.
 
 riaps_deplo typically runs on the target nodes with root privileges but under the username riaps. The riaps_actors it launches run under a dynamically generated user name. The target nodes must have a riaps user account with the security keys set up. The BBB image has these pre-configured.
 
