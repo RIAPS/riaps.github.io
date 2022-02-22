@@ -112,7 +112,7 @@ Please follow these steps to have your contribution considered by the maintainer
 2. Follow the [styleguides](#styleguides)
 3. After you submit your pull request, verify that all
 [status checks](https://help.github.com/articles/about-status-checks/) are passing.
-5. Request a GitHub review by one of the core developers (e.g. @adubey14 @imadari @MMetelko)
+5. Request a GitHub review by one of the core developers (e.g. @adubey14 @eiselesr @MMetelko)
 6. Follow their instructions or discuss about the requested changes. Please don't take criticism personally,
 it is normal to iterate on this step several times.
 7. Repeat step 6 until the pull request is merged!

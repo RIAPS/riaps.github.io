@@ -35,23 +35,23 @@ logger.set_level(spd.LogLevel.INFO)
 
 The log messages are sent to the console output on the node.  If working on the development VM and starting the ***riaps_deplo*** using either Eclipse or ```sudo -E riaps_deplo``` in a terminal window, the console output will be available.  The information provided will be both the RIAPS platform and the application component logging information.
 
-The BBB nodes run ***riaps_deplo*** as a systemd service, so the console log information is placed in the system logs.  To view the information as the application is running, ssh into a BBB node and run the ***journalctl*** command or you can view an individual BBB journal file using a fabric command.
+The target nodes nodes run ***riaps_deplo*** as a systemd service, so the console log information is placed in the system logs.  To view the information as the application is running, ssh into a target node and run the ***journalctl*** command or you can view an individual target node journal file using a fabric command.
 
-* SSH to BBB:
+* SSH to target nodes:
   ```bash
   sudo journalctl -u riaps-deplo.service -f
   ```
 
 * Fabric Command from VM:
   ```
-  fab deplo.journal:n=200,grep=WeatherMonitor -H bbb-a2c4.local > debug-log.log
+  fab deplo.journal:n=200,grep=WeatherMonitor -H riaps-a2c4.local > debug-log.log
 
   where
     - n is the number of lines of the journal desired, defaults to 10
     - grep='' allows one word search narrowing,
       it is case sensitive and only search number of lines pulled (n=)
-    - '-H' allows specification of a single BBB hostname
-      (either IP address or bbb-xxxx.local format),
+    - '-H' allows specification of a single target node hostname
+      (either IP address or riaps-xxxx.local format),
       defaults to all RIAPS hosted specified in fabric riaps_host.py file
     - use '>' to direct output to a file, if desired
   ```
@@ -68,14 +68,14 @@ A global way to log **Actor** information to a file in the deployed application 
 app_logs = log
 ```
 
-For the remote RIAPS nodes, the *riaps.conf* can be modified on the development VM and then moved to the remote nodes using the [fabfile utility](https://github.com/RIAPS/riaps-pycom/tree/master/src/riaps/fabfile). Start with [original *riaps.conf* file](https://github.com/RIAPS/riaps-pycom/blob/master/src/riaps/etc/riaps.conf) and configure appropriately for your system configuration (including the NIC name). Make sure the RIAPS nodes are accessible from the fab command (see ```fab sys.check```). Then use the ```fab riaps.updateConfig``` command to transfer the locally edited *riaps.conf* file to the remote nodes.
+For the remote RIAPS nodes, the *riaps.conf* can be modified on the development VM and then moved to the remote nodes using the [fabfile utility](https://github.com/RIAPS/riaps-pycom/tree/master/src/riaps/fabfile). Start with [original *riaps.conf* file](https://github.com/RIAPS/riaps-pycom/blob/master/src/riaps/etc/riaps.conf) and configure appropriately for your system configuration (including the NIC name). Make sure the RIAPS nodes are accessible from the fab command (see ```riaps_fab sys.check```). Then use the ```riaps_fab riaps.updateConfig``` command to transfer the locally edited *riaps.conf* file to the remote nodes.
 
 Since applications are deployed under a generated username, the developer must have root access to view the log messages in the */home/riaps/riaps_apps/\<app name>* directory.  When writing to a log file, output to this file happens in batches so it can take some time for the data to appear in the desired file (on the order of a minute or more).
 
-The */home/riaps/riaps_apps/\<app name>* directory is only available when the application is deployed.  Removing an application using the RIAPS controller will delete the log information.  It is anticipated that when an application is deployed in a real system, it could be stopped and restarted or just left continuously running throughout the life of the application on the system.  Therefore, logged information will remain available to system operators.  During application development, the developer will be deploying and removing the application during debugging efforts.  So it is recommended to copy the logs to another location if access is needed at a later time (for debugging).  The log files can be moved from a remote node to the development machine using the following fabric utility command from the development machine (passing where to locate the file and then where to place the file locally).  The 'true' is needed since the logs are located in a privileged location that requires 'sudo' in the get command.
+The */home/riaps/riaps_apps/\<app name>* directory is only available when the application is deployed.  Removing an application using the RIAPS controller will delete the log information.  It is anticipated that when an application is deployed in a real system, it could be stopped and restarted or just left continuously running throughout the life of the application on the system.  Therefore, logged information will remain available to system operators.  During application development, the developer will be deploying and removing the application during debugging efforts.  So it is recommended to copy the logs to another location if access is needed at a later time (for debugging).  The log files can be copied from a remote node to the development machine using the following fabric utility command from the development machine.  All available application log files (.log) will be retrieved from each node for the application identified (app_name). For each node, these files will be placed under a logs/<hostname> directory..
 
 ```
-sys.get:riaps_apps/DistributedEstimator/log/*,.,true -H bbb-8014.local
+riaps.getAppLogs -H riaps-8014.local
 ```
 
 > Note: It is not recommended to leave actor-level logging on in a real system deployed application unless the logging is for errors and warnings only, in order to minimize disk usage.  Consider using customizable component-level logging instead.

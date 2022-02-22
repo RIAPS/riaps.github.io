@@ -1,6 +1,6 @@
 ## Application Model and Deployment Files Tutorial
 
-In RIAPS, applications consists of components (written as Python modules or compiled into C++ shared libraries), additional libraries the application needs, and descriptions of the application architecture and how it should be deployed on a network or RIAPS nodes.
+In RIAPS, applications consists of components (written as Python modules), additional libraries the application needs, and descriptions of the application architecture and how it should be deployed on a network or RIAPS nodes.
 Applications are described using a model file (*.riaps*) that define component port types (and, implicitly, connections among those ports), the messages passed between or within components, and how the components are utilized to create actors. The deployment model (*.depl*) defines the expected configuration of the application on a specific network setup.  
 
 ### Page Contents
@@ -41,7 +41,7 @@ The key words used to create the core application elements are:
   'message yourMessageName;'
 - Actor definition - list all actors in the application <br>
   'actor yourActorName{actorInstanceName : yourComponentName;}'
-- *Optional:*  Library name - Python or C++ library available to the components code development, either third party packages or developer created.  For Python, the name is a string value representing the folder in which the library code is located.  For C++, the name is the shared library file name (without the *.so*).  Libraries are either installed in the system or included with the  application files.  <br>
+- *Optional:*  Library name - Python or C++ library available to the components code development, either third party packages or developer created.  The name is a string value representing the folder in which the library code is located.  <br>
   'library libraryName;'
 
 Below is a skeleton of an application file to show how these elements relate in the model (*.riaps*) file.
@@ -91,14 +91,6 @@ The component definitions will indicate the available ports in each components. 
 - Client (**clt**) <--> Server (**srv**)  
 - Query (**qry**) / Answer (**ans**)
 - Inside Ports (**inside**) - used only in device components to isolate hardware communication
-
-Components (and Devices) can be written in either Python (3.6) or C++ (v17).  An application can be created from a mix of both Python and C++ components.  To identify the language of the component, add "in" and then the language type just before the "{}" to define the ports.  If no language is indicated, then the components will be expected to be a Python implementation.  Python can be specified by either **Python**, **python** or **py**.  C++ can be specified by either **C++**, **c++** or **cpp**.
-
-```
-    Component1 () in Python {
-
-    }
-```
 
 ##### <a name="timer-def">Timer Ports</a>
 
@@ -298,12 +290,12 @@ net rate 10 kbps ceil 12 kbps burst 1.2 k;
 
 ### <a name="depl-def">Application Deployment File (*.depl*)</a>
 
-This file sets up the hardware configuration to reflect where the actors are located relative to the physical hardware devices.  The application name here must match the application name used in the corresponding model file (*.riaps*).  The deployment specification begins with the keyword **on** and then specifies the device location and the actor that is placed on this device.  The device location can either be a specific device or indicate to place the actor on **all** devices discovered by the RIAPS controller.  The specific device can be indicated by its host name (bbb-1234) with a **.local** afterwards or by its IP address.  The hostname is indicated when you remote login into the specific hardware device, it is the command prompt available.  Below is an example of a basic deployment file.  
+This file sets up the hardware configuration to reflect where the actors are located relative to the physical hardware devices.  The application name here must match the application name used in the corresponding model file (*.riaps*).  The deployment specification begins with the keyword **on** and then specifies the device location and the actor that is placed on this device.  The device location can either be a specific device or indicate to place the actor on **all** devices discovered by the RIAPS controller.  The specific device can be indicated by its host name (riaps-1234) with a **.local** afterwards or by its IP address.  The hostname is indicated when you remote login into the specific hardware device, it is the command prompt available.  Below is an example of a basic deployment file.  
 
 ```
 app TestApp {
     on (192.168.1.101) ActorName1;
-    on (bbb-1234.local) ActorName2;
+    on (riaps-1234.local) ActorName2;
 }
 ```
 
@@ -324,7 +316,7 @@ app DistributedEstimator {
   host all {
     network dns;          // All hosts may connect to the domain name service
   }
-  host bbb-452e.local {
+  host riaps-452e.local {
     network 198.168.1.1;  // This host may connect to the specified IP address
   }
   on all Estimator;       // Estimator actor deployed to all nodes
@@ -385,9 +377,9 @@ Here is an example where the deployment model defines the final setup of the app
 
 ```
 app DistributedEstimatorGpio {
-    on (bbb-89a5.local) Estimator(freqArg=0.5,value=1.0);  // 0.5 Hz update rate
-    on (bbb-a06e.local) Estimator(freqArg=1.0,value=2.0);  // 1 Hz update rate
-    on (bbb-398d.local) Estimator(freqArg=2.0,value=3.0);  // 2 Hz update rate
+    on (riaps-89a5.local) Estimator(freqArg=0.5,value=1.0);  // 0.5 Hz update rate
+    on (riaps-a06e.local) Estimator(freqArg=1.0,value=2.0);  // 1 Hz update rate
+    on (riaps-398d.local) Estimator(freqArg=2.0,value=3.0);  // 2 Hz update rate
     on (192.168.1.101) Aggregator();  
 }
 ```

@@ -9,4 +9,5 @@ Gabor Karsai | https://github.com/gkarsai | everything | everything
 Istvan Madari | https://github.com/imadari | everything | everything
 Mary Metelko | https://github.com/MMetelko | everything | everything
 Peter Volgyesi | https://github.com/volgy | everything | everything
-
+Scott Eisele | https://github.com/eiselesr | everything | everything
+Gerry McAfee | https://github.com/GWMAC150 | device interfacing | device interfacing

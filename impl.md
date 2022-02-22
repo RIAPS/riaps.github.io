@@ -1,10 +1,8 @@
 ## Implementation details
 
-RIAPS relies on an underlying Linux operating system - currently we are using Ubuntu 18.04. Any hardware platform that runs this OS will likely run (most of) RIAPS. One of the RIAPS services: the time-synchronization service requires that the network interface of the hardware platform supports the IEEE-1558 (Precision Time Protocol). This is necessary for high-precision (read: better than NTP) time synchronization only.
+RIAPS relies on an underlying Linux operating system - currently we are using Ubuntu 20.04. Any hardware platform that runs this OS will likely run (most of) RIAPS. One of the RIAPS services: the time-synchronization service requires that the network interface of the hardware platform supports the IEEE-1558 (Precision Time Protocol). This is necessary for high-precision (read: better than NTP) time synchronization only.
 
-The two main implementation languages are Python (3.6) and C++ (as supported by gcc-7).
-
-Application components can be implemented in Python and in C++. In both cases the developer has to follow a structure for the components.
+Application components are implemented in Python (3.8). The developer has to follow a structure for the components.
 
 The table below lists the main ingredients of RIAPS. Note that these are only the main processes; there are several run-time libraries, configuration files, etc.
 
@@ -21,7 +19,7 @@ rpyc_registry | Registry service <br> Courtesy of https://github.com/tomerfiliba
 
 ### riaps_actor
 
-This is the executable that dynamically loads and executes RIAPS components. It is implemented in Python and it uses the dynamic loader to load components implemented either in Python or C++. One riaps_actor process is one application actor, and a multi-actor application runs multiple riaps_actor processes. riaps_actor is not functional alone, it communicates with its parent: the deployment manager (riaps_deplo) and the discovery service (riaps_deplo). The components it loads communicate with their peers within the application.
+This is the executable that dynamically loads and executes RIAPS components. It is implemented in Python and it uses the dynamic loader to load the Python components. One riaps_actor process is one application actor, and a multi-actor application runs multiple riaps_actor processes. riaps_actor is not functional alone, it communicates with its parent: the deployment manager (riaps_deplo) and the discovery service (riaps_deplo). The components it loads communicate with their peers within the application.
 
 Each riaps_actor runs under a dynamically generated user-id/group-id, with non-root privileges. It is launched by riaps_deplo.
 
@@ -59,7 +57,7 @@ riaps_deplo is typically started automatically (by systemd, for instance) on the
 
 ## Installation
 
-A RIAPS installation includes one development / control host, and a network of target hosts. For the former, a pre-configured virtual machine is provided: an x86_64 (or amd64) machine (although a physical machine can be used as well, after some serious configuration). For the latter, we provide a bootable SD card image for a Beaglebone Black (BBB) board.  
+A RIAPS installation includes one development / control host, and a network of target hosts. For the former, a pre-configured virtual machine is provided: an x86_64 (or amd64) machine (although a physical machine can be used as well, after some serious configuration). For the latter, we provide a bootable SD card image for a Beaglebone Black (BBB), Raspberry Pi 4 (RPi) and Jetson Nano boards.  
 
 The development host and the target nodes must be on the same subnet.
 
@@ -75,10 +73,10 @@ As discussed above, development runs riaps_ctrl (and rpyc_registry), while the t
 
 ### Some configuration
 
-If a host has multiple physical NICs, riaps_ctrl and riaps_deplo must know which NIC to use. This is controlled by a configuration file: /usr/local/riaps/etc/riaps.conf via an entry called 'nic_name'. This has to be set to the name of the NIC, e.g. eth0 on the BBBs, enp0s3 for VMs. If not set, RIAPS will attempt to use the first NIC which it finds on the machine.
+If a host has multiple physical NICs, riaps_ctrl and riaps_deplo must know which NIC to use. This is controlled by a configuration file: /riaps/etc/riaps.conf via an entry called 'nic_name'. This has to be set to the name of the NIC, e.g. eth0 on the BBBs, enp0s3 for VMs. If not set, RIAPS will attempt to use the first NIC which it finds on the machine.
 
-riaps_deplo typically runs on the target nodes with root privileges but under the username riaps. The riaps_actors it launches run under a dynamically generated user name. The target nodes must have a riaps user account with the security keys set up. The BBB image has these pre-configured.
+riaps_deplo typically runs on the target nodes with root privileges but under the username riaps. The riaps_actors it launches run under a dynamically generated user name. The target nodes must have a riaps user account with the security keys set up. The target images has these pre-configured.
 
 riaps_deplo relies on two environment variables that must be set correctly.
-- RIAPSHOME should point to the location of the RIAPS data files. On the VM and BBB images it is set to /usr/local/riaps.
-- RIAPSAPPS should point to a folder where the apps are downloaded to and are run from. On the VM and the BBB images it is set to ~riaps/riaps-apps.
+- RIAPSHOME should point to the location of the RIAPS data files. On the VM and target nodes images it is set to /usr/local/riaps.
+- RIAPSAPPS should point to a folder where the apps are downloaded to and are run from. On the VM and the target nodes images it is set to ~riaps/riaps-apps.
