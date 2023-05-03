@@ -249,3 +249,18 @@ Syntax:
 handleVoteResult(group, rfvId, vote)
   where vote = true or false
 ```
+
+### Additional Group Parameters
+
+Users can optionally overwrite some of the default timeout values by specifying them while defining the group in the application model. Here is an example of a group with a leader and user specified parameters:
+
+```
+group TheGroup with leader using Msg
+heartbeat = 2000, electionMin = 2500, electionMax = 3000, peerTimeout = 3500, consensusTimeout = 2500;
+```
+
+The various parameters available are:
+- `heartbeat`: Group heartbeat period. Default is 1000.
+- `electionMin` and `electionMax`: The election timeout is the maximum time a follower waits until it becomes a candidate (see "Leader Elections" section). The value will be randomly selected between these two values. Default is 1500 and 2000 respectively.
+- `peerTimeout`: A peer is declared lost after this timeout. This value must be less than the `electionMax`. Default is 3000.
+- `consensusTimeout`: Maximum time to get the result of a consensus vote (see "Consensus Voting" section"). Default is 1500.
