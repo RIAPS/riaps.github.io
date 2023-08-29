@@ -1,5 +1,5 @@
 # Query-Answer Example App
-The `QryAns` app, located in the QryAns directory of [riaps-tutorials](https://github.com/RIAPS/riaps-tutorials), demonstrates how to use Query-Answer messaging. It can be run on a single RIAPS VM node. 
+The `QryAns` app, located in the QryAns directory of [riaps-tutorials](https://github.com/RIAPS/riaps-tutorials), demonstrates how to use Query-Answer messaging. It should be run on a single RIAPS VM node. 
 
 # About Query-Answer Messaging
 Query-Answer, (a.k.a. qry-ans), is a bidirectional messaging pattern where a query port sends a message to an answer port, which can then send a message back.
