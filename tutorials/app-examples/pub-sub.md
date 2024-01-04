@@ -1,107 +1,43 @@
-## "Publish/Subscribe" from RIAPS Tutorials Episode 2
+# Publish-Subscribe Example App 
+The `PubSub` app, located in the PubSub directory of [riaps-tutorials](https://github.com/RIAPS/riaps-tutorials), demonstrates how to use Publish-Subscribe messaging. It should be run on a single RIAPS VM node. 
 
-The RIAPS Pub/Sub example expands upon the application from [Episode 1](https://riaps.github.io/tutorials/app-examples/hello-world.html "Link to Episode 1") to add a RIAPS node logging data from the PMU. Tutorial 2 introduces messages, message topics, and the publish/subscribe messaging pattern. It then adds these features to the application from Episode 1, which then samples (rather, simulates sampling) a PMU and publishes the measurement on a RIAPS message topic, which is received by a subscriber, then logged. 
+# About Publish-Subscribe Messaging
+Publish-Subscribe, (a.k.a. pub-sub), is a one-way messaging pattern from N-to-M ports: publish, or **pub** ports, send messages, and subscribe, or **sub** ports, receive them. Connections between pub and sub ports happen via **topics**. 
 
-### [RIAPS Tutorials Episode 2](https://www.youtube.com/watch?v=4bE0cddRiSE "RIAPS Tutorials Episode 2")
+Topics are a virtual[^1] message stream: pub ports send messages into the stream, while sub ports receive messages from it. 
 
-
-
-### Model File (SmartGrid.riaps)
+The below RIAPS model snippet shows how each is declared:
 ```
-app SmartGrid {
+message MsgTopic;
 	
-  message PmuData;
-
-  component PMUSampler {
-    timer clock 1000;
-    pub pubport : PmuData;
-  }
-  
-  component PhaseDataListener {
-    sub subport : PmuData;
-  }
-
-  actor PMU {
-    {
-      mySampler : PMUSampler;
-    }
-  }
-  
-  actor DataLogger {
-    {
-      myListener : PhaseDataListener;
-    }
-  }
+component Foo {
+  pub pubPort : MsgTopic;
+  ...
 }
-```
 
-### Deployment File (SmartGrid.depl)
-```
-app SmartGrid {
-  on (<RIAPS NODE IP ADDRESS>) PMU;
-  on (<RIAPS NODE IP ADDRESS>) DataLogger;
+component Bar {
+  sub subPort : MsgTopic;
+  ...
 }
+``` 
+A topic called `MsgTopic` is declared with the `message` keyword.  
+A component uses the `pub` keyword to declare a publish port named `pubPort`. A colon separates the port name from the topic it will publish to, namely `MsgTopic`.  
+Another component uses the `sub` keyword to declare a subscribe port named `subPort`. It subscribes to `MsgTopic`, and will receive messages published there[^1]. 
+
+A publish port can be used almost anywhere in a component implementation. For example, the `Foo` component above can send a string using its `pubPort` by calling:
+```python
+my_msg = "Hello from Foo"
+self.pubPort.send_pyobj(my_msg)
+```
+The message sent can be any [serializable](https://docs.python.org/3/library/pickle.html#what-can-be-pickled-and-unpickled) Python object. The `pubPort` will send the message to all connected sub ports, in this case `subPort` declared in the above `Bar` component. When the message is received by `subPort`, it triggers the poller in `Bar` to look for and run a function named `on_subPort`, like in the below:
+```python
+class Bar(Component):
+    ...
+    def on_subPort(self):
+        msg = self.subPort.recv_pyobj()
+        # msg contains "Hello from Foo"
 ```
 
-### Component Code (PMUSampler.py)
-```
-# riaps:keep_import:begin
-from riaps.run.comp import Component
-import spdlog
-import capnp
-import smartgrid_capnp
-from math import sin, pi
 
-# riaps:keep_import:end
 
-class PMUSampler(Component):
-
-# riaps:keep_constr:begin
-    def __init__(self):
-        super(PMUSampler, self).__init__()
-# riaps:keep_constr:end
-
-# riaps:keep_clock:begin
-    def on_clock(self):
-        timestamp = self.clock.recv_pyobj()
-        measurement = self.takeSample(timestamp)
-        self.logger.info("Measured %f volts and %f amps" % measurement)
-        self.pubport.send_pyobj(measurement)
-# riaps:keep_clock:end
-
-# riaps:keep_impl:begin
-    def takeSample(self,t):
-        voltage = 480*sin(2*pi*60*t)
-        current = 200*sin(2*pi*60*t)
-        return (voltage,current)
-
-# riaps:keep_impl:end
-```
-
-### Component Code (PhaseDataListener.py)
-```
-# riaps:keep_import:begin
-from riaps.run.comp import Component
-import spdlog
-import capnp
-import smartgrid_capnp
-
-# riaps:keep_import:end
-
-class PhaseDataListener(Component):
-
-# riaps:keep_constr:begin
-    def __init__(self):
-        super(PhaseDataListener, self).__init__()
-# riaps:keep_constr:end
-
-# riaps:keep_subport:begin
-    def on_subport(self):
-        measurement = self.subport.recv_pyobj()
-        self.logger.info("Logging %s" % str(measurement))
-# riaps:keep_subport:end
-
-# riaps:keep_impl:begin
-
-# riaps:keep_impl:end
-```
+[^1]: Under-the-hood, a topic is not a place in memory, but a string that sub ports use to look up pub ports that they should connect to. When a pub port publishes a message, it sends the message to each connected sub port, one-at-a-time. This means that when a topic has more than one publisher, the received message order is not necessarily the same for at all subscribers.

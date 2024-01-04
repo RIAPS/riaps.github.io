@@ -35,18 +35,23 @@ Logging files are useful in the debugging and monitoring of applications.  The [
 There is also a [Debugging RIAPS Apps Tutorial](tutorials/debug.md) that can provide information on different ways to debug an application during development or when something goes wrong.
 
 ### RIAPS Feature Tutorials
+#### Setup  
+The below collection of RIAPS applications each demonstrate a feature available to RIAPS applications. After having set up a RIAPS dvelopment VM, clone the [riaps-tutorials repository](https://github.com/RIAPS/riaps-tutorials) into your VM to view and launch the applications.
 
-Here is a set of videos describing different features of the RIAPS platform and how they can be utilized in application development.  The code used in the video is provided.
-
-* [Simple Publish/Subscribe App](tutorials/app-examples/pub-sub.md)
+#### RIAPS Feature Example Applications
+* [Timer Ports](tutorials/app-examples/timer-app.md)  
+Create time-triggered functions
+* [Publish-Subscribe Messaging](tutorials/app-examples/pub-sub.md)  
+Send one-way messages from N-to-M nodes.
+* [Query-Answer Messaging](tutorials/app-examples/qry-ans.md)  
+Sending a message and expecting a response
+* [Utilizing Parameters in Application Definitions](tutorials/app-examples/parameters-app.md)
 
 >NOTE:  Upcoming Tutorials
 
-* [Simple Request/Reply App](tutorials/app-examples/req-rep.md)
-* [Complex example: Distributed Estimator App](tutorials/app-examples/complex-app.md)
+* [Complex example: Distributed Averaging](tutorials/app-examples/complex-app.md)  
 * [Utilizing Parameters in Application Definitions](tutorials/app-examples/parameters-app.md)
 * [Additional Port types](tutorials/app-examples/other-ports.md)
-* [Timer programming](tutorials/app-examples/timer-app.md)
 * [Simple Device Component Example](tutorials/app-examples/simple-device.md)
 * [Advanced Device Component Example](tutorials/app-examples/multithread-device.md)
 * [Device Component Library](tutorials/app-examples/device-library.md)
