@@ -45,7 +45,7 @@ Create time-triggered functions
 Send one-way messages from N-to-M nodes.
 * [Query-Answer Messaging](tutorials/app-examples/qry-ans.md)  
 Sending a message and expecting a response
-
+* [Utilizing Parameters in Application Definitions](tutorials/app-examples/parameters-app.md)
 
 >NOTE:  Upcoming Tutorials
 
